@@ -4,6 +4,19 @@ android {
     compileSdkVersion 28
 
 
+    sourceSets {
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res/layouts/activities',
+                            'src/main/res/layouts/fragments',
+                            'src/main/res/layouts/content',
+                            'src/main/res/layouts',
+                            'src/main/res'
+                    ]
+        }
+    }
+
 
     defaultConfig {
         applicationId "com.bw.movie"
