@@ -22,6 +22,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             //透明导航栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+
+
         //加载布局
         setContentView(getLayoutResId());
         //初始化view
