@@ -6,6 +6,7 @@ import com.bw.movie.R;
 import com.bw.movie.fragmnet.BaseFragment;
 
 public class GuideFirstFragment extends BaseFragment {
+
     @Override
     protected void initData() {
 
