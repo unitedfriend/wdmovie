@@ -24,6 +24,7 @@
         <!-- 遮罩层 -->
         <item name="android:backgroundDimAmount">0.5</item>
     </style>
+
     <style name="TransDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>

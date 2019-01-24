@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bw.movie">
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="READ_PHONE_STATE"/>
-    <uses-permission android:name="CAMERA"/>
-    <uses-permission android:name="ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="ACCESS_WIFI_STATE" />
+    <uses-permission android:name="READ_PHONE_STATE" />
+    <uses-permission android:name="CAMERA" />
+    <uses-permission android:name="ACCESS_NETWORK_STATE" />
+
     <application
+        android:name=".application.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".application.MyApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".guide.activity.GuideActivity">
+        <activity android:name=".login.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-                <!--跳转到网络设置的权限-->
+                <!-- 跳转到网络设置的权限 -->
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.activity.LoginActivity" android:launchMode="singleTask"/>
+        <!-- <activity android:name=".login.activity.LoginActivity" android:launchMode="singleTask"/> -->
+        <activity android:name=".register.activity.RegisterActivity" android:launchMode="singleTask"/>
     </application>
+
 </manifest>

@@ -13,4 +13,6 @@ public class EmptyUtil {
     public static boolean isNull(String name,String password){
         return !TextUtils.isEmpty(name)&&!TextUtils.isEmpty(password);
     }
+
+    
 }

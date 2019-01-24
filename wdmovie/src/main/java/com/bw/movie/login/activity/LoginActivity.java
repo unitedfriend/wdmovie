@@ -1,6 +1,7 @@
 package com.bw.movie.login.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -20,6 +21,7 @@ import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
 import com.bw.movie.login.bean.LoginBean;
+import com.bw.movie.register.activity.RegisterActivity;
 import com.bw.movie.util.AccountValidatorUtil;
 import com.bw.movie.util.EmptyUtil;
 import com.bw.movie.util.EncryptUtil;
@@ -184,6 +186,8 @@ public class LoginActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.login_text_sign:
+                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(intent);
                 break;
             case R.id.login_but:
                 phone = textPhone.getText().toString().trim();
