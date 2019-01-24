@@ -119,20 +119,20 @@
         app:layout_constraintRight_toLeftOf="@+id/sign_text_phone"
         android:background="@mipmap/log_icon_phone_default"
         />
+
     <EditText
         android:id="@+id/sign_text_phone"
         android:layout_width="0dp"
-        android:layout_height="@dimen/dp_20"
+        android:layout_height="22dp"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@null"
         android:hint="手机号"
         android:textColor="#fff"
         android:textColorHint="#fff"
         android:textSize="@dimen/sp_16"
-        android:background="@null"
-        android:layout_marginTop="@dimen/dp_20"
-        app:layout_constraintTop_toBottomOf="@id/sign_view_date"
         app:layout_constraintLeft_toRightOf="@+id/sign_image_phone"
         app:layout_constraintRight_toRightOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@id/sign_view_date" />
     <View
         android:id="@+id/sign_view_phone"
         android:layout_width="match_parent"
@@ -195,6 +195,7 @@
         android:textSize="@dimen/sp_16"
         android:background="@null"
         android:layout_marginTop="@dimen/dp_20"
+        android:password="true"
         app:layout_constraintTop_toBottomOf="@id/sign_view_email"
         app:layout_constraintLeft_toRightOf="@+id/sign_image_pwd"
         app:layout_constraintRight_toRightOf="parent"

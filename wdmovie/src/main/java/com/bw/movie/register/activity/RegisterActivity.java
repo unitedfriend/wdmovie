@@ -1,29 +1,48 @@
 package com.bw.movie.register.activity;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
+import com.bw.movie.api.Apis;
+import com.bw.movie.register.bean.RegisterBean;
+import com.bw.movie.util.AccountValidatorUtil;
+import com.bw.movie.util.EmptyUtil;
+import com.bw.movie.util.EncryptUtil;
+import com.bw.movie.util.ToastUtil;
+
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
+/**
+  * @作者 GXY
+  * @创建日期 2019/1/24 20:43
+  * @描述 注册Activity
+  *
+  */
 public class RegisterActivity extends BaseActivity {
     @BindView(R.id.sign_text_nick)
-    EditText signTextNick;
+    EditText textNick;
     @BindView(R.id.sign_text_sex)
-    EditText signTextSex;
+    EditText textSex;
     @BindView(R.id.sign_text_date)
-    EditText signTextDate;
+    EditText textDate;
     @BindView(R.id.sign_text_phone)
-    EditText signTextPhone;
+    EditText textPhone;
     @BindView(R.id.sign_text_email)
-    EditText signTextEmail;
+    EditText textEmail;
     @BindView(R.id.sign_text_pwd)
-    EditText signTextPwd;
+    EditText textPwd;
     @BindView(R.id.sign_but)
     Button signBut;
 
@@ -41,6 +60,7 @@ public class RegisterActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
+        getDateTime();
     }
 
     /**
@@ -56,7 +76,14 @@ public class RegisterActivity extends BaseActivity {
      */
     @Override
     protected void netSuccess(Object object) {
-
+        if(object instanceof RegisterBean){
+            RegisterBean registerBean = (RegisterBean) object;
+            if(registerBean==null || !registerBean.isSuccess()){
+                ToastUtil.showToast(registerBean.getMessage());
+            }else{
+                ToastUtil.showToast(getResources().getString(R.string.register_successfully));
+            }
+        }
     }
 
     /**
@@ -64,11 +91,85 @@ public class RegisterActivity extends BaseActivity {
      */
     @Override
     protected void netFail(String s) {
-
+        ToastUtil.showToast(s);
     }
 
     @OnClick(R.id.sign_but)
     public void onViewClicked() {
+        String nick = textNick.getText().toString().trim();
+        String sex = textSex.getText().toString().trim();
+        String date = textDate.getText().toString().trim();
+        String email = textEmail.getText().toString().trim();
+        String phone = textPhone.getText().toString().trim();
+        String pwd = textPwd.getText().toString().trim();
+        if(EmptyUtil.loginNull(nick,sex,date,email,phone,pwd)){
+            if(AccountValidatorUtil.isMobile(phone)){
+                if(AccountValidatorUtil.isEmail(email)){
+                    if(AccountValidatorUtil.isPassword(pwd)){
+                        int mSex = 1;
+                        if(sex.equals("女")){
+                            mSex = 2;
+                        }
+                        Map<String,String> map = new HashMap<>();
+                        map.put("nickName",nick);
+                        map.put("sex",String.valueOf(mSex));
+                        map.put("birthday",date);
+                        map.put("phone",phone);
+                        map.put("email",email);
+                        map.put("pwd",EncryptUtil.encrypt(pwd));
+                        map.put("pwd2",EncryptUtil.encrypt(pwd));
+                        doNetWorkPostRequest(Apis.URL_REGISTER_USER_POST,map,RegisterBean.class);
+                    }else{
+                        ToastUtil.showToast(getResources().getString(R.string.is_pwd));
+                    }
+                }else{
+                    ToastUtil.showToast(getResources().getString(R.string.register_email));
+                }
+            }else{
+                ToastUtil.showToast(getResources().getString(R.string.register_phone));
+            }
+        }else{
+            ToastUtil.showToast(getResources().getString(R.string.is_null));
+        }
 
     }
+    private void getDateTime(){
+        //日期第三方
+        textDate.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    showDatePickDlg();
+                    return true;
+                }
+                return false;
+            }
+        });
+        textDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    showDatePickDlg();
+                }
+            }
+        });
+
+
+    }
+
+    //第三方控件  日期格式
+    protected void showDatePickDlg() {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                RegisterActivity.this.textDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+
+    }
+
 }

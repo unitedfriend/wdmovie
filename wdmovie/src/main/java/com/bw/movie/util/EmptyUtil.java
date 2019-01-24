@@ -14,7 +14,8 @@ public class EmptyUtil {
         return !TextUtils.isEmpty(name)&&!TextUtils.isEmpty(password);
     }
     //注册非空判断
-    public static boolean loginNull(String phone){
-        return false;
+    public static boolean loginNull(String nick,String sex,String date,String phone,String email,String pwd){
+        return !TextUtils.isEmpty(nick)&&!TextUtils.isEmpty(sex)&&!TextUtils.isEmpty(date)&&!TextUtils.isEmpty(phone)
+                &&!TextUtils.isEmpty(email)&&!TextUtils.isEmpty(pwd);
     }
 }

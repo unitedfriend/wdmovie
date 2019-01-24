@@ -7,6 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <!--解决启动时 app白屏问题-->
+    <style name="AppTheme.Launcher">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
     <style name="custom_dialog" parent="@android:style/Theme.Dialog">
         <!-- 边框 -->
         <item name="android:windowFrame">@null</item>

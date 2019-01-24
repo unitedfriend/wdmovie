@@ -4,12 +4,15 @@
     <string name="is_null">输入不能为空</string>
     <string name="is_pwd">密码不能小于六位数</string>
     <string name="login_successfully">登录成功</string>
-
+    <string name="register_email">邮箱格式不正确</string>
+    <string name="register_phone">手机号格式不正确</string>
+    <string name="register_successfully">注册成功</string>
     <string name="guide_text">一场电影</string>
     <string name="guide_1_text1">净化你的灵魂</string>
     <string name="guide_2_text1">看遍人生百态</string>
     <string name="guide_3_text1">荡涤你的灵魂</string>
     <string name="guide_text4">移动通信学院作品</string>
     <string name="guide_4_text1">带您开启一段美好的电影之旅</string>
+
 
 </resources>

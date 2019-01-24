@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
+import com.bw.movie.home.activity.HomeActivity;
 import com.bw.movie.login.bean.LoginBean;
 import com.bw.movie.register.activity.RegisterActivity;
 import com.bw.movie.util.AccountValidatorUtil;
@@ -60,8 +61,6 @@ public class LoginActivity extends BaseActivity {
     private SharedPreferences.Editor edit;
     private String phone;
     private String password;
-    private String encrypt;
-
     /**
      * 初始化数据
      */
@@ -94,7 +93,10 @@ public class LoginActivity extends BaseActivity {
         //将自动状态值取出
         boolean o_check = preferences.getBoolean("o_check", false);
         if(o_check){
-           getData();
+            Map<String,String> map = new HashMap<>();
+            map.put("phone",textPhone.getText().toString().trim());
+            map.put("pwd",EncryptUtil.encrypt(textPwd.getText().toString().trim()));
+            doNetWorkPostRequest(Apis.URL_LOGIN_POST,map,LoginBean.class);
         }
         // 勾选自动登录同事勾选记住 密码
         checkAuto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -128,15 +130,7 @@ public class LoginActivity extends BaseActivity {
     protected int getLayoutResId() {
         return R.layout.activity_login;
     }
-    /**
-     * 请求数据
-     * */
-    private void getData() {
-        Map<String,String> map = new HashMap<>();
-        map.put("phone",textPhone.getText().toString().trim());
-        map.put("pwd",encrypt);
-        doNetWorkPostRequest(Apis.URL_LOGIN_POST,map,LoginBean.class);
-    }
+
     /**
      * 成功
      * */
@@ -173,13 +167,15 @@ public class LoginActivity extends BaseActivity {
                     edit.commit();
                 }
                 preferences.edit().putString("userId",String.valueOf(userId)).putString("sessionId",sessionId).commit();
+                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                startActivity(intent);
             }
         }
     }
 
     @Override
     protected void netFail(String s) {
-
+        String s1 = s;
     }
 
     @OnClick({R.id.login_text_sign, R.id.login_but, R.id.login_weixin})
@@ -192,11 +188,13 @@ public class LoginActivity extends BaseActivity {
             case R.id.login_but:
                 phone = textPhone.getText().toString().trim();
                 password = textPwd.getText().toString().trim();
-                encrypt = EncryptUtil.encrypt(password);
                 //非空判断
                 if(EmptyUtil.isNull(phone,password)){
                     if(AccountValidatorUtil.isPassword(password)){
-                        getData();
+                        Map<String,String> map = new HashMap<>();
+                        map.put("phone",phone);
+                        map.put("pwd",EncryptUtil.encrypt(password));
+                        doNetWorkPostRequest(Apis.URL_LOGIN_POST,map,LoginBean.class);
                     }else{
                         ToastUtil.showToast(getResources().getString(R.string.is_pwd));
                     }
