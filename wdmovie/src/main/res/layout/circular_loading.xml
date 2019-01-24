@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="@dimen/dp_60"
+    android:minWidth="@dimen/dp_150"
+    android:background="#00ffffff"
+    android:orientation="horizontal" >
+    <ImageView
+        android:id="@+id/load_iv"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_50"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginStart="@dimen/dp_20"
+        android:src="@drawable/jiazaiquan" />
+    <TextView
+        android:id="@+id/point_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_0"
+        android:layout_toRightOf="@+id/load_iv"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:textSize="16sp" />
+</RelativeLayout>
