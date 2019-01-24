@@ -13,6 +13,8 @@ public class EmptyUtil {
     public static boolean isNull(String name,String password){
         return !TextUtils.isEmpty(name)&&!TextUtils.isEmpty(password);
     }
-
-    
+    //注册非空判断
+    public static boolean loginNull(String phone){
+        return false;
+    }
 }

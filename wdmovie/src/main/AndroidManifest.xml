@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".login.activity.LoginActivity">
+        <activity android:name=".guide.activity.GuideActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +29,7 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </activity>
-        <!-- <activity android:name=".login.activity.LoginActivity" android:launchMode="singleTask"/> -->
+        <activity android:name=".login.activity.LoginActivity" android:launchMode="singleTask"/>
         <activity android:name=".register.activity.RegisterActivity" android:launchMode="singleTask"/>
     </application>
 
