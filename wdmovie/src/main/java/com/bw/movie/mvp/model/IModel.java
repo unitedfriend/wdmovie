@@ -1,11 +1,13 @@
-package com.bw.movie.model;
+package com.bw.movie.mvp.model;
 
 import java.util.Map;
 
 /**
- * m层接口
- * guoxinyu
- * */
+  * @作者 GXY
+  * @创建日期 2019/1/23 18:40
+  * @描述 m层接口
+  *
+  */
 public interface IModel {
     /**
      * get请求

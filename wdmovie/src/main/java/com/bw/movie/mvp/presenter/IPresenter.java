@@ -1,11 +1,14 @@
-package com.bw.movie.presenter;
+package com.bw.movie.mvp.presenter;
 
 import java.util.Map;
 
 /**
- * p层接口
- * guoxinyu
- * */
+  * @作者 GXY
+  * @创建日期 2019/1/23 18:41
+  * @描述 p层接口
+  *
+  */
+
 public interface IPresenter {
     /**
      * get请求

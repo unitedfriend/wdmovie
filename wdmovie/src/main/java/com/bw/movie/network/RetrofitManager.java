@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.bw.movie.application.MyApplication;
+import com.bw.movie.util.ToastUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,11 +27,17 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
+/**
+  * @作者 GXY
+  * @创建日期 2019/1/24 9:47
+  * @描述 网络请求工具类
+  *
+  */
 public class RetrofitManager {
     private final String BASE_URL = "http://mobile.bwstudent.com/";
     private final BaseApis baseApis;
-
+    private  String ak = "0110010010000";
+    private String Content_Type = "application/x-www-form-urlencoded";
     /**
      * 静态内部类的单例模式
      */
@@ -53,8 +60,6 @@ public class RetrofitManager {
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
                 SharedPreferences preferences = MyApplication.getApplication().getSharedPreferences("User", Context.MODE_PRIVATE);
-                String ak = preferences.getString("ak", "0110010010000");
-                String Content_Type = preferences.getString("Content-Type", "application/x-www-form-urlencoded");
                 String userId = preferences.getString("userId", "");
                 String sessionId = preferences.getString("sessionId", "");
                 Request.Builder builder1 = request.newBuilder();
@@ -111,7 +116,6 @@ public class RetrofitManager {
 
     }
 
-
     /**
      * 上传头像
      */
@@ -137,11 +141,9 @@ public class RetrofitManager {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getObserver(listener));
     }
-
     /**
      * 观察者
      */
-
     private Observer getObserver(final HttpListener listener) {
         Observer observer = new Observer<ResponseBody>() {
             @Override
@@ -160,6 +162,7 @@ public class RetrofitManager {
             public void onNext(ResponseBody responseBody) {
                 try {
                     String data = responseBody.string();
+                    ToastUtil.showToast(data);
                     if (null != listener) {
                         listener.onSuccess(data);
                     }

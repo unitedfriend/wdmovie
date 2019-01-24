@@ -1,4 +1,4 @@
-package com.bw.movie.view;
+package com.bw.movie.mvp.view;
 
 public interface IView<E> {
     void requestSuccess(E e);
