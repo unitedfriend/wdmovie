@@ -33,4 +33,14 @@ public class GuideActivity extends BaseActivity {
     protected int getLayoutResId() {
         return R.layout.guide_activity;
     }
+
+    @Override
+    protected void netSuccess(Object object) {
+
+    }
+
+    @Override
+    protected void netFail(String s) {
+
+    }
 }
