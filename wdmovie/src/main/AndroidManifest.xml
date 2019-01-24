@@ -26,6 +26,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".login.activity.LoginActivity" android:launchMode="singleTask"/>-->
+        <activity android:name=".login.activity.LoginActivity" android:launchMode="singleTask"/>
     </application>
 </manifest>
