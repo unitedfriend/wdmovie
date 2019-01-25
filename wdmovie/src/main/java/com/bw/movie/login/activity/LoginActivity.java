@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
+import com.bw.movie.home.activity.HomeActivity;
 import com.bw.movie.login.bean.LoginBean;
 import com.bw.movie.register.activity.RegisterActivity;
 import com.bw.movie.util.AccountValidatorUtil;
@@ -173,6 +174,9 @@ public class LoginActivity extends BaseActivity {
                     edit.commit();
                 }
                 preferences.edit().putString("userId",String.valueOf(userId)).putString("sessionId",sessionId).commit();
+                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                startActivity(intent);
+
             }
         }
     }
