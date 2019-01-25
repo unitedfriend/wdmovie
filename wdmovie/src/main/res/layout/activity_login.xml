@@ -100,19 +100,6 @@
         android:layout_marginTop="@dimen/dp_15"
         app:layout_constraintTop_toBottomOf="@id/login_view_pwd"
         />
-    <CheckBox
-        android:id="@+id/login_check_auto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_view_pwd"
-        android:buttonTint="#fff"
-        android:text="自动登录"
-        android:textSize="@dimen/sp_14"
-        android:textColor="#fff"
-        android:layout_marginTop="@dimen/dp_15"
-        android:layout_marginLeft="@dimen/dp_10"
-        app:layout_constraintTop_toBottomOf="@id/login_view_pwd"
-        app:layout_constraintLeft_toRightOf="@id/login_check_rem"/>
     <TextView
         android:id="@+id/login_text_sign"
         android:layout_width="wrap_content"

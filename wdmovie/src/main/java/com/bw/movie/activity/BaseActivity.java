@@ -1,12 +1,15 @@
 package com.bw.movie.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.WindowManager;
 
 import com.bw.movie.R;
@@ -16,6 +19,9 @@ import com.bw.movie.util.CircularLoading;
 import com.bw.movie.util.NetUtil;
 import com.bw.movie.util.ToastUtil;
 import android.app.Dialog;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
+
 import java.util.Map;
 
 /**
@@ -122,9 +128,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
             presenter.onDetach();
         }
     }
-
-
-
     //动态注册权限
     private void stateNetWork() {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
@@ -160,5 +163,20 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
                 }
             }
         }
+    }
+    /**
+     * 点击空白区域隐藏键盘.
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (BaseActivity.this.getCurrentFocus() != null) {
+                if (BaseActivity.this.getCurrentFocus().getWindowToken() != null) {
+                    imm.hideSoftInputFromWindow(BaseActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            }
+        }
+        return super.onTouchEvent(event);
     }
 }

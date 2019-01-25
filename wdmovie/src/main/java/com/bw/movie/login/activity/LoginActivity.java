@@ -47,8 +47,6 @@ public class LoginActivity extends BaseActivity {
     EditText textPwd;
     @BindView(R.id.login_check_rem)
     CheckBox checkRem;
-    @BindView(R.id.login_check_auto)
-    CheckBox checkAuto;
     @BindView(R.id.login_text_sign)
     TextView textSign;
     @BindView(R.id.login_but)
@@ -90,25 +88,6 @@ public class LoginActivity extends BaseActivity {
             textPwd.setText(password);
             checkRem.setChecked(true);
         }
-        //将自动状态值取出
-        boolean o_check = preferences.getBoolean("o_check", false);
-        if(o_check){
-            Map<String,String> map = new HashMap<>();
-            map.put("phone",textPhone.getText().toString().trim());
-            map.put("pwd",EncryptUtil.encrypt(textPwd.getText().toString().trim()));
-            doNetWorkPostRequest(Apis.URL_LOGIN_POST,map,LoginBean.class);
-        }
-        // 勾选自动登录同事勾选记住 密码
-        checkAuto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    checkRem.setChecked(true);
-                }else{
-                    checkRem.setChecked(false);
-                }
-            }
-        });
         //密码显示和隐藏
         imageButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -122,7 +101,6 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
-
     /**
      * 加载布局
      */
@@ -159,29 +137,26 @@ public class LoginActivity extends BaseActivity {
                     //提交
                     edit.commit();
                 }
-                //自动登录
-                if(checkAuto.isChecked()){
-                    //存入一个勾选状态
-                    edit.putBoolean("o_check",true);
-                    //提交
-                    edit.commit();
-                }
+                //将userId和sessionId保存到本地
                 preferences.edit().putString("userId",String.valueOf(userId)).putString("sessionId",sessionId).commit();
+                //登录成功跳转到首页
                 Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                 startActivity(intent);
             }
         }
     }
-
+    /**
+     * 失败
+     * */
     @Override
     protected void netFail(String s) {
-        String s1 = s;
+       ToastUtil.showToast(s);
     }
-
     @OnClick({R.id.login_text_sign, R.id.login_but, R.id.login_weixin})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.login_text_sign:
+                //点击跳转到注册
                 Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(intent);
                 break;

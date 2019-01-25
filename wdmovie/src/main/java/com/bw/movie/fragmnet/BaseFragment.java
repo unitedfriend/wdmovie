@@ -1,5 +1,6 @@
 package com.bw.movie.fragmnet;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.bw.movie.mvp.presenter.PresenterImpl;
 import com.bw.movie.mvp.view.IView;
@@ -97,5 +99,12 @@ public abstract class BaseFragment extends Fragment implements IView {
     public void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
+    }
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
     }
 }

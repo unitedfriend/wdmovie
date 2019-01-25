@@ -1,6 +1,7 @@
 package com.bw.movie.register.activity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
+import com.bw.movie.home.activity.HomeActivity;
+import com.bw.movie.login.bean.LoginBean;
 import com.bw.movie.register.bean.RegisterBean;
 import com.bw.movie.util.AccountValidatorUtil;
 import com.bw.movie.util.EmptyUtil;
@@ -45,6 +48,8 @@ public class RegisterActivity extends BaseActivity {
     EditText textPwd;
     @BindView(R.id.sign_but)
     Button signBut;
+    private String phone;
+    private String pwd;
 
     /**
      * 加载数据
@@ -53,7 +58,6 @@ public class RegisterActivity extends BaseActivity {
     protected void initData() {
 
     }
-
     /**
      * 初始化view
      */
@@ -70,7 +74,6 @@ public class RegisterActivity extends BaseActivity {
     protected int getLayoutResId() {
         return R.layout.activity_register;
     }
-
     /**
      * 成功
      */
@@ -82,10 +85,22 @@ public class RegisterActivity extends BaseActivity {
                 ToastUtil.showToast(registerBean.getMessage());
             }else{
                 ToastUtil.showToast(getResources().getString(R.string.register_successfully));
+                Map<String,String> map = new HashMap<>();
+                map.put("phone",phone);
+                map.put("pwd",EncryptUtil.encrypt(pwd));
+                doNetWorkPostRequest(Apis.URL_LOGIN_POST,map,LoginBean.class);
+            }
+        }else if(object instanceof LoginBean){
+            LoginBean loginBean = (LoginBean) object;
+            if(loginBean==null || !loginBean.isSuccess()){
+                ToastUtil.showToast(loginBean.getMessage());
+            }else{
+                ToastUtil.showToast(getResources().getString(R.string.login_successfully));
+                Intent intent = new Intent(RegisterActivity.this,HomeActivity.class);
+                startActivity(intent);
             }
         }
     }
-
     /**
      * 失败
      */
@@ -100,9 +115,9 @@ public class RegisterActivity extends BaseActivity {
         String sex = textSex.getText().toString().trim();
         String date = textDate.getText().toString().trim();
         String email = textEmail.getText().toString().trim();
-        String phone = textPhone.getText().toString().trim();
-        String pwd = textPwd.getText().toString().trim();
-        if(EmptyUtil.loginNull(nick,sex,date,email,phone,pwd)){
+        phone = textPhone.getText().toString().trim();
+        pwd = textPwd.getText().toString().trim();
+        if(EmptyUtil.loginNull(nick,sex,date,email, phone, pwd)){
             if(AccountValidatorUtil.isMobile(phone)){
                 if(AccountValidatorUtil.isEmail(email)){
                     if(AccountValidatorUtil.isPassword(pwd)){
@@ -114,7 +129,7 @@ public class RegisterActivity extends BaseActivity {
                         map.put("nickName",nick);
                         map.put("sex",String.valueOf(mSex));
                         map.put("birthday",date);
-                        map.put("phone",phone);
+                        map.put("phone", phone);
                         map.put("email",email);
                         map.put("pwd",EncryptUtil.encrypt(pwd));
                         map.put("pwd2",EncryptUtil.encrypt(pwd));
@@ -131,7 +146,6 @@ public class RegisterActivity extends BaseActivity {
         }else{
             ToastUtil.showToast(getResources().getString(R.string.is_null));
         }
-
     }
     private void getDateTime(){
         //日期第三方
@@ -155,10 +169,7 @@ public class RegisterActivity extends BaseActivity {
                 }
             }
         });
-
-
     }
-
     //第三方控件  日期格式
     protected void showDatePickDlg() {
         Calendar calendar = Calendar.getInstance();
@@ -169,7 +180,5 @@ public class RegisterActivity extends BaseActivity {
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
-
     }
-
 }
