@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">维度影院</string>
+    <string name="app_name">维度电影</string>
     <string name="no_net_work">网络不可用，请检查网络状态</string>
     <string name="is_null">输入不能为空</string>
     <string name="is_pwd">密码不能小于六位数</string>

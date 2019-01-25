@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_my">
+
+    <ImageView
+        android:id="@+id/my_icon"
+        android:layout_width="@dimen/dp_72"
+        android:layout_height="@dimen/dp_72"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_70"
+        android:src="@mipmap/my_head" />
+    <TextView
+        android:id="@+id/my_icon_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/my_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_12"
+        android:text="冬天来了"
+        android:textColor="#ffffff" />
+    <Button
+        android:id="@+id/sign"
+        android:layout_width="@dimen/dp_66"
+        android:layout_height="@dimen/dp_28"
+        android:text="签到"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/sp_14"
+        android:layout_below="@id/my_icon_name"
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/my_button_sign_shape"
+        />
+</RelativeLayout>
