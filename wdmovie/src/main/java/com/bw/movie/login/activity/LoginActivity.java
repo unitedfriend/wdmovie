@@ -152,6 +152,7 @@ public class LoginActivity extends BaseActivity {
     protected void netFail(String s) {
        ToastUtil.showToast(s);
     }
+
     @OnClick({R.id.login_text_sign, R.id.login_but, R.id.login_weixin})
     public void onViewClicked(View view) {
         switch (view.getId()) {
