@@ -24,6 +24,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends BaseActivity {
+//buhuoi
+    //获取id
     @BindView(R.id.home_viewpage)
     NoScrollViewPager homeViewpage;
     @BindView(R.id.film)
