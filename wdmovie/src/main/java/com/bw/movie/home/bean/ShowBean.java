@@ -13,7 +13,10 @@ public class ShowBean {
     private String message;
     private String status;
     private List<ResultBean> result;
-
+    private final String SUCCESS_STATUS = "0000";
+    public boolean isSuccess(){
+        return status.equals(SUCCESS_STATUS);
+    }
     public String getMessage() {
         return message;
     }

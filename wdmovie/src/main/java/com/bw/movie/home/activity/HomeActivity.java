@@ -24,7 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class HomeActivity extends BaseActivity {
-//buhuoi
     //获取id
     @BindView(R.id.home_viewpage)
     NoScrollViewPager homeViewpage;
@@ -47,15 +46,12 @@ public class HomeActivity extends BaseActivity {
      *  @describe 设置点击放大的动画效果
      */
     private void initSelector() {
-        //film选中的动画
-
-        //film取消选中的动画
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
                     case R.id.film:
+                        //点击同时设置其他按钮回归原状并切换页面
                         setMagnify(film);
                         setShrink(cinema);
                         setShrink(my);
