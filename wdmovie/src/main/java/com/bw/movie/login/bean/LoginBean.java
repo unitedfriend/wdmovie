@@ -1,11 +1,14 @@
 package com.bw.movie.login.bean;
+
+import java.io.Serializable;
+
 /**
   * @作者 GXY
   * @创建日期 2019/1/24 14:37
   * @描述 登录的bean
   *
   */
-public class LoginBean {
+public class LoginBean implements Serializable {
 
     private ResultBean result;
     private String message;
@@ -38,7 +41,7 @@ public class LoginBean {
         this.status = status;
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Serializable{
 
         private String sessionId;
         private int userId;

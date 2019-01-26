@@ -39,6 +39,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void initData() {
         initSelector();
+
     }
     /**
      *  @author Tang
@@ -74,6 +75,7 @@ public class HomeActivity extends BaseActivity {
                 }
             }
         });
+
         film.setChecked(true);
     }
     /**
@@ -125,6 +127,7 @@ public class HomeActivity extends BaseActivity {
         list.add(myFragment);
         HomeViewPageAdapter pageAdapter = new HomeViewPageAdapter(getSupportFragmentManager(),list);
         homeViewpage.setAdapter(pageAdapter);
+        homeViewpage.setOffscreenPageLimit(2);
     }
 
     @Override

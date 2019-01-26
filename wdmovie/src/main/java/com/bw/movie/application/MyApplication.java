@@ -1,15 +1,15 @@
 package com.bw.movie.application;
 
+
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
-
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
-
 public class MyApplication extends Application {
     private static Context mContext;
     @Override
@@ -24,9 +24,9 @@ public class MyApplication extends Application {
         ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
                 .setMainDiskCacheConfig(cacheConfig)
                 .build();
-        Fresco.initialize(this,config);
+        Fresco.initialize(this, config);
 
-        mContext=getApplicationContext();
+        mContext = getApplicationContext();
 
         //android 7.0调用相机闪退问题
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

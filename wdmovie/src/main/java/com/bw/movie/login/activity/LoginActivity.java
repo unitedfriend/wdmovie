@@ -59,6 +59,7 @@ public class LoginActivity extends BaseActivity {
     private SharedPreferences.Editor edit;
     private String phone;
     private String password;
+
     /**
      * 初始化数据
      */
@@ -74,7 +75,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
-        preferences = getSharedPreferences("User",MODE_PRIVATE);
+        preferences = getSharedPreferences("User", MODE_PRIVATE);
         edit = preferences.edit();
 
         //将记住密码的状态值取出
@@ -101,6 +102,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 加载布局
      */
@@ -111,46 +113,47 @@ public class LoginActivity extends BaseActivity {
 
     /**
      * 成功
-     * */
+     */
     @Override
     protected void netSuccess(Object object) {
-        if(object instanceof LoginBean){
+        if (object instanceof LoginBean) {
             LoginBean loginBean = (LoginBean) object;
-            int userId = loginBean.getResult().getUserId();
-            String sessionId = loginBean.getResult().getSessionId();
-            if(loginBean==null || !loginBean.isSuccess()){
+            if (loginBean == null || !loginBean.isSuccess()) {
                 ToastUtil.showToast(loginBean.getMessage());
-            }else{
+            } else {
+                int userId = loginBean.getResult().getUserId();
+                String sessionId = loginBean.getResult().getSessionId();
                 ToastUtil.showToast(getResources().getString(R.string.login_successfully));
                 //判断记住密码是否勾选
-                if(checkRem.isChecked()){
+                if (checkRem.isChecked()) {
                     //存值
-                    edit.putString("phone",phone);
-                    edit.putString("password",password);
+                    edit.putString("phone", phone);
+                    edit.putString("password", password);
                     //存入一个勾选转态
                     edit.putBoolean("r_check", true);
                     //提交
                     edit.commit();
-                }else{
+                } else {
                     //清空
                     edit.clear();
                     //提交
                     edit.commit();
                 }
                 //将userId和sessionId保存到本地
-                preferences.edit().putString("userId",String.valueOf(userId)).putString("sessionId",sessionId).commit();
+                preferences.edit().putString("userId", String.valueOf(userId)).putString("sessionId", sessionId).commit();
                 //登录成功跳转到首页
-                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         }
     }
+
     /**
      * 失败
-     * */
+     */
     @Override
     protected void netFail(String s) {
-       ToastUtil.showToast(s);
+        ToastUtil.showToast(s);
     }
 
     @OnClick({R.id.login_text_sign, R.id.login_but, R.id.login_weixin})
@@ -158,30 +161,30 @@ public class LoginActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.login_text_sign:
                 //点击跳转到注册
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
                 break;
             case R.id.login_but:
                 phone = textPhone.getText().toString().trim();
                 password = textPwd.getText().toString().trim();
                 //非空判断
-                if(EmptyUtil.isNull(phone,password)){
-                    if(AccountValidatorUtil.isPassword(password)){
-                        Map<String,String> map = new HashMap<>();
-                        map.put("phone",phone);
-                        map.put("pwd",EncryptUtil.encrypt(password));
-                        doNetWorkPostRequest(Apis.URL_LOGIN_POST,map,LoginBean.class);
-                    }else{
+                if (EmptyUtil.isNull(phone, password)) {
+                    if (AccountValidatorUtil.isPassword(password)) {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("phone", phone);
+                        map.put("pwd", EncryptUtil.encrypt(password));
+                        doNetWorkPostRequest(Apis.URL_LOGIN_POST, map, LoginBean.class);
+                    } else {
                         ToastUtil.showToast(getResources().getString(R.string.is_pwd));
                     }
-                }else{
+                } else {
                     ToastUtil.showToast(getResources().getString(R.string.is_null));
                 }
                 break;
             case R.id.login_weixin:
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 

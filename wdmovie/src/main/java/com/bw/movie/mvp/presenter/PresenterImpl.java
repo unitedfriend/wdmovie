@@ -25,7 +25,17 @@ public class PresenterImpl implements IPresenter {
      * */
     @Override
     public void requestGet(String url, Class clazz) {
+        model.getRequest(url, clazz, new MyCallBack() {
+            @Override
+            public void onSuccess(Object data) {
+                mIView.requestSuccess(data);
+            }
 
+            @Override
+            public void onFail(Object o) {
+                mIView.requestFail(o.toString());
+            }
+        });
     }
     /**
      * post请求
