@@ -162,7 +162,7 @@ public class RetrofitManager {
             public void onNext(ResponseBody responseBody) {
                 try {
                     String data = responseBody.string();
-                    ToastUtil.showToast(data);
+                    //ToastUtil.showToast(data);
                     if (null != listener) {
                         listener.onSuccess(data);
                     }

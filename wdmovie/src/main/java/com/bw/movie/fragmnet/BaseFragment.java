@@ -33,11 +33,12 @@ public abstract class BaseFragment extends Fragment implements IView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        presenter = new PresenterImpl(this);
         //初始化view
         initView(view);
         //初始化数据
         initData();
-        presenter = new PresenterImpl(this);
+
     }
     /**
      * 初始化数据

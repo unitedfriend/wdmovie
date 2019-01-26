@@ -1,4 +1,6 @@
 package com.bw.movie.home.fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -6,8 +8,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bw.movie.R;
+import com.bw.movie.api.Apis;
 import com.bw.movie.custom.ZoomInScrollView;
 import com.bw.movie.fragmnet.BaseFragment;
+import com.bw.movie.my.activity.MyMessageActivity;
+import com.bw.movie.my.bean.MyMessageBean;
+import com.bw.movie.util.ToastUtil;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +28,7 @@ import butterknife.Unbinder;
  */
 public class MyFragment extends BaseFragment {
     @BindView(R.id.my_icon)
-    ImageView myIcon;
+    SimpleDraweeView myIcon;
     @BindView(R.id.my_icon_name)
     TextView myIconName;
     @BindView(R.id.sign)
@@ -43,15 +50,15 @@ public class MyFragment extends BaseFragment {
     @BindView(R.id.system_message)
     ImageView systemMessage;
     Unbinder unbinder;
-
+    private MyMessageBean.ResultBean result;
+    private final int REQUESTCODE_NUM = 100;
     /**
      * 初始化数据
      */
     @Override
     protected void initData() {
-
+        doNetWorkGetRequest(Apis.URL_GET_USER_INFO_BY_USERID_GET,MyMessageBean.class);
     }
-
     /**
      * 初始化view
      */
@@ -74,7 +81,18 @@ public class MyFragment extends BaseFragment {
      */
     @Override
     protected void netSuccess(Object object) {
-
+        if(object instanceof MyMessageBean){
+            MyMessageBean myMessageBean = (MyMessageBean) object;
+            String headPic = myMessageBean.getResult().getHeadPic();
+            String nickName = myMessageBean.getResult().getNickName();
+            result = myMessageBean.getResult();
+            if(myMessageBean == null || !myMessageBean.isSuccess()){
+                ToastUtil.showToast(myMessageBean.getMessage());
+            }else{
+                myIcon.setImageURI(Uri.parse(headPic));
+                myIconName.setText(nickName);
+            }
+        }
     }
 
     /**
@@ -82,7 +100,7 @@ public class MyFragment extends BaseFragment {
      */
     @Override
     protected void netFail(String s) {
-
+        ToastUtil.showToast(s);
     }
 
     @Override
@@ -97,6 +115,9 @@ public class MyFragment extends BaseFragment {
             case R.id.sign:
                 break;
             case R.id.my_message:
+                Intent intent = new Intent(getActivity(),MyMessageActivity.class);
+                intent.putExtra("result",result);
+                startActivityForResult(intent,REQUESTCODE_NUM);
                 break;
             case R.id.my_concern:
                 break;

@@ -47,11 +47,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         }
         //加载布局
         setContentView(getLayoutResId());
+        presenter = new PresenterImpl(this);
         //初始化view
         initView(savedInstanceState);
         //初始化数据
         initData();
-        presenter = new PresenterImpl(this);
         stateNetWork();
     }
     /**

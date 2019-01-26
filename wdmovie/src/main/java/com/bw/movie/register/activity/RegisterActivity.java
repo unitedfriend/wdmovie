@@ -2,6 +2,7 @@ package com.bw.movie.register.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -50,7 +51,8 @@ public class RegisterActivity extends BaseActivity {
     Button signBut;
     private String phone;
     private String pwd;
-
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor edit;
     /**
      * 加载数据
      */
@@ -64,6 +66,8 @@ public class RegisterActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
+        preferences = getSharedPreferences("User", MODE_PRIVATE);
+        edit = preferences.edit();
         getDateTime();
     }
 
@@ -96,6 +100,10 @@ public class RegisterActivity extends BaseActivity {
                 ToastUtil.showToast(loginBean.getMessage());
             }else{
                 ToastUtil.showToast(getResources().getString(R.string.login_successfully));
+                int userId = loginBean.getResult().getUserId();
+                String sessionId = loginBean.getResult().getSessionId();
+                //将userId和sessionId保存到本地
+                preferences.edit().putString("userId", String.valueOf(userId)).putString("sessionId", sessionId).commit();
                 Intent intent = new Intent(RegisterActivity.this,HomeActivity.class);
                 startActivity(intent);
             }

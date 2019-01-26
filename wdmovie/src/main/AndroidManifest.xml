@@ -32,6 +32,6 @@
         <activity android:name=".login.activity.LoginActivity" android:launchMode="singleTask"/>
         <activity android:name=".register.activity.RegisterActivity" android:launchMode="singleTask"/>
         <activity android:name=".home.activity.HomeActivity" android:launchMode="singleTask"/>
+        <activity android:name=".my.activity.MyMessageActivity"/>
     </application>
-
 </manifest>
