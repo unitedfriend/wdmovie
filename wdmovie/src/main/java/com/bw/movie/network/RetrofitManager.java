@@ -64,8 +64,8 @@ public class RetrofitManager {
                 String sessionId = preferences.getString("sessionId", "");
                 Request.Builder builder1 = request.newBuilder();
                 builder1.method(request.method(), request.body());
-                builder1.addHeader("ak", ak);
-                builder1.addHeader("Content_Type", Content_Type);
+                builder1.addHeader("ak",ak);
+                builder1.addHeader("Content_Type",Content_Type);
                 if (!TextUtils.isEmpty(userId) && !TextUtils.isEmpty(sessionId)) {
                     builder1.addHeader("userId", userId);
                     builder1.addHeader("sessionId", sessionId);
@@ -150,19 +150,16 @@ public class RetrofitManager {
             public void onCompleted() {
 
             }
-
             @Override
             public void onError(Throwable e) {
                 if (listener != null) {
                     listener.onFail(e.getMessage());
                 }
             }
-
             @Override
             public void onNext(ResponseBody responseBody) {
                 try {
                     String data = responseBody.string();
-                    //ToastUtil.showToast(data);
                     if (null != listener) {
                         listener.onSuccess(data);
                     }

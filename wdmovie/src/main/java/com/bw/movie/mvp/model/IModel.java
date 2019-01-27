@@ -17,4 +17,9 @@ public interface IModel {
      * post请求
      * */
     void postRequest(String url, Map<String,String> map,Class clazz,MyCallBack myCallBack);
+    /**
+     * 上传头像
+     * */
+    void ImagePostrRequest(String url,Map<String,String> map,Class clazz,MyCallBack myCallBack);
+
 }

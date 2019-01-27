@@ -30,10 +30,9 @@ public class PresenterImpl implements IPresenter {
             public void onSuccess(Object data) {
                 mIView.requestSuccess(data);
             }
-
             @Override
-            public void onFail(Object o) {
-                mIView.requestFail(o.toString());
+            public void onFail(String error) {
+                mIView.requestFail(error);
             }
         });
     }
@@ -49,12 +48,31 @@ public class PresenterImpl implements IPresenter {
             }
 
             @Override
-            public void onFail(Object o) {
-                mIView.requestFail(o.toString());
+            public void onFail(String error) {
+                mIView.requestFail(error);
             }
         });
     }
-   public void onDetach(){
+        /**
+         * 上传头像
+         * */
+    @Override
+    public void imageRequestPost(String url, Map<String, String> map, Class clazz) {
+        model.ImagePostrRequest(url, map, clazz, new MyCallBack() {
+            @Override
+            public void onSuccess(Object data) {
+                mIView.requestSuccess(data);
+            }
+
+            @Override
+            public void onFail(String error) {
+                mIView.requestFail(error);
+            }
+        });
+    }
+
+
+    public void onDetach(){
         if(mIView!=null){
             mIView = null;
         }

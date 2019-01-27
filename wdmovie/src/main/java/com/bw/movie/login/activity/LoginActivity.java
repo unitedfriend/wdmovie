@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
+import com.bw.movie.application.MyApplication;
 import com.bw.movie.home.activity.HomeActivity;
 import com.bw.movie.login.bean.LoginBean;
 import com.bw.movie.register.activity.RegisterActivity;
@@ -27,6 +28,8 @@ import com.bw.movie.util.AccountValidatorUtil;
 import com.bw.movie.util.EmptyUtil;
 import com.bw.movie.util.EncryptUtil;
 import com.bw.movie.util.ToastUtil;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -153,7 +156,6 @@ public class LoginActivity extends BaseActivity {
      */
     @Override
     protected void netFail(String s) {
-        ToastUtil.showToast(s);
     }
 
     @OnClick({R.id.login_text_sign, R.id.login_but, R.id.login_weixin})
@@ -182,6 +184,21 @@ public class LoginActivity extends BaseActivity {
                 }
                 break;
             case R.id.login_weixin:
+                if (MyApplication.api == null) {
+                    MyApplication.api = WXAPIFactory.createWXAPI(this, MyApplication.APP_ID, true);
+                }
+                if (!MyApplication.api.isWXAppInstalled()) {
+                    ToastUtil.showToast("您手机尚未安装微信，请安装后再登录");
+                    return;
+                }
+                MyApplication.api.registerApp(MyApplication.APP_ID);
+                SendAuth.Req req = new SendAuth.Req();
+                req.scope = "snsapi_userinfo";
+                //官方说明：用于保持请求和回调的状态，授权请求后原样带回给第三方
+                // 。该参数可用于防止csrf攻击（跨站请求伪造攻击）
+                // ，建议第三方带上该参数，可设置为简单的随机数加session进行校验
+                req.state = "wechat_sdk_xb_live_state";
+                MyApplication.api.sendReq(req);
                 break;
             default:
                 break;

@@ -130,6 +130,8 @@
         android:textColor="#fff"
         android:textColorHint="#fff"
         android:textSize="@dimen/sp_16"
+        android:maxLength="11"
+        android:phoneNumber="true"
         app:layout_constraintLeft_toRightOf="@+id/sign_image_phone"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sign_view_date" />
@@ -165,6 +167,7 @@
         app:layout_constraintTop_toBottomOf="@id/sign_view_phone"
         app:layout_constraintLeft_toRightOf="@+id/sign_image_email"
         app:layout_constraintRight_toRightOf="parent"
+        android:digits="0123456789abcdefghijklmnopqrstuvwxyz."
         />
     <View
         android:id="@+id/sign_view_email"

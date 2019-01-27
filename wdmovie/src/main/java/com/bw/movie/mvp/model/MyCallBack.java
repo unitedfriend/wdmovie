@@ -13,5 +13,5 @@ public interface MyCallBack<E> {
     /**
      * 失败
      * */
-    void onFail(Object o);
+    void onFail(String error);
 }

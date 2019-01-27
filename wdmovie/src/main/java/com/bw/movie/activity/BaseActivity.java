@@ -2,6 +2,7 @@ package com.bw.movie.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,8 +14,11 @@ import android.view.MotionEvent;
 import android.view.WindowManager;
 
 import com.bw.movie.R;
+import com.bw.movie.finals.BaseFinal;
 import com.bw.movie.mvp.presenter.PresenterImpl;
 import com.bw.movie.mvp.view.IView;
+import com.bw.movie.util.AccountValidatorUtil;
+import com.bw.movie.util.ActivityCollectorUtil;
 import com.bw.movie.util.CircularLoading;
 import com.bw.movie.util.NetUtil;
 import com.bw.movie.util.ToastUtil;
@@ -36,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityCollectorUtil.addActivity(this);
         /**
          * 页面增加一个判断，因为4.4版本之前没有沉浸式可言
          * */
@@ -54,6 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         initData();
         stateNetWork();
     }
+
     /**
      * post请求
      * */
@@ -75,6 +81,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         }
     }
     /**
+     * 上传头像
+     * */
+    protected void doNetWorkPostimagesRequest(String url, Map<String,String> map,Class clazz){
+        if(presenter!=null) {
+            mCircularLoading = CircularLoading.showLoadDialog(this, "加载中...", true);
+            presenter.imageRequestPost(url, map, clazz);
+        }
+    }
+    /**
      * v层请求成功的方法
      * */
     @Override
@@ -90,7 +105,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     public void requestFail(String error) {
         //TODO:收起
         CircularLoading.closeDialog(mCircularLoading);
-        if(error.equals("hsanetwork")){
+        if(error.equals(BaseFinal.NET_WORK)){
             ToastUtil.showToast(getResources().getString(R.string.no_net_work));
             NetUtil.showNotNetWork(this);
         }
@@ -127,6 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         if(presenter!=null){
             presenter.onDetach();
         }
+       ActivityCollectorUtil.removeActivity(this);
     }
     //动态注册权限
     private void stateNetWork() {
@@ -146,8 +162,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
                     Manifest.permission.INTERNET,
                     //相机
                     Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_APN_SETTINGS,
                     Manifest.permission.ACCESS_NETWORK_STATE,
+                    Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
             };
             ActivityCompat.requestPermissions(this,mStatenetwork,100);
         }

@@ -29,7 +29,7 @@
         android:hint="手机号"
         android:textColor="#eeeeee"
         android:textColorHint="#eeeeee"
-        android:inputType="number"
+        android:phoneNumber="true"
         android:background="@null"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/login_image_phone"

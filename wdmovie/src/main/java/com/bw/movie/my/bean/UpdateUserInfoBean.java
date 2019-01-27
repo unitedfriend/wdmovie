@@ -1,13 +1,11 @@
 package com.bw.movie.my.bean;
-
-import java.io.Serializable;
 /**
   * @作者 GXY
-  * @创建日期 2019/1/27 11:32
-  * @描述 我的信息bean
+  * @创建日期 2019/1/27 11:33
+  * @描述 修改用户信息bean
   *
   */
-public class MyMessageBean implements Serializable {
+public class UpdateUserInfoBean {
 
     private ResultBean result;
     private String message;
@@ -40,31 +38,11 @@ public class MyMessageBean implements Serializable {
         this.status = status;
     }
 
-    public static class ResultBean implements Serializable{
+    public static class ResultBean {
 
-        private String birthday;
-        private String headPic;
         private int id;
-        private long lastLoginTime;
         private String nickName;
-        private String phone;
         private int sex;
-
-        public String getBirthday() {
-            return birthday;
-        }
-
-        public void setBirthday(String birthday) {
-            this.birthday = birthday;
-        }
-
-        public String getHeadPic() {
-            return headPic;
-        }
-
-        public void setHeadPic(String headPic) {
-            this.headPic = headPic;
-        }
 
         public int getId() {
             return id;
@@ -74,28 +52,12 @@ public class MyMessageBean implements Serializable {
             this.id = id;
         }
 
-        public long getLastLoginTime() {
-            return lastLoginTime;
-        }
-
-        public void setLastLoginTime(long lastLoginTime) {
-            this.lastLoginTime = lastLoginTime;
-        }
-
         public String getNickName() {
             return nickName;
         }
 
         public void setNickName(String nickName) {
             this.nickName = nickName;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public void setPhone(String phone) {
-            this.phone = phone;
         }
 
         public int getSex() {
