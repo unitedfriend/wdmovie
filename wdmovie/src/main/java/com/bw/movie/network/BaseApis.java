@@ -9,6 +9,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -35,4 +36,5 @@ public interface BaseApis<E> {
 
     @POST
     Observable<ResponseBody> imagePost(@Url String url, @Body MultipartBody multipartBody);
+
 }

@@ -11,8 +11,14 @@ import com.bw.movie.R;
 import com.bw.movie.api.Apis;
 import com.bw.movie.custom.ZoomInScrollView;
 import com.bw.movie.fragmnet.BaseFragment;
+import com.bw.movie.login.activity.LoginActivity;
+import com.bw.movie.my.activity.FeedBackActivity;
+import com.bw.movie.my.activity.MyAttentionActivity;
 import com.bw.movie.my.activity.MyMessageActivity;
+import com.bw.movie.my.activity.MyTicketrecordActivity;
 import com.bw.movie.my.bean.MyMessageBean;
+import com.bw.movie.my.bean.UserSignInBean;
+import com.bw.movie.util.ActivityCollectorUtil;
 import com.bw.movie.util.ToastUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -52,6 +58,7 @@ public class MyFragment extends BaseFragment {
     Unbinder unbinder;
     private MyMessageBean.ResultBean result;
     private final int REQUESTCODE_NUM = 100;
+    private final int RESULTCODE_NUM = 200;
     /**
      * 初始化数据
      */
@@ -92,6 +99,13 @@ public class MyFragment extends BaseFragment {
                 myIcon.setImageURI(Uri.parse(headPic));
                 myIconName.setText(nickName);
             }
+        }else if(object instanceof UserSignInBean){
+            UserSignInBean signInBean = (UserSignInBean) object;
+            if(signInBean == null || !signInBean.isSuccess()){
+                ToastUtil.showToast(signInBean.getMessage());
+            }else{
+                ToastUtil.showToast(signInBean.getMessage());
+            }
         }
     }
 
@@ -100,7 +114,7 @@ public class MyFragment extends BaseFragment {
      */
     @Override
     protected void netFail(String s) {
-        ToastUtil.showToast(s);
+
     }
 
     @Override
@@ -112,27 +126,52 @@ public class MyFragment extends BaseFragment {
     @OnClick({R.id.sign, R.id.my_message, R.id.my_concern, R.id.my_ticketinrecords, R.id.my_feedback, R.id.my_latestversion, R.id.my_quit, R.id.system_message})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            //签到
             case R.id.sign:
+                doNetWorkGetRequest(Apis.URL_USER_SIGN_IN_GET,UserSignInBean.class);
                 break;
+                //我的信息
             case R.id.my_message:
                 Intent intent = new Intent(getActivity(),MyMessageActivity.class);
                 intent.putExtra("result",result);
                 startActivityForResult(intent,REQUESTCODE_NUM);
                 break;
+                //我的关注
             case R.id.my_concern:
+                startActivity(new Intent(getActivity(),MyAttentionActivity.class));
+                getActivity().overridePendingTransition(0, 0);
                 break;
+                //购票记录
             case R.id.my_ticketinrecords:
+                startActivity(new Intent(getActivity(),MyTicketrecordActivity.class));
+                getActivity().overridePendingTransition(0, 0);
                 break;
+                //意见反馈
             case R.id.my_feedback:
+                startActivity(new Intent(getActivity(),FeedBackActivity.class));
+                //屏蔽activity跳转的默认转场效果
+                getActivity().overridePendingTransition(0, 0);
                 break;
+                //最新版本
             case R.id.my_latestversion:
                 break;
+                //退出登录
             case R.id.my_quit:
+                ActivityCollectorUtil.finishAllActivity();
                 break;
             case R.id.system_message:
                 break;
                 default:
                     break;
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUESTCODE_NUM && resultCode == RESULTCODE_NUM){
+            doNetWorkGetRequest(Apis.URL_GET_USER_INFO_BY_USERID_GET,MyMessageBean.class);
         }
     }
 }

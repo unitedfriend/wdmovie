@@ -1,7 +1,12 @@
 package com.bw.movie.my.bean;
 
 import java.io.Serializable;
-
+/**
+  * @作者 GXY
+  * @创建日期 2019/1/27 11:32
+  * @描述 我的信息bean
+  *
+  */
 public class MyMessageBean implements Serializable {
 
     private ResultBean result;

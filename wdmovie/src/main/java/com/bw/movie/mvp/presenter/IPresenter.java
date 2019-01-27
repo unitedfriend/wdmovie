@@ -18,4 +18,9 @@ public interface IPresenter {
      * post请求
      * */
     void requestPost(String url,Map<String,String> map,Class clazz);
+    /***
+     * 上传头像
+     */
+    void imageRequestPost(String url,Map<String,String> map,Class clazz);
+
 }

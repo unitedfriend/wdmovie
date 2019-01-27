@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.bw.movie.R;
 import com.bw.movie.home.bean.AllBean;
-import com.dalong.carrousellayout.CarrouselLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,8 +88,6 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                         bannerViewHoder.searchText.setVisibility(View.GONE);
                     }
                 });
-
-
                 break;
             case HOT:
                 break;
@@ -156,8 +153,6 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         TextView searchText;
         @BindView(R.id.searchViewGroup)
         ConstraintLayout searchViewGroup;
-        @BindView(R.id.carrousel)
-        CarrouselLayout carrousel;
 
         public BannerViewHoder(@NonNull View itemView) {
             super(itemView);

@@ -76,4 +76,36 @@ public class ModelImpl implements IModel {
             });
         }
     }
+    /**
+     * 上传头像
+     * */
+    @Override
+    public void ImagePostrRequest(String url, Map<String, String> map, final Class clazz, final MyCallBack myCallBack) {
+        if(!NetUtil.hasNetWork()){
+            myCallBack.onFail(BaseFinal.NET_WORK);
+        }else{
+            RetrofitManager.getInstance().imagePost(url, map, new RetrofitManager.HttpListener() {
+                @Override
+                public void onSuccess(String data) {
+                    try {
+                        Object o = new Gson().fromJson(data, clazz);
+                        if(myCallBack!=null){
+                            myCallBack.onSuccess(o);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        if(myCallBack!=null){
+                            myCallBack.onFail(e.getMessage());
+                        }
+                    }
+                }
+                @Override
+                public void onFail(String error) {
+                    if(myCallBack!=null){
+                        myCallBack.onFail(error);
+                    }
+                }
+            });
+        }
+    }
 }
