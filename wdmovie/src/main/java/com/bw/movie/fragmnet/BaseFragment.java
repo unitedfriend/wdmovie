@@ -58,7 +58,10 @@ public abstract class BaseFragment extends Fragment implements IView {
      * */
     protected void doNetWorkPostRequest(String url, Map<String,String> map, Class clazz){
         if(presenter!=null){
-            mCircularLoading = CircularLoading.showLoadDialog(getActivity(), "加载中...", true);
+            if(mCircularLoading==null){
+                mCircularLoading = CircularLoading.showLoadDialog(getActivity(), "加载中...", true);
+            }
+
             presenter.requestPost(url,map,clazz);
         }
     }
@@ -67,7 +70,10 @@ public abstract class BaseFragment extends Fragment implements IView {
      * */
     protected void doNetWorkGetRequest(String url,Class clazz){
         if(presenter!=null){
-            mCircularLoading = CircularLoading.showLoadDialog(getActivity(), "加载中...", true);
+            if(mCircularLoading==null){
+                mCircularLoading = CircularLoading.showLoadDialog(getActivity(), "加载中...", true);
+            }
+
             presenter.requestGet(url,clazz);
         }
     }
@@ -77,6 +83,7 @@ public abstract class BaseFragment extends Fragment implements IView {
     @Override
     public void requestSuccess(Object o) {
         CircularLoading.closeDialog(mCircularLoading);
+        mCircularLoading=null;
         netSuccess(o);
     }
     /**

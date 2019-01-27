@@ -79,19 +79,19 @@ public class Apis {
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/findHotMovieList
      * 请求方式：GET
      * */
-    public static final String URL_FIND_HOT_MOVIE_LIST_GET="movieApi/movie/v1/findHotMovieList";
+    public static final String URL_FIND_HOT_MOVIE_LIST_GET="movieApi/movie/v1/findHotMovieList?page=%d&count=%d";
     /**
      * 2查询正在上映电影列表
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/findReleaseMovieList
      * 请求方式：GET
      * */
-    public static final String URL_FIND_RELEASE_MOVIE_LIST_GET = "movieApi/movie/v1/findReleaseMovieList";
+    public static final String URL_FIND_RELEASE_MOVIE_LIST_GET = "movieApi/movie/v1/findReleaseMovieList?page=%d&count=%d";
     /**
      * 3查询即将上映电影列表
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/findComingSoonMovieList
      * 请求方式：GET
      * */
-    public static final String URL_FIND_COMING_SOON_MOVIE_LIST_GET = "movieApi/movie/v1/findComingSoonMovieList";
+    public static final String URL_FIND_COMING_SOON_MOVIE_LIST_GET = "movieApi/movie/v1/findComingSoonMovieList?page=%d&count=%d";
     /**
      * 4根据电影ID查询电影信息
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/findMoviesById
@@ -115,13 +115,13 @@ public class Apis {
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/verify/followMovie
      * 请求方式：GET
      * */
-    public static final String URL_FOLLOW_MOVIE_GET = "movieApi/movie/v1/verify/followMovie";
+    public static final String URL_FOLLOW_MOVIE_GET = "movieApi/movie/v1/verify/followMovie?movieId=%s";
     /**
      * 8.取消关注电影
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/verify/cancelFollowMovie
      * 请求方式：GET
      * */
-    public static final String URL_CANCEL_FOLLOW_MOVIE_GET = "movieApi/movie/v1/verify/cancelFollowMovie";
+    public static final String URL_CANCEL_FOLLOW_MOVIE_GET = "movieApi/movie/v1/verify/cancelFollowMovie?movieId=%s";
     /**
      * 9.查询影片评论
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/findAllMovieComment

@@ -52,7 +52,7 @@ public class ShowingBean {
          * releaseTimeShow : 2018-07-05
          */
 
-        private boolean followMovie;
+        private int followMovie;
         private int id;
         private String imageUrl;
         private String name;
@@ -61,10 +61,10 @@ public class ShowingBean {
         private String releaseTimeShow;
 
         public boolean isFollowMovie() {
-            return followMovie;
+            return !(followMovie==2);
         }
 
-        public void setFollowMovie(boolean followMovie) {
+        public void setFollowMovie(int followMovie) {
             this.followMovie = followMovie;
         }
 

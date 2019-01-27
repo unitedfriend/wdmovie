@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="@dimen/dp_24"
+    android:layout_marginTop="@dimen/dp_20"
+    android:layout_height="wrap_content">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/c1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/showTextView"
+            android:textSize="@dimen/sp_16"
+            android:textColor="#333333"
+            android:text="即将上映"
+            />
+        <ImageView
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/showImage"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="@dimen/dp_24"
+            android:src="@mipmap/com_icon_next_default"
+            />
+        <TextView
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_3"
+            android:background="@drawable/item_titletext"
+            app:layout_constraintTop_toBottomOf="@id/showTextView"
+            app:layout_constraintLeft_toLeftOf="@id/showTextView"
+            />
+    </android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/showRecycleView"
+        app:layout_constraintTop_toBottomOf="@id/c1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layout_constraintRight_toRightOf="parent"></android.support.v7.widget.RecyclerView>
 </android.support.constraint.ConstraintLayout>

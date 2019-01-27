@@ -3,37 +3,31 @@ package com.bw.movie.home.bean;
 import java.util.List;
 
 public class AllBean {
-    List<HotBean>hotList;
-    List<ShowingBean>showingList;
-    List<ShowBean>showList;
+    HotBean hot;
+    ShowingBean showing;
+   ShowBean show;
 
-    public AllBean(List<HotBean> hotList, List<ShowingBean> showingList, List<ShowBean> showList) {
-        this.hotList = hotList;
-        this.showingList = showingList;
-        this.showList = showList;
+    public HotBean getHot() {
+        return hot;
     }
 
-    public List<HotBean> getHotList() {
-        return hotList;
+    public void setHot(HotBean hot) {
+        this.hot = hot;
     }
 
-    public void setHotList(List<HotBean> hotList) {
-        this.hotList = hotList;
+    public ShowingBean getShowing() {
+        return showing;
     }
 
-    public List<ShowingBean> getShowingList() {
-        return showingList;
+    public void setShowing(ShowingBean showing) {
+        this.showing = showing;
     }
 
-    public void setShowingList(List<ShowingBean> showingList) {
-        this.showingList = showingList;
+    public ShowBean getShow() {
+        return show;
     }
 
-    public List<ShowBean> getShowList() {
-        return showList;
-    }
-
-    public void setShowList(List<ShowBean> showList) {
-        this.showList = showList;
+    public void setShow(ShowBean show) {
+        this.show = show;
     }
 }
