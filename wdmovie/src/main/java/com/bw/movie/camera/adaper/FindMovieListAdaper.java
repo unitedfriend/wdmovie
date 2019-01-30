@@ -68,4 +68,5 @@ public class FindMovieListAdaper extends RecyclerView.Adapter<RecyclerView.ViewH
             ButterKnife.bind(this,itemView);
         }
     }
+
 }
