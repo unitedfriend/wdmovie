@@ -82,7 +82,7 @@ public class FilmDetailsActivity extends BaseActivity {
     private String id;
     private FilmDetailsBean filmDetailsBean;
     private View detailsView;
-    private PopupWindow detailsPopupWindow;
+    private PopupWindow detailsPopupWindowsss;
 
 
 
@@ -157,10 +157,12 @@ public class FilmDetailsActivity extends BaseActivity {
         id = getIntent().getStringExtra("id");
         movieId=Integer.parseInt(id);
         doNetWorkGetRequest(String.format(Apis.URL_FIND_MOVIE_DETAIL_GET, id), FilmDetailsBean.class);
+
         getRevirwView();
         getStillsView();
         init();
-        initDetailsPop();
+
+
         initPrevuePop();
     }
 
@@ -196,12 +198,12 @@ public class FilmDetailsActivity extends BaseActivity {
     }
 
     private void initDetailsPop() {
-        detailsPopupWindow = new PopupWindow(detailsView, ViewGroup.LayoutParams.MATCH_PARENT,
+        detailsPopupWindowsss = new PopupWindow(detailsView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT, true);
-        detailsPopupWindow.setFocusable(true);
-        detailsPopupWindow.setTouchable(true);
+        detailsPopupWindowsss.setFocusable(true);
+        detailsPopupWindowsss.setTouchable(true);
         int color = getResources().getColor(R.color.popup_bg);
-        detailsPopupWindow.setBackgroundDrawable(new ColorDrawable(color));
+        detailsPopupWindowsss.setBackgroundDrawable(new ColorDrawable(color));
     }
 
     @Override
@@ -220,6 +222,7 @@ public class FilmDetailsActivity extends BaseActivity {
         if (object instanceof FilmDetailsBean) {
             filmDetailsBean = (FilmDetailsBean) object;
             initDetailsView();
+            initDetailsPop();
             FilmDetailsBean.ResultBean result = filmDetailsBean.getResult();
             Uri uri = Uri.parse(result.getImageUrl());
             layoutBg.setImageURI(uri);
@@ -302,7 +305,7 @@ public class FilmDetailsActivity extends BaseActivity {
         dimensImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                detailsPopupWindow.dismiss();
+                detailsPopupWindowsss.dismiss();
             }
         });
     }
@@ -317,8 +320,7 @@ public class FilmDetailsActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.deteilsButtont:
-
-                detailsPopupWindow.showAsDropDown(nameText, 0, -75);
+                detailsPopupWindowsss.showAsDropDown(nameText, 0, -75);
                 break;
             case R.id.prevueButton:
                 prevuePopup.showAsDropDown(nameText, 0, -75);
@@ -465,7 +467,6 @@ public class FilmDetailsActivity extends BaseActivity {
                     Map<String, String> map = new HashMap<>();
                     map.put("movieId", String.valueOf(movieId));
                     map.put("commentContent", trim);
-                    Log.i("TAG", map + "=========");
                     doNetWorkPostRequest(Apis.URL_MOVIE_COMMENT_POST, map,MovieComment.class);
                 }
             }

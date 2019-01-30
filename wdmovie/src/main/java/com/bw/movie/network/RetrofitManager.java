@@ -106,7 +106,7 @@ public class RetrofitManager {
         if (map == null) {
             map = new HashMap<>();
         }
-        baseApis.post(url, map)
+        baseApis.post(url,map)
                 // 后台执行在哪个线程
                 .subscribeOn(Schedulers.io())
                 //最终完成后执行在哪个线程

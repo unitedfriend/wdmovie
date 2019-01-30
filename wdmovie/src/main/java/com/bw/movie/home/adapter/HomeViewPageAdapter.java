@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class HomeViewPageAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment>mList ;
+    private List<Fragment> mList ;
 
     public HomeViewPageAdapter(FragmentManager fm,List<Fragment>list) {
         super(fm);

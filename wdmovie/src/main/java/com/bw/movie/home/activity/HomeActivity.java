@@ -4,10 +4,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
@@ -149,5 +151,22 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+    //监听返回键
+    private long exitTime = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
 
+            if((System.currentTimeMillis()-exitTime) > 2000){
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
 }
