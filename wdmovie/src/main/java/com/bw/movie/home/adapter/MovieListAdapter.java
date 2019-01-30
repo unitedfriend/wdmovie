@@ -6,7 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  9:09
+ *  @describe 影片组的fragment适配器
+ */
 public class MovieListAdapter extends FragmentPagerAdapter {
     private List<Fragment> mList ;
     private String [] pageName ={"热门推荐","正在热播","即将上映"};

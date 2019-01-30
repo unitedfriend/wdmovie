@@ -21,12 +21,18 @@ import com.bw.movie.home.fragment.ListHotFragment;
 import com.bw.movie.home.fragment.ListShowFragment;
 import com.bw.movie.home.fragment.ListShowingFragment;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  8:58
+ *  @describe 电影分组页面
+ */
 public class MovieListActivity extends BaseActivity {
     @BindView(R.id.locationImage)
     ImageView locationImage;
@@ -58,7 +64,11 @@ public class MovieListActivity extends BaseActivity {
     protected void initData() {
 
     }
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  8:59
+ *  @describe 加载视图
+ */
     @Override
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
@@ -70,7 +80,11 @@ public class MovieListActivity extends BaseActivity {
         //判断是从哪个组过来的
         initTypeGroup();
     }
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  9:00
+ *  @describe 判断是从哪个组跳转过来的,选中这个组
+ */
     private void initTypeGroup() {
         String type = getIntent().getStringExtra("type");
         switch (type){
@@ -85,16 +99,32 @@ public class MovieListActivity extends BaseActivity {
                 break;
         }
     }
-
+    /**
+     *  @author Tang
+     *  @time 2019/1/28  9:01
+     *  @describe 创建fragment,加入viewpage
+     */
     private void initViewPage() {
         List<Fragment> list = new ArrayList<>();
         if (list.size() <= 0) {
-            ListHotFragment listHotFragment = new ListHotFragment();
-            ListShowingFragment listShowingFragment = new ListShowingFragment();
+            final ListHotFragment listHotFragment = new ListHotFragment();
+            final ListShowingFragment listShowingFragment = new ListShowingFragment();
             ListShowFragment listShowFragment = new ListShowFragment();
             list.add(listHotFragment);
             list.add(listShowingFragment);
             list.add(listShowFragment);
+            listHotFragment.setListHotCallBack(new ListHotFragment.ListHotCallBack() {
+                @Override
+                public void callBack() {
+                    listShowingFragment.onResume();
+                }
+            });
+            listShowingFragment.setListShowingCallBack(new ListShowingFragment.ListShowingCallBack() {
+                @Override
+                public void callBack() {
+                    listHotFragment.onResume();
+                }
+            });
         }
         MovieListAdapter listAdapter = new MovieListAdapter(getSupportFragmentManager(), list);
         viewPage.setAdapter(listAdapter);
@@ -102,7 +132,11 @@ public class MovieListActivity extends BaseActivity {
     }
 
 
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  9:02
+ *  @describe RadioButton与ViewPage做联动,并给RadioButton做背景切换
+ */
     private void initRadioButton() {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -129,6 +163,8 @@ public class MovieListActivity extends BaseActivity {
                 }
             }
         });
+        viewPage.setOffscreenPageLimit(2);
+        //viewpage切换时切换对应button
         viewPage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {

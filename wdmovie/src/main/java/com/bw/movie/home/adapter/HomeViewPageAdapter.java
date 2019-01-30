@@ -6,7 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  9:05
+ *  @describe 首页的三个fragment
+ */
 public class HomeViewPageAdapter extends FragmentPagerAdapter {
 
     private List<Fragment>mList ;

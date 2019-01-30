@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/dp_20">
+
+
+        <cn.jzvd.JZVideoPlayerStandard
+            android:id="@+id/custom_videoplayer_standard"
+            android:layout_width="match_parent"
+            android:layout_height="153dp">
+        </cn.jzvd.JZVideoPlayerStandard>
+
+
+</android.support.constraint.ConstraintLayout>

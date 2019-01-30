@@ -1,5 +1,6 @@
 package com.bw.movie.home.fragment;
 
+import android.content.Intent;
 import android.view.View;
 
 import com.bw.movie.R;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import com.bw.movie.R;
 import com.bw.movie.api.Apis;
 import com.bw.movie.fragmnet.BaseFragment;
+import com.bw.movie.home.activity.FilmDetailsActivity;
 import com.bw.movie.home.adapter.MovieListHotAdapter;
 import com.bw.movie.home.bean.AttentionBean;
 import com.bw.movie.home.bean.HotBean;
@@ -22,10 +24,18 @@ import com.bw.movie.home.bean.ShowingBean;
 import com.bw.movie.util.ToastUtil;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  9:51
+ *  @describe 电影列表的正在热映页面
+ */
 public class ListShowingFragment extends BaseFragment {
     @BindView(R.id.hotXRecycleview)
     XRecyclerView hotXRecycleview;
@@ -42,7 +52,7 @@ public class ListShowingFragment extends BaseFragment {
     protected void initView(View view) {
         page=1;
         unbinder = ButterKnife.bind(this, view);
-        hotAdapter = new MovieListHotAdapter(getActivity());
+        hotAdapter = new MovieListHotAdapter(getActivity(),"showing");
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         hotXRecycleview.setLayoutManager(layoutManager);
@@ -70,17 +80,15 @@ public class ListShowingFragment extends BaseFragment {
                 }else {
                     doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_MOVIE_GET,id),AttentionBean.class);
                 }
+                listShowingCallBack.callBack();
+            }
+
+            @Override
+            public void skipDetails(String id) {
+                startActivity(new Intent(getActivity(),FilmDetailsActivity.class).putExtra("id",id));
             }
         });
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_RELEASE_MOVIE_LIST_GET,page,COUNT),HotBean.class);
-
-    }
-
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_list_hot;
@@ -113,15 +121,29 @@ public class ListShowingFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        page=1;
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_RELEASE_MOVIE_LIST_GET,page,COUNT),HotBean.class);
+    }
+
+    @Override
     protected void netFail(String s) {
 
     }
-
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    ListShowingCallBack listShowingCallBack;
+    public interface ListShowingCallBack{
+        void callBack();
+    }
+    public void setListShowingCallBack(ListShowingCallBack callBack){
+        listShowingCallBack=callBack;
     }
 }
 

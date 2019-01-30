@@ -20,7 +20,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  9:08
+ *  @describe 首页电影多条目即将上映电影的适配器
+ */
 public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ViewHoder> {
 
     private Context mContext;

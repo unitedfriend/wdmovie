@@ -1,7 +1,11 @@
 package com.bw.movie.home.bean;
 
 import java.util.List;
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  9:12
+ *  @describe 即将上映Bean
+ */
 public class ShowBean {
 
     /**

@@ -26,11 +26,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  8:48
+ *  @describe 电影首页的多条目
+ */
 public class FilmRecycleAdapter extends RecyclerView.Adapter {
-
-
-
     private Context mContext;
     private AllBean allBean;
     private final int BANNER = 0;
@@ -50,6 +51,16 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
+    
+    /**
+     *  @author Tang
+     *  @time 2019/1/28  8:49
+     *  @describe 加载不同视图
+     *  bannerView 轮播图
+     *  hotView 热门电影
+     *  showingView 正在热映
+     *  showView 即将上映
+     */
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -69,19 +80,21 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         }
         return null;
     }
-
+    //搜索框是否弹出的标识
     boolean b = true;
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
+        //不同类型加载不同数据
         int itemViewType = getItemViewType(i);
         switch (itemViewType) {
             case BANNER:
+                //设置搜索框进来就被移动到屏幕外
                 final BannerViewHoder bannerViewHoder = (BannerViewHoder) viewHolder;
-                // ObjectAnimator translationX = new ObjectAnimator().ofFloat(myyuan,"translationX",0,600f);
                 setTranslationOut(bannerViewHoder.searchViewGroup, 0);
                 bannerViewHoder.searchEditText.setVisibility(View.GONE);
                 bannerViewHoder.searchText.setVisibility(View.GONE);
+                //点击搜索图片时判断是否显示或隐藏
                 bannerViewHoder.searchImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -98,12 +111,13 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                         }
                     }
                 });
-
+                //加载子条目的recycleview
                 RecyclerCoverFlowAdapter recyclerCoverFlowAdapter = new RecyclerCoverFlowAdapter(mContext);
                 ((BannerViewHoder) viewHolder).list.setAdapter(recyclerCoverFlowAdapter);
                 HotBean hot1 = allBean.getHot();
                 recyclerCoverFlowAdapter.setmList(hot1.getResult());
                 current=5;
+                //轮播图自动轮播
                 handler = new Handler(){
                     @Override
                     public void handleMessage(Message msg) {
@@ -113,6 +127,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                         handler.sendEmptyMessageDelayed(0,2000);
                     }
                 };
+                //点击隐藏搜索框
                 bannerViewHoder.searchText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -124,7 +139,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                         filmCallBack.searchCallBack(s);
                     }
                 });
-
+                //每次旋转得到条目位置
                 ((BannerViewHoder) viewHolder).list.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
                     @Override
                     public void onItemSelected(int position) {

@@ -19,7 +19,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  9:07
+ *  @describe 首页电影多条目热门电影的适配器
+ */
 public class HotAdapter extends RecyclerView.Adapter<HotAdapter.ViewHoder> {
 
     private Context mContext;

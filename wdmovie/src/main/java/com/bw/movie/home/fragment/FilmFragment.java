@@ -24,7 +24,11 @@ import com.bw.movie.util.ToastUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  9:12
+ *  @describe 电影首页的电影页面
+ */
 public class FilmFragment extends BaseFragment {
     @BindView(R.id.home_recycle)
     RecyclerView homeRecycle;
@@ -49,7 +53,7 @@ private int tag;
         homeRecycle.setLayoutManager(layoutManager);
         adapter = new FilmRecycleAdapter(getActivity());
         homeRecycle.setAdapter(adapter);
-
+        //创建一个Bean得到所有网络请求的数据
         allBean = new AllBean();
         doNetWorkGetRequest(String.format(Apis.URL_FIND_HOT_MOVIE_LIST_GET,PAGE,COUNT),HotBean.class);
         doNetWorkGetRequest(String.format(Apis.URL_FIND_RELEASE_MOVIE_LIST_GET,PAGE,COUNT),ShowingBean.class);
@@ -65,13 +69,12 @@ private int tag;
             @Override
             public void searchCallBack(String s) {
                 //搜索按钮击事件
-                startActivity(new Intent(getActivity(),MovieListActivity.class).putExtra("type","search").putExtra("name",s));
+              //  startActivity(new Intent(getActivity(),MovieListActivity.class).putExtra("type","search").putExtra("name",s));
             }
 
             @Override
             public void bannerCallBack(String id) {
                 //轮播图图片点击事件
-                ToastUtil.showToast("轮播图图片点击事件");
                 startActivity(new Intent(getActivity(),FilmDetailsActivity.class).putExtra("id",id));
             }
 

@@ -22,7 +22,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ *  @author Tang
+ *  @time 2019/1/28  9:04
+ *  @describe 首页的activity,有三个页面
+ */
 public class HomeActivity extends BaseActivity {
     //获取id
     @BindView(R.id.home_viewpage)

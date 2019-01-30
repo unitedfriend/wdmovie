@@ -103,7 +103,7 @@ public class Apis {
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/findMoviesDetail
      * 请求方式：GET
      * */
-    public static final String URL_FIND_MOVIE_DETAIL_GET = "movieApi/movie/v1/findMoviesDetail";
+    public static final String URL_FIND_MOVIE_DETAIL_GET = "movieApi/movie/v1/findMoviesDetail?movieId=%s";
     /**
      * 6.查询用户关注的影片列表
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/verify/findMoviePageList
@@ -127,7 +127,7 @@ public class Apis {
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/findAllMovieComment
      * 请求方式：GET
      * */
-    public static final String URL_FIND_MOVIE_COMMENT_GET = "movieApi/movie/v1/findAllMovieComment";
+    public static final String URL_FIND_MOVIE_COMMENT_GET = "movieApi/movie/v1/findAllMovieComment?movieId=%d&page=%d&count=%d";
     /**
      * 10.添加用户对影片的评论
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/verify/movieComment
@@ -139,7 +139,7 @@ public class Apis {
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/findCommentReply
      * 请求方式：GET
      * */
-    public static final String URL_FIND_COMMENT_REPLY_GET ="movieApi/movie/v1/findCommentReply";
+    public static final String URL_FIND_COMMENT_REPLY_GET ="movieApi/movie/v1/findCommentReply?commentId=%d&page=%d&count=%d";
     /**
      * 12.添加用户对评论的回复
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/verify/commentReply

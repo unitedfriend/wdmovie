@@ -66,7 +66,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     protected void doNetWorkPostRequest(String url, Map<String,String> map,Class clazz){
         if(presenter!=null){
             //TODO:弹出等待的loding圈
-            mCircularLoading = CircularLoading.showLoadDialog(this, "加载中...", true);
+            if(mCircularLoading==null){
+                mCircularLoading = CircularLoading.showLoadDialog(this, "加载中...", true);
+            }
             presenter.requestPost(url,map,clazz);
         }
     }
@@ -76,7 +78,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     protected void doNetWorkGetRequest(String url,Class clazz){
         if(presenter!=null){
             //TODO:弹出等待的loding圈
-            mCircularLoading = CircularLoading.showLoadDialog(this, "加载中...", true);
+            if(mCircularLoading==null){
+                mCircularLoading = CircularLoading.showLoadDialog(this, "加载中...", true);
+            }
             presenter.requestGet(url,clazz);
         }
     }
@@ -96,6 +100,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
     public void requestSuccess(Object o) {
         //TODO：收起
         CircularLoading.closeDialog(mCircularLoading);
+        mCircularLoading=null;
         netSuccess(o);
     }
     /**
@@ -109,6 +114,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
             ToastUtil.showToast(getResources().getString(R.string.no_net_work));
             NetUtil.showNotNetWork(this);
         }
+        mCircularLoading=null;
         netFail(error);
     }
 

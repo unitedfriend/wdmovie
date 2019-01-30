@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/movieName"
+    android:textSize="@dimen/sp_18"
+    android:textColor="#333333"
+    android:text="铁血战士"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    android:layout_marginTop="@dimen/dp_35"
+    android:layout_marginLeft="@dimen/dp_24"
+    />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/t1"
+        android:text="选择合适的影院"
+        android:textColor="#b11450"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintTop_toBottomOf="@id/movieName"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintLeft_toLeftOf="@id/movieName"
+        />
+    <com.jcodecraeer.xrecyclerview.XRecyclerView
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginRight="@dimen/dp_24"
+        app:layout_constraintTop_toBottomOf="@id/t1"
+        android:layout_marginTop="@dimen/dp_10"
+        android:id="@+id/xrecycleView"/>
+
+</android.support.constraint.ConstraintLayout>

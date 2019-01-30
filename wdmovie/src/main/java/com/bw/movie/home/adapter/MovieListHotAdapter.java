@@ -13,8 +13,11 @@ import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.home.bean.HotBean;
+import com.bw.movie.home.bean.RefreshHotBean;
 import com.bw.movie.util.ToastUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +31,11 @@ public class MovieListHotAdapter extends RecyclerView.Adapter<MovieListHotAdapte
     private List<HotBean.ResultBean> mList;
     private final int SUCCESS=1;
     private final int CANCEL=2;
-
-    public MovieListHotAdapter(Context mContext) {
+    private String type;
+    public MovieListHotAdapter(Context mContext,String t) {
         this.mContext = mContext;
         mList = new ArrayList<>();
+        type=t;
     }
 
     public void setmList(List<HotBean.ResultBean> list) {
@@ -68,6 +72,12 @@ public class MovieListHotAdapter extends RecyclerView.Adapter<MovieListHotAdapte
         }else{
             viewHoder.attentionImage.setChecked(false);
         }
+        viewHoder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hotCallBack.skipDetails(mList.get(i).getId()+"");
+            }
+        });
         viewHoder.attentionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +92,7 @@ public class MovieListHotAdapter extends RecyclerView.Adapter<MovieListHotAdapte
                 }
             }
         });
+
     }
 public void setAttentionScccess(int p){
         mList.get(p).setFollowMovie(SUCCESS);
@@ -113,6 +124,7 @@ public void setCancelAttention(int p){
     MovieListHotCallBack hotCallBack;
     public interface MovieListHotCallBack{
         void hotCallBack(String id,int p,boolean b);
+        void skipDetails(String id);
     }
 
     public void setHotCallBack(MovieListHotCallBack hotCallBack) {

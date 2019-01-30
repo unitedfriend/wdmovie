@@ -40,6 +40,9 @@
             android:exported="true" />
         <activity android:name=".home.activity.FilmDetailsActivity"/>
         <activity android:name=".home.activity.MovieListActivity"/>
+        <activity android:name=".my.activity.MyAttentionActivity"/>
+        <activity android:name=".my.activity.MyTicketrecordActivity"/>
+        <activity android:name=".home.activity.BuyTicketActivity"/>
     </application>
 
 </manifest>
