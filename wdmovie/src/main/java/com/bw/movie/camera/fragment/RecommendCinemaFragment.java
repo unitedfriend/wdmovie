@@ -83,7 +83,6 @@ public class RecommendCinemaFragment extends BaseFragment {
            @Override
            public void callBack(int id) {
                Intent intent = new Intent(getActivity(),CinemaDateListActivity.class);
-               //intent.putExtra("resultBean",resultBean);
                intent.putExtra("id",id);
                startActivity(intent);
            }
@@ -108,8 +107,8 @@ public class RecommendCinemaFragment extends BaseFragment {
                     recommendAdaper.addmResult(recommendBean.getResult());
                 }
                 mPage++;
-                xrecycleview.refreshComplete();
                 xrecycleview.loadMoreComplete();
+                xrecycleview.refreshComplete();
             }
         }else if(object instanceof FollowCinemaBean){
             FollowCinemaBean followCinemaBean = (FollowCinemaBean) object;

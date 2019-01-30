@@ -97,5 +97,6 @@ public class CinemaDateListActivity extends BaseActivity {
     }
     @OnClick(R.id.cinema_film_return)
     public void onViewClicked() {
+        finish();
     }
 }

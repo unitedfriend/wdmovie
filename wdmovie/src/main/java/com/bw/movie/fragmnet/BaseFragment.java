@@ -1,6 +1,7 @@
 package com.bw.movie.fragmnet;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,9 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.bw.movie.R;
+import com.bw.movie.finals.BaseFinal;
 import com.bw.movie.mvp.presenter.PresenterImpl;
 import com.bw.movie.mvp.view.IView;
 import com.bw.movie.util.CircularLoading;
+import com.bw.movie.util.NetUtil;
+import com.bw.movie.util.ToastUtil;
 
 import java.util.Map;
 
@@ -24,6 +29,7 @@ public abstract class BaseFragment extends Fragment implements IView {
 
     private PresenterImpl presenter;
     private Dialog mCircularLoading;
+    private AlertDialog alertDialog;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,6 +98,16 @@ public abstract class BaseFragment extends Fragment implements IView {
     @Override
     public void requestFail(String error) {
         CircularLoading.closeDialog(mCircularLoading);
+        if(error.equals(BaseFinal.NET_WORK)){
+            ToastUtil.showToast(getResources().getString(R.string.no_net_work));
+            if(alertDialog==null){
+                alertDialog = NetUtil.showNotNetWork(getActivity());
+            }else{
+                alertDialog.dismiss();
+                alertDialog=null;
+                alertDialog=NetUtil.showNotNetWork(getActivity());
+            }
+        }
         netFail(error);
     }
     /**
