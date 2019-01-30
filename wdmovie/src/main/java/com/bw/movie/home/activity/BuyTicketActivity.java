@@ -7,8 +7,10 @@ import android.widget.TextView;
 import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
+import com.bw.movie.camera.bean.FollowCinemaBean;
 import com.bw.movie.home.adapter.BuyTicketAdapter;
 import com.bw.movie.home.bean.BuyTicketCinameList;
+import com.bw.movie.util.ToastUtil;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import butterknife.BindView;
@@ -25,7 +27,7 @@ public class BuyTicketActivity extends BaseActivity {
     protected void initData() {
 
     }
-
+private int position;
     @Override
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
@@ -39,7 +41,24 @@ public class BuyTicketActivity extends BaseActivity {
         xrecycleView.setLayoutManager(layoutManager);
         adapter = new BuyTicketAdapter(this);
         xrecycleView.setAdapter(adapter);
+        xrecycleView.setLoadingMoreEnabled(false);
+        xrecycleView.setPullRefreshEnabled(false);
+        adapter.setTicketCallBcak(new BuyTicketAdapter.BuyTicketCallBcak() {
+            @Override
+            public void onClick(String id) {
 
+            }
+            /*@Override
+            public void onAttention(int p,boolean b,String id) {
+                position=p;
+                if(b) {
+                    doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_MOVIE_GET,id),FollowCinemaBean.class);
+                }else{
+                    doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_MOVIE_GET,id),FollowCinemaBean.class);
+                }
+            }*/
+
+        });
     }
 
     @Override
@@ -53,11 +72,21 @@ public class BuyTicketActivity extends BaseActivity {
             BuyTicketCinameList object1 = (BuyTicketCinameList) object;
             adapter.setmList(object1.getResult());
         }
+
+        /*else if(object instanceof FollowCinemaBean){
+            FollowCinemaBean object1 = (FollowCinemaBean) object;
+            ToastUtil.showToast(object1.getMessage());
+            if(object1.getMessage().equals("关注成功")){
+                adapter.setCheckBox(position,true);
+            }else{
+                adapter.setCheckBox(position,false);
+            }
+        }*/
     }
 
     @Override
     protected void netFail(String s) {
-
+        String s1 = s;
     }
 
 

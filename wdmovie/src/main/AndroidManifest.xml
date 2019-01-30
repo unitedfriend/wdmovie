@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <application
+        android:networkSecurityConfig="@xml/network_security_config"
         android:name=".application.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
@@ -41,5 +42,6 @@
         <activity android:name=".home.activity.MovieListActivity"/>
         <activity android:name=".camera.activity.CinemaDateListActivity"/>
         <activity android:name=".home.activity.BuyTicketActivity"/>
+
     </application>
 </manifest>
