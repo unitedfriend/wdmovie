@@ -65,6 +65,7 @@
         app:layout_constraintTop_toBottomOf="@id/sign_view_nick"
         app:layout_constraintLeft_toRightOf="@+id/sign_image_sex"
         app:layout_constraintRight_toRightOf="parent"
+        android:digits="男女"
         />
     <View
         android:id="@+id/sign_view_sex"
@@ -167,7 +168,7 @@
         app:layout_constraintTop_toBottomOf="@id/sign_view_phone"
         app:layout_constraintLeft_toRightOf="@+id/sign_image_email"
         app:layout_constraintRight_toRightOf="parent"
-        android:digits="0123456789abcdefghijklmnopqrstuvwxyz."
+        android:digits="0123456789abcdefghijklmnopqrstuvwxyz.@"
         />
     <View
         android:id="@+id/sign_view_email"

@@ -80,7 +80,9 @@ public class RegisterActivity extends BaseActivity {
         textSex.setFilters(emojiFilters);
         textDate.setFilters(emojiFilters);
         textEmail.setFilters(emojiFilters);
-        textEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        textSex.setFilters(emojiFilters);
+        textDate.setFilters(emojiFilters);
+        textPwd.setFilters(emojiFilters);
         getDateTime();
     }
     /**
@@ -218,7 +220,7 @@ public class RegisterActivity extends BaseActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                RegisterActivity.this.textDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                RegisterActivity.this.textDate.setText(year + "-" + (monthOfYear+1) + "-" + dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();

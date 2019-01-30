@@ -1,7 +1,6 @@
 package com.bw.movie.application;
 
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
@@ -10,18 +9,11 @@ import android.os.StrictMode;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
 public class MyApplication extends Application {
     private static Context mContext;
-    public static String APP_ID="wxb3852e6a6b7d9516";
-    public static IWXAPI api;
     @Override
     public void onCreate() {
         super.onCreate();
-        api = WXAPIFactory.createWXAPI(this, APP_ID, true);
-        api.registerApp(APP_ID);
         //设置磁盘缓存
         DiskCacheConfig cacheConfig = DiskCacheConfig.newBuilder(this)
                 .setBaseDirectoryName("images")

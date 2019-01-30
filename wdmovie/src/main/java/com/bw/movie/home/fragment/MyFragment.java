@@ -1,6 +1,12 @@
 package com.bw.movie.home.fragment;
+
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,10 +23,18 @@ import com.bw.movie.my.activity.MyAttentionActivity;
 import com.bw.movie.my.activity.MyMessageActivity;
 import com.bw.movie.my.activity.MyTicketrecordActivity;
 import com.bw.movie.my.bean.MyMessageBean;
+import com.bw.movie.my.bean.NewVersionBean;
 import com.bw.movie.my.bean.UserSignInBean;
 import com.bw.movie.util.ActivityCollectorUtil;
 import com.bw.movie.util.ToastUtil;
+import com.bw.movie.util.VersionUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,13 +73,17 @@ public class MyFragment extends BaseFragment {
     private MyMessageBean.ResultBean result;
     private final int REQUESTCODE_NUM = 100;
     private final int RESULTCODE_NUM = 200;
+    private String mFilePath;
+    private boolean mIsUpdate;
+
     /**
      * 初始化数据
      */
     @Override
     protected void initData() {
-        doNetWorkGetRequest(Apis.URL_GET_USER_INFO_BY_USERID_GET,MyMessageBean.class);
+        doNetWorkGetRequest(Apis.URL_GET_USER_INFO_BY_USERID_GET, MyMessageBean.class);
     }
+
     /**
      * 初始化view
      */
@@ -88,23 +106,30 @@ public class MyFragment extends BaseFragment {
      */
     @Override
     protected void netSuccess(Object object) {
-        if(object instanceof MyMessageBean){
+        if (object instanceof MyMessageBean) {
             MyMessageBean myMessageBean = (MyMessageBean) object;
             String headPic = myMessageBean.getResult().getHeadPic();
             String nickName = myMessageBean.getResult().getNickName();
             result = myMessageBean.getResult();
-            if(myMessageBean == null || !myMessageBean.isSuccess()){
+            if (myMessageBean == null || !myMessageBean.isSuccess()) {
                 ToastUtil.showToast(myMessageBean.getMessage());
-            }else{
+            } else {
                 myIcon.setImageURI(Uri.parse(headPic));
                 myIconName.setText(nickName);
             }
-        }else if(object instanceof UserSignInBean){
+        } else if (object instanceof UserSignInBean) {
             UserSignInBean signInBean = (UserSignInBean) object;
-            if(signInBean == null || !signInBean.isSuccess()){
+            if (signInBean == null || !signInBean.isSuccess()) {
                 ToastUtil.showToast(signInBean.getMessage());
-            }else{
+            } else {
                 ToastUtil.showToast(signInBean.getMessage());
+            }
+        } else if (object instanceof NewVersionBean) {
+            NewVersionBean versionBean = (NewVersionBean) object;
+            if (versionBean == null || !versionBean.isSuccess()) {
+                ToastUtil.showToast(versionBean.getMessage());
+            } else {
+                showAlertDialog(versionBean.getDownloadUrl());
             }
         }
     }
@@ -128,41 +153,42 @@ public class MyFragment extends BaseFragment {
         switch (view.getId()) {
             //签到
             case R.id.sign:
-                doNetWorkGetRequest(Apis.URL_USER_SIGN_IN_GET,UserSignInBean.class);
+                doNetWorkGetRequest(Apis.URL_USER_SIGN_IN_GET, UserSignInBean.class);
                 break;
-                //我的信息
+            //我的信息
             case R.id.my_message:
-                Intent intent = new Intent(getActivity(),MyMessageActivity.class);
-                intent.putExtra("result",result);
-                startActivityForResult(intent,REQUESTCODE_NUM);
+                Intent intent = new Intent(getActivity(), MyMessageActivity.class);
+                intent.putExtra("result", result);
+                startActivityForResult(intent, REQUESTCODE_NUM);
                 break;
-                //我的关注
+            //我的关注
             case R.id.my_concern:
-                startActivity(new Intent(getActivity(),MyAttentionActivity.class));
+                startActivity(new Intent(getActivity(), MyAttentionActivity.class));
                 getActivity().overridePendingTransition(0, 0);
                 break;
-                //购票记录
+            //购票记录
             case R.id.my_ticketinrecords:
-                startActivity(new Intent(getActivity(),MyTicketrecordActivity.class));
+                startActivity(new Intent(getActivity(), MyTicketrecordActivity.class));
                 getActivity().overridePendingTransition(0, 0);
                 break;
-                //意见反馈
+            //意见反馈
             case R.id.my_feedback:
-                startActivity(new Intent(getActivity(),FeedBackActivity.class));
+                startActivity(new Intent(getActivity(), FeedBackActivity.class));
                 //屏蔽activity跳转的默认转场效果
                 getActivity().overridePendingTransition(0, 0);
                 break;
-                //最新版本
+            //最新版本
             case R.id.my_latestversion:
+                doNetWorkGetRequest(Apis.URL_FIND_NEW_VERSION_GET, NewVersionBean.class);
                 break;
-                //退出登录
+            //退出登录
             case R.id.my_quit:
                 ActivityCollectorUtil.finishAllActivity();
                 break;
             case R.id.system_message:
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
@@ -170,8 +196,105 @@ public class MyFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUESTCODE_NUM && resultCode == RESULTCODE_NUM){
-            doNetWorkGetRequest(Apis.URL_GET_USER_INFO_BY_USERID_GET,MyMessageBean.class);
+        if (requestCode == REQUESTCODE_NUM && resultCode == RESULTCODE_NUM) {
+            doNetWorkGetRequest(Apis.URL_GET_USER_INFO_BY_USERID_GET, MyMessageBean.class);
         }
+    }
+    /**
+     * 显示AlertDialog
+     * */
+    private void showAlertDialog(final String downloadUrl) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("版本升级");
+        builder.setMessage("软件更新");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startDialog(downloadUrl);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+    }
+    /**
+     * 点击确定获取url下载
+     * */
+    private void startDialog(final String downloadUrl) {
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    startDownload(downloadUrl, progressDialog);
+                    progressDialog.dismiss();
+                } catch (Exception e) {
+
+                }
+            }
+        }.start();
+    }
+
+    private void startDownload(String downloadUrl, ProgressDialog progressDialog) throws Exception {
+        URL url = new URL(downloadUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(8000);
+        progressDialog.setMax(conn.getContentLength());
+        InputStream inputStream = conn.getInputStream();
+        mFilePath = VersionUtil.getSaveFilePath(downloadUrl);
+        File file = new File(mFilePath);
+        writeFile(inputStream, file, progressDialog);
+    }
+    /**
+     * 写入文件
+     * */
+    public void writeFile(InputStream inputStream, File file, ProgressDialog progressDialog) throws Exception {
+//判断下载的文件是否已存在
+        if (file.exists()) {
+            file.delete();
+        }
+        FileOutputStream fos = null;
+        fos = new FileOutputStream(file);
+        byte[] b = new byte[1024];
+        int length;
+        int total = 0;
+        while ((length = inputStream.read(b)) != -1) {
+            fos.write(b, 0, length);
+            total += length;
+            progressDialog.setProgress(total);
+        }
+        inputStream.close();
+        fos.close();
+        progressDialog.dismiss();
+        installApk(mFilePath);
+    }
+
+    private void installApk(String filePath) {
+        File file = new File(filePath);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //判断版本大于等于7.0
+            // "com.ansen.checkupdate.fileprovider"即是在清单文件中配置的authorities
+            // 通过FileProvider创建一个content类型的Uri
+            data = FileProvider.getUriForFile(getActivity(), "com.bw.movie.fileprovider", file);
+            // 给目标应用一个临时授权
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            data = Uri.fromFile(file);
+        }
+        intent.setDataAndType(data, "application/vnd.android.package-archive");
+        startActivity(intent);
     }
 }

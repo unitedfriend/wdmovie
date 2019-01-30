@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
+
     compileSdkVersion 28
-
-
     sourceSets {
         main {
             res.srcDirs =
@@ -16,8 +15,17 @@ android {
                     ]
         }
     }
-
-
+    /**
+     * 微信登录签名
+     * */
+    signingConfigs {
+        config {
+            keyAlias 'bw_movie'
+            keyPassword '123456'
+            storeFile file('movie.keystore')
+            storePassword '123456'
+        }
+    }
     defaultConfig {
         applicationId "com.bw.movie"
         minSdkVersion 19
@@ -28,13 +36,16 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            signingConfig signingConfigs.config
+        }
     }
+
     //如果导入依赖报错请写以下代码
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
@@ -47,6 +58,7 @@ android {
             }
         }
     }
+
 }
 
 dependencies {
@@ -76,9 +88,7 @@ dependencies {
     //xrecycleview依赖
     implementation 'com.jcodecraeer:xrecyclerview:1.5.9'
     //微信登录
-    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.0.2'
-
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     //画廊banner
     implementation 'com.chenlittleping:recyclercoverflow:1.0.6'
-
 }
