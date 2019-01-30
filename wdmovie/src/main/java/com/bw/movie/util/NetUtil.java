@@ -24,8 +24,8 @@ public class NetUtil {
     }
 
     //弹框提示网络的方法
-    public static void showNotNetWork(final Context context) {
-        new AlertDialog.Builder(context)
+    public static AlertDialog showNotNetWork(final Context context) {
+        final AlertDialog show = new AlertDialog.Builder(context)
                 .setTitle("无网络")
                 .setMessage("当前网络不可用，是否去设置？")
                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -43,6 +43,7 @@ public class NetUtil {
                     }
                 })
                 .show();
+        return show;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.bw.movie.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -37,6 +38,8 @@ import java.util.Map;
 public abstract class BaseActivity extends AppCompatActivity implements IView {
     private PresenterImpl presenter;
     private Dialog mCircularLoading;
+    private AlertDialog alertDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +115,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         CircularLoading.closeDialog(mCircularLoading);
         if(error.equals(BaseFinal.NET_WORK)){
             ToastUtil.showToast(getResources().getString(R.string.no_net_work));
-            NetUtil.showNotNetWork(this);
+            if(alertDialog==null){
+                alertDialog = NetUtil.showNotNetWork(this);
+            }else{
+                alertDialog.dismiss();
+                alertDialog=null;
+                alertDialog=NetUtil.showNotNetWork(this);
+            }
         }
         mCircularLoading=null;
         netFail(error);
@@ -149,6 +158,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
             presenter.onDetach();
         }
        ActivityCollectorUtil.removeActivity(this);
+        alertDialog = null;
     }
     //动态注册权限
     private void stateNetWork() {

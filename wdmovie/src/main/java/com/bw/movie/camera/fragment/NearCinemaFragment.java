@@ -94,8 +94,8 @@ public class NearCinemaFragment extends BaseFragment {
                     neardAdaper.addmResult(nearBean.getResult());
                 }
                 mPage++;
-                xrecycleview.refreshComplete();
                 xrecycleview.loadMoreComplete();
+                xrecycleview.refreshComplete();
             }
         }else if(object instanceof FollowCinemaBean){
             FollowCinemaBean followCinemaBean = (FollowCinemaBean) object;
