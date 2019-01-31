@@ -46,7 +46,7 @@ private int position;
         adapter.setTicketCallBcak(new BuyTicketAdapter.BuyTicketCallBcak() {
             @Override
             public void onClick(String id) {
-
+                //TODO 得到名字和地址,跳转时闯过去
             }
             /*@Override
             public void onAttention(int p,boolean b,String id) {
