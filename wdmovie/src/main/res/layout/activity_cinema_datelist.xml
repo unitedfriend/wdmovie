@@ -62,9 +62,21 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="visible"/>
+    <TextView
+        android:id="@+id/textline"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_3"
+        android:background="@drawable/line_black"
+        app:layout_constraintTop_toBottomOf="@id/cinema_film"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginRight="@dimen/dp_24"
+        />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/cinema_film_scheduling"
-        app:layout_constraintTop_toBottomOf="@id/cinema_film"
+        app:layout_constraintTop_toBottomOf="@id/textline"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_width="@dimen/dp_316"
         app:layout_constraintLeft_toLeftOf="parent"

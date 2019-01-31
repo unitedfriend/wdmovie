@@ -94,7 +94,7 @@ public class CinemaDateListActivity extends BaseActivity {
 
     @Override
     protected void netFail(String s) {
-        String s1 = s;
+
     }
     @OnClick(R.id.cinema_film_return)
     public void onViewClicked() {

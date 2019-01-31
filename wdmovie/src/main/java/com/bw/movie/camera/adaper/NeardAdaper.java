@@ -3,6 +3,7 @@ package com.bw.movie.camera.adaper;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +77,7 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }else{
             holderNear.attentionImage.setChecked(false);
         }
+        //关注
         holderNear.attentionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +89,15 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     if(callBackNear!=null){
                         callBackNear.callBeak(mResult.get(i).getId(),false,i);
                     }
+                }
+            }
+        });
+        //点击跳转
+        holderNear.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(callBackList!=null){
+                    callBackList.callBack(mResult.get(i).getId());
                 }
             }
         });
@@ -107,6 +118,8 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView distance;
         @BindView(R.id.attentionImage)
         CheckBox attentionImage;
+        @BindView(R.id.layout)
+        ConstraintLayout layout;
         public ViewHolderNear(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -119,5 +132,13 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
     public interface CallBackNear{
         void callBeak(int id, boolean b, int position);
+    }
+    //根据影院ID查询该影院当前排期的电影列表接口
+    private CallBackList callBackList;
+    public void setCallBackList(CallBackList callBackList){
+        this.callBackList = callBackList;
+    }
+    public interface CallBackList{
+        void callBack(int id);
     }
 }

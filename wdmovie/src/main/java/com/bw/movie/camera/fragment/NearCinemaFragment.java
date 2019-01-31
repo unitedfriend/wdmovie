@@ -1,5 +1,6 @@
 package com.bw.movie.camera.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.bw.movie.R;
 import com.bw.movie.api.Apis;
+import com.bw.movie.camera.activity.CinemaDateListActivity;
 import com.bw.movie.camera.adaper.NeardAdaper;
 import com.bw.movie.camera.adaper.RecommendAdaper;
 import com.bw.movie.camera.bean.CancelFollowCineamBean;
@@ -22,7 +24,12 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
+/**
+  * @作者 GXY
+  * @创建日期 2019/1/30 19:59
+  * @描述 附近影院Fragment
+  *
+  */
 public class NearCinemaFragment extends BaseFragment {
     @BindView(R.id.xrecycleview)
     XRecyclerView xrecycleview;
@@ -64,6 +71,7 @@ public class NearCinemaFragment extends BaseFragment {
                 initData();
             }
         });
+        //关注
        neardAdaper.setCallBackNear(new NeardAdaper.CallBackNear() {
            @Override
            public void callBeak(int id, boolean b, int position) {
@@ -74,6 +82,15 @@ public class NearCinemaFragment extends BaseFragment {
                }
            }
        });
+        //跳转到排期
+        neardAdaper.setCallBackList(new NeardAdaper.CallBackList() {
+            @Override
+            public void callBack(int id) {
+                Intent intent = new Intent(getActivity(),CinemaDateListActivity.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
