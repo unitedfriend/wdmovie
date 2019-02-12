@@ -1,8 +1,12 @@
 package com.bw.movie.camera.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class CinemaMovieListBean {
+public class CinemaMovieListBean implements Serializable {
 
     /**
      * result : [{"beginTime":"17:05","duration":"118分钟","endTime":"19:03","id":3,"price":0.13,"screeningHall":"3厅","seatsTotal":180,"seatsUseCount":10,"status":2},{"beginTime":"19:20","duration":"118分钟","endTime":"21:18","id":136,"price":0.13,"screeningHall":"2号厅","seatsTotal":150,"seatsUseCount":50,"status":2},{"beginTime":"20:30","duration":"118分钟","endTime":"22:28","id":137,"price":0.13,"screeningHall":"1号厅","seatsTotal":66,"seatsUseCount":15,"status":2},{"beginTime":"11:50","duration":"118分钟","endTime":"14:02","id":138,"price":0.13,"screeningHall":"4厅","seatsTotal":21,"seatsUseCount":19,"status":2}]
@@ -14,6 +18,12 @@ public class CinemaMovieListBean {
     private String status;
     private List<ResultBean> result;
     private final String SUCCESS_STATUS = "0000";
+
+    protected CinemaMovieListBean(Parcel in) {
+        message = in.readString();
+        status = in.readString();
+    }
+
     public boolean isSuccess(){
         return status.equals(SUCCESS_STATUS);
     }
@@ -41,7 +51,7 @@ public class CinemaMovieListBean {
         this.result = result;
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Serializable {
         /**
          * beginTime : 17:05
          * duration : 118分钟
@@ -63,6 +73,18 @@ public class CinemaMovieListBean {
         private int seatsTotal;
         private int seatsUseCount;
         private int status;
+
+        protected ResultBean(Parcel in) {
+            beginTime = in.readString();
+            duration = in.readString();
+            endTime = in.readString();
+            id = in.readInt();
+            price = in.readDouble();
+            screeningHall = in.readString();
+            seatsTotal = in.readInt();
+            seatsUseCount = in.readInt();
+            status = in.readInt();
+        }
 
         public String getBeginTime() {
             return beginTime;
