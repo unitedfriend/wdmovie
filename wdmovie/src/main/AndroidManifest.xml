@@ -42,6 +42,6 @@
         <activity android:name=".home.activity.MovieListActivity"/>
         <activity android:name=".camera.activity.CinemaDateListActivity"/>
         <activity android:name=".home.activity.BuyTicketActivity"/>
-
+        <activity android:name=".seat.activity.SeatActivity"/>
     </application>
 </manifest>
