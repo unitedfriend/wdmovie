@@ -73,7 +73,7 @@ public class BuyTicketAdapter extends RecyclerView.Adapter<BuyTicketAdapter.View
         viewHoder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ticketCallBcak.onClick(mList.get(i).getId()+"");
+                ticketCallBcak.onClick(mList.get(i).getId()+"",mList.get(i).getAddress(),mList.get(i).getName());
             }
         });
     }
@@ -112,7 +112,7 @@ public class BuyTicketAdapter extends RecyclerView.Adapter<BuyTicketAdapter.View
 
     public interface BuyTicketCallBcak {
         /*void onAttention(int p,boolean b,String id);*/
-        void onClick(String id);
+        void onClick(String id,String address,String cinemaname);
     }
 
     public void setTicketCallBcak(BuyTicketCallBcak callBcak) {

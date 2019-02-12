@@ -302,6 +302,7 @@ public class FilmDetailsActivity extends BaseActivity {
         addressText.setText("产地: "+result.getPlaceOrigin());
         synopsisText.setText(result.getSummary());
         actorList.setText(result.getStarring());
+
         dimensImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -320,7 +321,7 @@ public class FilmDetailsActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.deteilsButtont:
-                detailsPopupWindowsss.showAsDropDown(nameText, 0, -75);
+                detailsPopupWindowsss.showAsDropDown(nameText, 0, 0 );
                 break;
             case R.id.prevueButton:
                 prevuePopup.showAsDropDown(nameText, 0, -75);
@@ -337,8 +338,11 @@ public class FilmDetailsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.buyTicketImage:
+                //电影的名字
                 String s = nameText.getText().toString();
-                startActivity(new Intent(FilmDetailsActivity.this,BuyTicketActivity.class).putExtra("name",s).putExtra("id",id));
+                //电影的ID传过去,在电影排期页面使用
+
+                startActivity(new Intent(FilmDetailsActivity.this,BuyTicketActivity.class).putExtra("name",s).putExtra("movieId",id));
                 break;
         }
     }

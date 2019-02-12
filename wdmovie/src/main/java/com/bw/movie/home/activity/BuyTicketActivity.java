@@ -1,5 +1,6 @@
 package com.bw.movie.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ public class BuyTicketActivity extends BaseActivity {
     @BindView(R.id.xrecycleView)
     XRecyclerView xrecycleView;
     private BuyTicketAdapter adapter;
+    private String name;
+    private String movieId;
 
     @Override
     protected void initData() {
@@ -31,10 +34,10 @@ private int position;
     @Override
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
-        String name = getIntent().getStringExtra("name");
+        name = getIntent().getStringExtra("name");
         movieName.setText(name);
-        String id = getIntent().getStringExtra("id");
-        doNetWorkGetRequest(Apis.URL_FIND_CINEMAS_LIST_BY_MOVIE_ID_GET + "?movieId=" + id, BuyTicketCinameList.class);
+        movieId = getIntent().getStringExtra("movieId");
+        doNetWorkGetRequest(Apis.URL_FIND_CINEMAS_LIST_BY_MOVIE_ID_GET + "?movieId=" + movieId, BuyTicketCinameList.class);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -45,8 +48,9 @@ private int position;
         xrecycleView.setPullRefreshEnabled(false);
         adapter.setTicketCallBcak(new BuyTicketAdapter.BuyTicketCallBcak() {
             @Override
-            public void onClick(String id) {
-                //TODO 得到名字和地址,跳转时闯过去
+            public void onClick(String id,String address,String cinemaName) {
+                //TODO 得到名字和地址,跳转时传过去
+                startActivity(new Intent(BuyTicketActivity.this,MovieScheduleActivity.class).putExtra("movieName",name).putExtra("movieId",movieId).putExtra("cinemaId",id).putExtra("cinemaAddress",address).putExtra("cinemaName",cinemaName));
             }
             /*@Override
             public void onAttention(int p,boolean b,String id) {
@@ -70,6 +74,7 @@ private int position;
     protected void netSuccess(Object object) {
         if(object instanceof BuyTicketCinameList){
             BuyTicketCinameList object1 = (BuyTicketCinameList) object;
+
             adapter.setmList(object1.getResult());
         }
 

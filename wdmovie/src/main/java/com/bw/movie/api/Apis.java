@@ -164,7 +164,7 @@ public class Apis {
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/findMovieScheduleList
      * 请求方式：GET
      * */
-    public static final String URL_FIND_MOVIE_SCHEDULE_LIST ="movieApi/movie/v1/findMovieScheduleList";
+    public static final String URL_FIND_MOVIE_SCHEDULE_LIST ="movieApi/movie/v1/findMovieScheduleList?cinemasId=%s&movieId=%s";
     /**
      * 16.根据电影ID查询当前排片该电影的影院列表
      * 接口地址：http://172.17.8.100/movieApi/movie/v1/findCinemasListByMovieId
