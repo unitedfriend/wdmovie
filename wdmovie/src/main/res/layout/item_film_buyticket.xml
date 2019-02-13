@@ -30,7 +30,7 @@
             android:textColor="#333333"
             android:text="CGV影城"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             app:layout_constraintLeft_toRightOf="@id/cinemaImage"
             android:layout_marginLeft="@dimen/dp_20"
             />
@@ -44,7 +44,7 @@
             app:layout_constraintLeft_toRightOf="@id/cinemaImage"
             android:layout_marginLeft="@dimen/dp_20"
             app:layout_constraintTop_toBottomOf="@id/cinemaName"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             android:layout_marginRight="@dimen/dp_20"
             app:layout_constraintRight_toRightOf="parent"
             />

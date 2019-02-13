@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.List;
-
+//根据影院id和电影id得到排期
 public class CinemaMovieListBean implements Serializable {
 
     /**
