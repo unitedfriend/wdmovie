@@ -1,7 +1,9 @@
-package com.bw.movie.util;
+package com.bw.movie.wxapi;
 
 import android.content.Context;
 
+import com.bw.movie.application.MyApplication;
+import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
@@ -37,5 +39,28 @@ public class WeiXinUtil {
         } else {
             return null;
         }
+    }
+
+    /**
+      * @作者 GXY
+      * @创建日期 2019/2/13 14:45
+      * @描述 微信支付
+      *
+      */
+    //支付
+    public static void  weiXinPay(WXPayBean bean){
+        IWXAPI wxapi = WXAPIFactory.createWXAPI(MyApplication.getApplication(), APP_ID, true);
+        //注册到微信
+        wxapi.registerApp(APP_ID);
+
+        PayReq payReq = new PayReq();
+        payReq.appId=bean.getAppId();
+        payReq.prepayId=bean.getPrepayId();
+        payReq.partnerId=bean.getPartnerId();
+        payReq.nonceStr=bean.getNonceStr();
+        payReq.timeStamp=bean.getTimeStamp();
+        payReq.sign=bean.getSign();
+        payReq.packageValue=bean.getPackageValue();
+        wxapi.sendReq(payReq);
     }
 }

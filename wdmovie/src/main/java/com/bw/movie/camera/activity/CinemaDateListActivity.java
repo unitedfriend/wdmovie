@@ -50,24 +50,31 @@ public class CinemaDateListActivity extends BaseActivity {
     RecyclerView cinemaFilmScheduling;
     @BindView(R.id.cinema_film_return)
     ImageView cinemaFilmReturn;
-    private int id;
+    private int cameraId;
     private FindMovieListAdaper movieListAdaper;
     private CineamaMovieAdaper movieAdaper;
     private List<FindMovieListByCinemaIdBean.ResultBean> result;
     private int i;
+    private int movieId;
+    private String movieName;
+    private String name;
+    private String address;
+
     @Override
     protected void initData() {
         Intent intent = getIntent();
         //影院id
-        id = intent.getIntExtra("id", 0);
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_CINEMA_INFO_GET,id),FindCinemaInfoBean.class);
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_MOVIE_LIST_BY_CINEMAID_GET,id),FindMovieListByCinemaIdBean.class);
+        cameraId = intent.getIntExtra("id", 0);
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_CINEMA_INFO_GET,cameraId),FindCinemaInfoBean.class);
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_MOVIE_LIST_BY_CINEMAID_GET,cameraId),FindMovieListByCinemaIdBean.class);
         cinemaFilm.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
+
             @Override
             public void onItemSelected(int position) {
                 i=position;
-                int movieId = result.get(position).getId();
-                doNetWorkGetRequest(String.format(Apis.URL_FIND_MOVIE_SCHEDULE_LIST,id,movieId),CinemaMovieListBean.class);
+                movieName = result.get(position).getName();
+                movieId = result.get(position).getId();
+                doNetWorkGetRequest(String.format(Apis.URL_FIND_MOVIE_SCHEDULE_LIST,cameraId, movieId),CinemaMovieListBean.class);
             }
         });
     }
@@ -77,7 +84,6 @@ public class CinemaDateListActivity extends BaseActivity {
         ButterKnife.bind(this);
         movieListAdaper = new FindMovieListAdaper(this);
         cinemaFilm.setAdapter(movieListAdaper);
-        //cinemaFilm.smoothScrollToPosition(0);
         //创建布局管理器
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
@@ -88,7 +94,10 @@ public class CinemaDateListActivity extends BaseActivity {
             @Override
             public void CallBack(CinemaMovieListBean.ResultBean resultBean) {
                 Intent intent = new Intent(CinemaDateListActivity.this,SeatActivity.class);
-                intent.putExtra("id",id);
+                intent.putExtra("movieName",movieName);
+                intent.putExtra("name",name);
+                intent.putExtra("address",address);
+                intent.putExtra("resultBean",resultBean);
                 startActivity(intent);
             }
         });
@@ -107,9 +116,9 @@ public class CinemaDateListActivity extends BaseActivity {
                 ToastUtil.showToast(cinemaInfoBean.getMessage());
             }else{
                 FindCinemaInfoBean.ResultBean result = cinemaInfoBean.getResult();
-                String address = result.getAddress();
+                address = result.getAddress();
                 String logo = result.getLogo();
-                String name = result.getName();
+                name = result.getName();
                 cinemaName.setText(name);
                 cinemaAddress.setText(address);
                 cinemaLogo.setImageURI(Uri.parse(logo));

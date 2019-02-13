@@ -43,5 +43,17 @@
         <activity android:name=".camera.activity.CinemaDateListActivity"/>
         <activity android:name=".home.activity.BuyTicketActivity"/>
         <activity android:name=".seat.activity.SeatActivity"/>
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:scheme="wxb3852e6a6b7d9516"/>
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
