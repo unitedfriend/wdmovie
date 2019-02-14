@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
 
-
-
     compileSdkVersion 28
     sourceSets {
         main {
@@ -104,6 +102,8 @@ dependencies {
     implementation  'cn.jzvd:jiaozivideoplayer:6.2.10'
 
     implementation 'com.github.bumptech.glide:glide:3.7.0'
+    //腾讯Bugly
+    implementation 'com.tencent.bugly:crashreport:latest.release'
 
     //地址
     implementation 'com.zaaach:citypicker:2.0.3'

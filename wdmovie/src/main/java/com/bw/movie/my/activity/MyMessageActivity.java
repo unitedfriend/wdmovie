@@ -93,7 +93,14 @@ public class MyMessageActivity extends BaseActivity {
         String phone = result.getPhone();
         usericonImage.setImageURI(Uri.parse(headPic));
         userNickname.setText(nickName);
-        birth.setText(birthday);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = format.parse(birthday);
+            birth.setText((CharSequence) date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         phonenumber.setText(phone);
         if (sex == 1) {
             userSex.setText("男");

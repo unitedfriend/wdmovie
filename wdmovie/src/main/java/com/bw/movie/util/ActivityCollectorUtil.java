@@ -3,7 +3,12 @@ package com.bw.movie.util;
 import android.app.Activity;
 
 import java.util.ArrayList;
-
+/**
+  * @作者 GXY
+  * @创建日期 2019/2/13 20:06
+  * @描述 退出登录工具类
+  *
+  */
 public class ActivityCollectorUtil {
     public static ArrayList<Activity> mActivityList = new ArrayList<Activity>();
 
