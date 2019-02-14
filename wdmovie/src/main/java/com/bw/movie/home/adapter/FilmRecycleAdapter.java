@@ -41,6 +41,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
     private final int COUNT = 4;
     private int current;
     private Handler handler;
+    private BannerViewHoder bannerViewHoder;
 
     public FilmRecycleAdapter(Context mContext) {
         this.mContext = mContext;
@@ -90,7 +91,13 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         switch (itemViewType) {
             case BANNER:
                 //设置搜索框进来就被移动到屏幕外
-                final BannerViewHoder bannerViewHoder = (BannerViewHoder) viewHolder;
+                bannerViewHoder = (BannerViewHoder) viewHolder;
+                bannerViewHoder.locationImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        filmCallBack.addressCallBack();
+                    }
+                });
                 setTranslationOut(bannerViewHoder.searchViewGroup, 0);
                 bannerViewHoder.searchEditText.setVisibility(View.GONE);
                 bannerViewHoder.searchText.setVisibility(View.GONE);
@@ -349,6 +356,10 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public void setLocation(String l){
+        bannerViewHoder.locationText.setText(l);
     }
 
     FilmCallBack filmCallBack;

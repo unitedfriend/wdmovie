@@ -26,7 +26,7 @@ import com.bw.movie.util.AccountValidatorUtil;
 import com.bw.movie.util.EmptyUtil;
 import com.bw.movie.util.EncryptUtil;
 import com.bw.movie.util.ToastUtil;
-import com.bw.movie.util.WeiXinUtil;
+import com.bw.movie.wxapi.WeiXinUtil;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import java.util.HashMap;

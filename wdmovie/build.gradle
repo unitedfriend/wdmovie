@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 
 android {
 
+
+
     compileSdkVersion 28
     sourceSets {
         main {
@@ -61,6 +63,11 @@ android {
     }
 
 }
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -97,5 +104,10 @@ dependencies {
     implementation  'cn.jzvd:jiaozivideoplayer:6.2.10'
 
     implementation 'com.github.bumptech.glide:glide:3.7.0'
+
+    //地址
+    implementation 'com.zaaach:citypicker:2.0.3'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+
 
 }

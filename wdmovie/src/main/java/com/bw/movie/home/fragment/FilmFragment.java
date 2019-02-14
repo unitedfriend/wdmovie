@@ -1,7 +1,12 @@
 package com.bw.movie.home.fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,10 +25,21 @@ import com.bw.movie.home.bean.HotBean;
 import com.bw.movie.home.bean.ShowBean;
 import com.bw.movie.home.bean.ShowingBean;
 import com.bw.movie.util.ToastUtil;
+import com.zaaach.citypicker.CityPicker;
+import com.zaaach.citypicker.adapter.OnPickListener;
+import com.zaaach.citypicker.model.City;
+import com.zaaach.citypicker.model.HotCity;
+import com.zaaach.citypicker.model.LocateState;
+import com.zaaach.citypicker.model.LocatedCity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
+
 /**
  *  @author Tang
  *  @time 2019/1/28  9:12
@@ -62,8 +78,41 @@ private int tag;
         adapter.setFilmCallBack(new FilmRecycleAdapter.FilmCallBack() {
             @Override
             public void addressCallBack() {
+
+
+
                 //地址点击事件
                 ToastUtil.showToast("地址点击事件");
+                List<HotCity> hotCities = new ArrayList<>();
+                hotCities.add(new HotCity("北京", "北京", "101010100")); //code为城市代码
+                hotCities.add(new HotCity("上海", "上海", "101020100"));
+                hotCities.add(new HotCity("广州", "广东", "101280101"));
+                hotCities.add(new HotCity("深圳", "广东", "101280601"));
+                hotCities.add(new HotCity("杭州", "浙江", "101210101"));
+                CityPicker.from(getActivity()) //activity或者fragment
+                        .enableAnimation(false)	//启用动画效果，默认无
+                        	//自定义动画
+                        .setLocatedCity(new LocatedCity("杭州", "浙江", "101210101")).setHotCities(hotCities)  //APP自身已定位的城市，传null会自动定位（默认）
+  	//指定热门城市
+                        .setOnPickListener(new OnPickListener() {
+                            @Override
+                            public void onPick(int position, City data) {
+                                adapter.setLocation(data.getName());
+                            }
+
+                            @Override
+                            public void onCancel(){
+
+                            }
+
+                            @Override
+                            public void onLocate() {
+                                //定位接口，需要APP自身实现，这里模拟一下定位
+
+
+                            }
+                        })
+                        .show();
             }
 
             @Override

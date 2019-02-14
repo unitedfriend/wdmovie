@@ -128,7 +128,12 @@ public class MovieListActivity extends BaseActivity {
         }
         MovieListAdapter listAdapter = new MovieListAdapter(getSupportFragmentManager(), list);
         viewPage.setAdapter(listAdapter);
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 

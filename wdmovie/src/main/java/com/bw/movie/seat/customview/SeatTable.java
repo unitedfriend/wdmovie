@@ -293,9 +293,9 @@ public class SeatTable extends View {
         overview_checked = typedArray.getColor(R.styleable.SeatTableView_overview_checked, Color.parseColor("#5A9E64"));
         overview_sold = typedArray.getColor(R.styleable.SeatTableView_overview_sold, Color.RED);
         txt_color=typedArray.getColor(R.styleable.SeatTableView_txt_color,Color.WHITE);
-        seatCheckedResID = typedArray.getResourceId(R.styleable.SeatTableView_seat_checked, R.mipmap.rectangle3copy5);
-        seatSoldResID = typedArray.getResourceId(R.styleable.SeatTableView_overview_sold, R.mipmap.rectangle3copy18);
-        seatAvailableResID = typedArray.getResourceId(R.styleable.SeatTableView_seat_available, R.mipmap.rectangle3copy12);
+        seatCheckedResID = typedArray.getResourceId(R.styleable.SeatTableView_seat_checked, R.mipmap.rectangle3copy18);
+        seatSoldResID = typedArray.getResourceId(R.styleable.SeatTableView_overview_sold, R.mipmap.rectangle3copy12);
+        seatAvailableResID = typedArray.getResourceId(R.styleable.SeatTableView_seat_available, R.mipmap.rectangle3copy5);
         typedArray.recycle();
     }
 

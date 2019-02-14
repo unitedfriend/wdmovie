@@ -25,6 +25,7 @@ import com.bw.movie.home.bean.CommentPraiseBean;
 import com.bw.movie.home.bean.FilmCommentBean;
 import com.bw.movie.home.bean.FilmDetailsBean;
 import com.bw.movie.home.bean.FindAllCinemaComment;
+import com.bw.movie.seat.activity.SeatActivity;
 import com.bw.movie.util.ToastUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -77,11 +78,11 @@ private int i;
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        String movieName = intent.getStringExtra("movieName");
+        final String movieName = intent.getStringExtra("movieName");
         final String cinemaId = intent.getStringExtra("cinemaId");
         String movieId = intent.getStringExtra("movieId");
-        String cinemaAddress = intent.getStringExtra("cinemaAddress");
-        String cinemaName = intent.getStringExtra("cinemaName");
+        final String cinemaAddress = intent.getStringExtra("cinemaAddress");
+        final String cinemaName = intent.getStringExtra("cinemaName");
         cinemaNameText.setText(cinemaName);
         cinemaAddressText.setText(cinemaAddress);
         doNetWorkGetRequest(String.format(Apis.URL_FIND_MOVIE_DETAIL_GET,movieId),FilmDetailsBean.class);
@@ -95,7 +96,12 @@ private int i;
         cineamaMovieAdaper.setCallBackCinemaMovie(new CineamaMovieAdaper.CallBackCinemaMovie() {
             @Override
             public void CallBack(CinemaMovieListBean.ResultBean resultBean) {
-                int id = resultBean.getId();
+                Intent intent = new Intent(MovieScheduleActivity.this,SeatActivity.class);
+                intent.putExtra("movieName",movieName);
+                intent.putExtra("name",cinemaName);
+                intent.putExtra("address",cinemaAddress);
+                intent.putExtra("resultBean",resultBean);
+                startActivity(intent);
             }
         });
         backImage.setOnClickListener(new View.OnClickListener() {
@@ -104,12 +110,19 @@ private int i;
                 finish();
             }
         });
+        final PopupWindow popuoWindow = getPopView(popupView);
         cinemaNameText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 doNetWorkGetRequest(String.format(Apis.URL_FIND_CINEMA_INFO_GET,Integer.parseInt(cinemaId)),FindCinemaInfoBean.class);
-                PopupWindow popuoWindow = getPopView(popupView);
+
                 popuoWindow.showAsDropDown(v);
+            }
+        });
+        popupView.findViewById(R.id.hideButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popuoWindow.dismiss();
             }
         });
         TextView datesButton = popupView.findViewById(R.id.datesButton);

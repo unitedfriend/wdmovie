@@ -9,7 +9,6 @@ import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
 import com.bw.movie.home.activity.HomeActivity;
 import com.bw.movie.util.ToastUtil;
-import com.bw.movie.util.WeiXinUtil;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;

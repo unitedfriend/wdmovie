@@ -31,6 +31,8 @@ import com.bw.movie.util.ToastUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -146,12 +148,12 @@ public class MyMessageActivity extends BaseActivity {
             public void onClick(View v) {
                 // 调取系统相机
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // 存到sdcard中
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                            Uri.fromFile(new File(path)));
-                    //执行
-                    startActivityForResult(intent, REQUESTCODE_CAMERA);
-                    window.dismiss();
+                // 存到sdcard中
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(new File(path)));
+                //执行
+                startActivityForResult(intent, REQUESTCODE_CAMERA);
+                window.dismiss();
             }
         });
         //点击打开相册
@@ -161,11 +163,11 @@ public class MyMessageActivity extends BaseActivity {
             public void onClick(View v) {
                 //加载相册
                 Intent intent = new Intent(Intent.ACTION_PICK);
-                    //设置图片格式
-                    intent.setType("image/*");
-                    //执行
-                    startActivityForResult(intent, REQUESTCODE_PICK);
-                    window.dismiss();
+                //设置图片格式
+                intent.setType("image/*");
+                //执行
+                startActivityForResult(intent, REQUESTCODE_PICK);
+                window.dismiss();
 
             }
         });
@@ -220,7 +222,7 @@ public class MyMessageActivity extends BaseActivity {
                 getUpdateNickName();
                 break;
             case R.id.resetbutton:
-                startActivity(new Intent(MyMessageActivity.this,UpdatePasswordActivity.class));
+                startActivity(new Intent(MyMessageActivity.this, UpdatePasswordActivity.class));
                 //屏蔽activity跳转的默认转场效果
                 overridePendingTransition(0, 0);
                 break;
