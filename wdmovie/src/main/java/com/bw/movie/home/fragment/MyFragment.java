@@ -129,11 +129,15 @@ public class MyFragment extends BaseFragment {
             if (versionBean == null || !versionBean.isSuccess()) {
                 ToastUtil.showToast(versionBean.getMessage());
             } else {
-                showAlertDialog(versionBean.getDownloadUrl());
+                int flag = versionBean.getFlag();
+                if(flag==1){
+                    showAlertDialog(versionBean.getDownloadUrl());
+                }else{
+                    ToastUtil.showToast("已是最新版本");
+                }
             }
         }
     }
-
     /**
      * 失败
      */

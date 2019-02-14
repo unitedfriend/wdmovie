@@ -9,6 +9,8 @@ import android.os.StrictMode;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.tencent.bugly.crashreport.CrashReport;
+
 public class MyApplication extends Application {
     private static Context mContext;
     @Override
@@ -32,6 +34,7 @@ public class MyApplication extends Application {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
         }
+        CrashReport.initCrashReport(getApplicationContext(), "7fb01ba51c", false);
     }
     public static Context getApplication() {
         return mContext;
