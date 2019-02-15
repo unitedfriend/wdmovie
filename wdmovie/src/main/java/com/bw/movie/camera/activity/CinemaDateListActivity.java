@@ -74,21 +74,22 @@ public class CinemaDateListActivity extends BaseActivity {
     private FindAllCinemaCommentAdapter adapter;
     private int d;
     private XRecyclerView xRecyclerView;
+
     @Override
     protected void initData() {
         Intent intent = getIntent();
         //影院id
         cameraId = intent.getIntExtra("id", 0);
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_CINEMA_INFO_GET,cameraId),FindCinemaInfoBean.class);
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_MOVIE_LIST_BY_CINEMAID_GET,cameraId),FindMovieListByCinemaIdBean.class);
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_CINEMA_INFO_GET, cameraId), FindCinemaInfoBean.class);
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_MOVIE_LIST_BY_CINEMAID_GET, cameraId), FindMovieListByCinemaIdBean.class);
         cinemaFilm.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
 
             @Override
             public void onItemSelected(int position) {
-                i=position;
+                i = position;
                 movieName = result.get(position).getName();
                 movieId = result.get(position).getId();
-                doNetWorkGetRequest(String.format(Apis.URL_FIND_MOVIE_SCHEDULE_LIST,cameraId, movieId),CinemaMovieListBean.class);
+                doNetWorkGetRequest(String.format(Apis.URL_FIND_MOVIE_SCHEDULE_LIST, cameraId, movieId), CinemaMovieListBean.class);
             }
         });
     }
@@ -107,11 +108,11 @@ public class CinemaDateListActivity extends BaseActivity {
         movieAdaper.setCallBackCinemaMovie(new CineamaMovieAdaper.CallBackCinemaMovie() {
             @Override
             public void CallBack(CinemaMovieListBean.ResultBean resultBean) {
-                Intent intent = new Intent(CinemaDateListActivity.this,SeatActivity.class);
-                intent.putExtra("movieName",movieName);
-                intent.putExtra("name",name);
-                intent.putExtra("address",address);
-                intent.putExtra("resultBean",resultBean);
+                Intent intent = new Intent(CinemaDateListActivity.this, SeatActivity.class);
+                intent.putExtra("movieName", movieName);
+                intent.putExtra("name", name);
+                intent.putExtra("address", address);
+                intent.putExtra("resultBean", resultBean);
                 startActivity(intent);
             }
         });
@@ -119,7 +120,7 @@ public class CinemaDateListActivity extends BaseActivity {
     }
 
     private void getView() {
-        popupView = View.inflate(this,R.layout.popup_movie_schedule,null);
+        popupView = View.inflate(this, R.layout.popup_movie_schedule, null);
         final PopupWindow popuoWindow = getPopView(popupView);
         cinemaName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,13 +164,13 @@ public class CinemaDateListActivity extends BaseActivity {
         xRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                page=1;
-                doNet(cameraId,page);
+                page = 1;
+                doNet(cameraId, page);
             }
 
             @Override
             public void onLoadMore() {
-                doNet(cameraId,page);
+                doNet(cameraId, page);
             }
         });
         adapter.setLucky(new FindAllCinemaCommentAdapter.Lucky() {
@@ -178,22 +179,20 @@ public class CinemaDateListActivity extends BaseActivity {
                 d = position;
                 Map<String, String> map = new HashMap<>();
                 map.put("commentId", String.valueOf(commentId));
-                doNetWorkPostRequest(Apis.URL_MOVIE_COMMENT_GREAT_POST,map,CommentPraiseBean.class);
+                doNetWorkPostRequest(Apis.URL_MOVIE_COMMENT_GREAT_POST, map, CommentPraiseBean.class);
             }
         });
         page = 1;
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doNet(cameraId,page);
+                doNet(cameraId, page);
                 popupView.findViewById(R.id.datesLine).setVisibility(View.INVISIBLE);
                 popupView.findViewById(R.id.commentLine).setVisibility(View.VISIBLE);
                 popupView.findViewById(R.id.datesLayout).setVisibility(View.INVISIBLE);
                 popupView.findViewById(R.id.commentLayout).setVisibility(View.VISIBLE);
             }
         });
-
-
 
 
     }
@@ -204,13 +203,14 @@ public class CinemaDateListActivity extends BaseActivity {
     }
 
 
-    private void doNet(int c,int p){
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_ALL_CINEAM_COMMENT_GET,c,p),FindAllCinemaComment.class);
+    private void doNet(int c, int p) {
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_ALL_CINEAM_COMMENT_GET, c, p), FindAllCinemaComment.class);
     }
+
     /**
-     *  @author Tang
-     *  @time 2019/2/12  20:29
-     *  @describe popupwindo
+     * @author Tang
+     * @time 2019/2/12  20:29
+     * @describe popupwindo
      */
     private PopupWindow getPopView(View view) {
         PopupWindow popupWindow = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -221,22 +221,16 @@ public class CinemaDateListActivity extends BaseActivity {
         //关闭
         int color = getResources().getColor(R.color.popup_bg);
         popupWindow.setBackgroundDrawable(new ColorDrawable(color));
-        /*detail_down.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });*/
         return popupWindow;
     }
 
     @Override
     protected void netSuccess(Object object) {
-        if(object instanceof FindCinemaInfoBean){
+        if (object instanceof FindCinemaInfoBean) {
             FindCinemaInfoBean cinemaInfoBean = (FindCinemaInfoBean) object;
-            if(cinemaInfoBean == null || !cinemaInfoBean.isSuccess()){
+            if (cinemaInfoBean == null || !cinemaInfoBean.isSuccess()) {
                 ToastUtil.showToast(cinemaInfoBean.getMessage());
-            }else{
+            } else {
                 FindCinemaInfoBean.ResultBean result = cinemaInfoBean.getResult();
                 address = result.getAddress();
                 String logo = result.getLogo();
@@ -244,42 +238,43 @@ public class CinemaDateListActivity extends BaseActivity {
                 cinemaName.setText(name);
                 cinemaAddress.setText(address);
                 cinemaLogo.setImageURI(Uri.parse(logo));
-                TextView addressText =popupView.findViewById(R.id.addressText);
+                TextView addressText = popupView.findViewById(R.id.addressText);
                 addressText.setText(result.getAddress());
                 TextView phoneText = popupView.findViewById(R.id.phoneText);
                 phoneText.setText(result.getPhone());
                 TextView pathText = popupView.findViewById(R.id.pathText);
                 pathText.setText(result.getVehicleRoute());
             }
-        }else if(object instanceof FindMovieListByCinemaIdBean){
+        } else if (object instanceof FindMovieListByCinemaIdBean) {
             FindMovieListByCinemaIdBean movieListByCinemaIdBean = (FindMovieListByCinemaIdBean) object;
             result = movieListByCinemaIdBean.getResult();
-            cinemaFilm.smoothScrollToPosition(result.size()/2);
-            if(movieListByCinemaIdBean == null || !movieListByCinemaIdBean.isSuccess()){
+            cinemaFilm.smoothScrollToPosition(result.size() / 2);
+
+            if (movieListByCinemaIdBean == null || !movieListByCinemaIdBean.isSuccess()) {
                 ToastUtil.showToast(movieListByCinemaIdBean.getMessage());
-            }else{
+            } else {
                 movieListAdaper.setmResult(movieListByCinemaIdBean.getResult());
             }
-        }else if(object instanceof CinemaMovieListBean){
+        } else if (object instanceof CinemaMovieListBean) {
             CinemaMovieListBean movieListBean = (CinemaMovieListBean) object;
-            if(movieListBean==null || !movieListBean.isSuccess()){
+            if (movieListBean == null || !movieListBean.isSuccess()) {
                 ToastUtil.showToast(movieListBean.getMessage());
-            }else{
+            } else {
                 movieAdaper.setmResult(movieListBean.getResult());
             }
 
-        }else if(object instanceof FindAllCinemaComment){
+        } else if (object instanceof FindAllCinemaComment) {
             FindAllCinemaComment object1 = (FindAllCinemaComment) object;
-            if(page==1){
+            if (page == 1) {
                 adapter.setList(object1.getResult());
-            }else{
+            } else {
                 adapter.addList(object1.getResult());
             }
             ToastUtil.showToast(object1.getMessage());
             page++;
             xRecyclerView.loadMoreComplete();
             xRecyclerView.refreshComplete();
-        }else if(object instanceof CommentPraiseBean) {
+        } else if (object instanceof CommentPraiseBean) {
             CommentPraiseBean object1 = (CommentPraiseBean) object;
             ToastUtil.showToast(object1.getMessage());
             if (object1.getMessage().equals("点赞成功")) {
@@ -292,6 +287,7 @@ public class CinemaDateListActivity extends BaseActivity {
     protected void netFail(String s) {
 
     }
+
     @OnClick(R.id.cinema_film_return)
     public void onViewClicked() {
         finish();

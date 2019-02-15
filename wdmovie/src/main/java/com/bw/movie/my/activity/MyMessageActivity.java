@@ -86,22 +86,28 @@ public class MyMessageActivity extends BaseActivity {
     protected void initData() {
         Intent intent = getIntent();
         MyMessageBean.ResultBean result = (MyMessageBean.ResultBean) intent.getSerializableExtra("result");
-        String headPic = result.getHeadPic();
-        String nickName = result.getNickName();
-        int sex = result.getSex();
-        String phone = result.getPhone();
-        usericonImage.setImageURI(Uri.parse(headPic));
-        userNickname.setText(nickName);
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String time = sDateFormat.format(Long.valueOf(result.getBirthday()));
-        birth.setText(time);
-        phonenumber.setText(phone);
-        if (sex == 1) {
-            userSex.setText("男");
-        } else if (sex == 2) {
-            userSex.setText("女");
+        if(result!=null) {
+            String headPic = result.getHeadPic();
+            String nickName = result.getNickName();
+            int sex = result.getSex();
+            String birthday = result.getBirthday();
+            String phone = result.getPhone();
+            usericonImage.setImageURI(Uri.parse(headPic));
+            userNickname.setText(nickName);
+            if(birthday!=null){
+                SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                String time = sDateFormat.format(Long.valueOf(birthday));
+                birth.setText(time);
+
+            }
+            phonenumber.setText(phone);
+            if (sex == 1) {
+                userSex.setText("男");
+            } else if (sex == 2) {
+                userSex.setText("女");
+            }
+            setResult(REQUESTCODE_SUCCESS, intent);
         }
-        setResult(REQUESTCODE_SUCCESS, intent);
     }
 
     /**

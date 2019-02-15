@@ -38,6 +38,7 @@ import com.bw.movie.home.bean.FilmDetailsBean;
 import com.bw.movie.home.bean.MovieComment;
 import com.bw.movie.home.bean.ReplyBean;
 import com.bw.movie.home.view.MySpannableTextView;
+import com.bw.movie.login.activity.LoginActivity;
 import com.bw.movie.util.ToastUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -135,6 +136,7 @@ public class FilmDetailsActivity extends BaseActivity {
         attentionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (attentionImage.isChecked()) {
                     doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_MOVIE_GET, id), AttentionBean.class);
                 } else {
@@ -239,6 +241,11 @@ public class FilmDetailsActivity extends BaseActivity {
         } else if (object instanceof AttentionBean) {
             AttentionBean object1 = (AttentionBean) object;
             ToastUtil.showToast(object1.getMessage());
+            if(object1.getMessage().equals("请先登陆")){
+                startActivity(new Intent(FilmDetailsActivity.this,LoginActivity.class));
+                boolean checked = attentionImage.isChecked();
+                attentionImage.setChecked(!checked);
+            }
         }else if (object instanceof FilmCommentBean) {
             FilmCommentBean revirwBean = (FilmCommentBean) object;
                 if (mpage == 1) {
@@ -252,6 +259,7 @@ public class FilmDetailsActivity extends BaseActivity {
             ToastUtil.showToast(revirwBean.getMessage());
         } else if (object instanceof ReplyBean) {
             ReplyBean filmCommentBean = (ReplyBean) object;
+
                 /* film_comment_recycler.setVisibility(View.VISIBLE);*/
                 //TODO 传值到查看评论回复适配器
                 if (mpage == 1) {
@@ -275,6 +283,8 @@ public class FilmDetailsActivity extends BaseActivity {
             ToastUtil.showToast(object1.getMessage());
             if(object1.getMessage().equals("点赞成功")){
                 revirwAdapter.addWhetherGreat(i);
+            }else if(object1.getMessage().equals("请先登陆")){
+                startActivity(new Intent(this,LoginActivity.class));
             }
 
 

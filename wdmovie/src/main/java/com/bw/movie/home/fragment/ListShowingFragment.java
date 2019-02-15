@@ -21,6 +21,7 @@ import com.bw.movie.home.bean.HotBean;
 import com.bw.movie.home.bean.RefreshHotBean;
 import com.bw.movie.home.bean.ShowBean;
 import com.bw.movie.home.bean.ShowingBean;
+import com.bw.movie.login.activity.LoginActivity;
 import com.bw.movie.util.ToastUtil;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
@@ -112,6 +113,8 @@ public class ListShowingFragment extends BaseFragment {
                 hotAdapter.setAttentionScccess(postion);
             }else if (object1.getMessage().equals("取消关注成功")){
                 hotAdapter.setCancelAttention(postion);
+            }else if(object1.getMessage().equals("请先登陆")){
+                startActivity(new Intent(getActivity(),LoginActivity.class));
             }
             ToastUtil.showToast(object1.getMessage());
             // doNetWorkGetRequest(String.format(Apis.URL_FIND_HOT_MOVIE_LIST_GET,page,COUNT),RefreshHotBean.class);

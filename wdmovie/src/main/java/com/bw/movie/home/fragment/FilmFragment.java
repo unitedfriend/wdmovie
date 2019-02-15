@@ -39,6 +39,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  *  @author Tang
@@ -82,7 +84,7 @@ private int tag;
 
 
                 //地址点击事件
-                ToastUtil.showToast("地址点击事件");
+
                 List<HotCity> hotCities = new ArrayList<>();
                 hotCities.add(new HotCity("北京", "北京", "101010100")); //code为城市代码
                 hotCities.add(new HotCity("上海", "上海", "101020100"));
@@ -91,9 +93,9 @@ private int tag;
                 hotCities.add(new HotCity("杭州", "浙江", "101210101"));
                 CityPicker.from(getActivity()) //activity或者fragment
                         .enableAnimation(false)	//启用动画效果，默认无
-                        	//自定义动画
+                        //自定义动画
                         .setLocatedCity(new LocatedCity("杭州", "浙江", "101210101")).setHotCities(hotCities)  //APP自身已定位的城市，传null会自动定位（默认）
-  	//指定热门城市
+  	                    //指定热门城市
                         .setOnPickListener(new OnPickListener() {
                             @Override
                             public void onPick(int position, City data) {
@@ -108,11 +110,18 @@ private int tag;
                             @Override
                             public void onLocate() {
                                 //定位接口，需要APP自身实现，这里模拟一下定位
-
-
+                                ToastUtil.showToast("启动");
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        CityPicker.from(getActivity()).locateComplete(new LocatedCity("深圳", "广东", "101280601"), LocateState.SUCCESS);
+                                    }
+                                }, 3000);
                             }
                         })
                         .show();
+
+
             }
 
             @Override

@@ -9,13 +9,18 @@ import android.os.StrictMode;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.crashreport.CrashReport;
 
 public class MyApplication extends Application {
     private static Context mContext;
+    private RefWatcher refWatcher;
     @Override
     public void onCreate() {
         super.onCreate();
+        //LeakCanary内存泄露检测
+        refWatcher = LeakCanary.install(this);
         //设置磁盘缓存
         DiskCacheConfig cacheConfig = DiskCacheConfig.newBuilder(this)
                 .setBaseDirectoryName("images")
@@ -38,5 +43,10 @@ public class MyApplication extends Application {
     }
     public static Context getApplication() {
         return mContext;
+    }
+    //LeakCanary内存泄露检测的方法
+    public static RefWatcher getRefWatcher(Context mContext){
+        MyApplication myApplication  = (MyApplication) mContext.getApplicationContext();
+        return myApplication.refWatcher;
     }
 }

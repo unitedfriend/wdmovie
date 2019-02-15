@@ -143,8 +143,8 @@ public class LoginActivity extends BaseActivity {
                 //将userId和sessionId保存到本地
                 preferences.edit().putString("userId", String.valueOf(userId)).putString("sessionId", sessionId).commit();
                 //登录成功跳转到首页
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);*/
                 finish();
             }
         }

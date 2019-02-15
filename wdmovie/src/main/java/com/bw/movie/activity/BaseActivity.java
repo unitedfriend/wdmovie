@@ -3,6 +3,7 @@ package com.bw.movie.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +16,10 @@ import android.view.MotionEvent;
 import android.view.WindowManager;
 
 import com.bw.movie.R;
+import com.bw.movie.application.MyApplication;
+import com.bw.movie.camera.bean.IsLoginBean;
 import com.bw.movie.finals.BaseFinal;
+import com.bw.movie.login.activity.LoginActivity;
 import com.bw.movie.mvp.presenter.PresenterImpl;
 import com.bw.movie.mvp.view.IView;
 import com.bw.movie.util.AccountValidatorUtil;
@@ -23,6 +27,8 @@ import com.bw.movie.util.ActivityCollectorUtil;
 import com.bw.movie.util.CircularLoading;
 import com.bw.movie.util.NetUtil;
 import com.bw.movie.util.ToastUtil;
+import com.squareup.leakcanary.RefWatcher;
+
 import android.app.Dialog;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -125,6 +131,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         }
         mCircularLoading=null;
         netFail(error);
+
     }
 
     /**
@@ -159,6 +166,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         }
        ActivityCollectorUtil.removeActivity(this);
         alertDialog = null;
+        //使用 RefWatcher 监控Activity内存泄漏
+        RefWatcher refWatcher = MyApplication.getRefWatcher(this);
+        refWatcher.watch(this);
     }
     //动态注册权限
     private void stateNetWork() {

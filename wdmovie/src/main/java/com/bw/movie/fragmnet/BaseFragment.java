@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.bw.movie.R;
+import com.bw.movie.application.MyApplication;
 import com.bw.movie.finals.BaseFinal;
 import com.bw.movie.mvp.presenter.PresenterImpl;
 import com.bw.movie.mvp.view.IView;
 import com.bw.movie.util.CircularLoading;
 import com.bw.movie.util.NetUtil;
 import com.bw.movie.util.ToastUtil;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Map;
 
@@ -123,6 +125,9 @@ public abstract class BaseFragment extends Fragment implements IView {
     public void onDestroy() {
         super.onDestroy();
         presenter.onDetach();
+        //使用 RefWatcher 监控Activity内存泄漏
+        RefWatcher refWatcher = MyApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =
