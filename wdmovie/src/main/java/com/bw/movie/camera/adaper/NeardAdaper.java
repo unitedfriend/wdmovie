@@ -34,6 +34,8 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private final int SUCCESS=1;
     private final int CANCEL=2;
+    private ViewHolderNear holderNear;
+
     public NeardAdaper(Context mContext) {
         this.mContext = mContext;
         mResult = new ArrayList<>();
@@ -66,7 +68,7 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
-        final ViewHolderNear holderNear = (ViewHolderNear) viewHolder;
+        holderNear = (ViewHolderNear) viewHolder;
         holderNear.cinemaimage.setImageURI(Uri.parse(mResult.get(i).getLogo()));
         holderNear.cinemaname.setText(mResult.get(i).getName());
         holderNear.cinemaaddress.setText(mResult.get(i).getAddress());
@@ -101,6 +103,10 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
             }
         });
+    }
+    public void setIsOk(boolean t){
+        holderNear.attentionImage.setChecked(t);
+        notifyDataSetChanged();
     }
     @Override
     public int getItemCount() {

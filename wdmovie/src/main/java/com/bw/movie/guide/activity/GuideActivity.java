@@ -14,6 +14,7 @@ import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.guide.adapter.GuideViewPageAdapter;
 import com.bw.movie.guide.bean.GuideBean;
+import com.bw.movie.home.activity.HomeActivity;
 import com.bw.movie.login.activity.LoginActivity;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class GuideActivity extends BaseActivity {
             public void run() {
                 //显示dialog
                 if (tag) {
-                    startActivity(new Intent(GuideActivity.this, LoginActivity.class));
+                    startActivity(new Intent(GuideActivity.this, HomeActivity.class));
                     finish();
                 } else {
                     image.setVisibility(View.INVISIBLE);
@@ -63,7 +64,10 @@ public class GuideActivity extends BaseActivity {
     @Override
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
-        sharedPreferences = getSharedPreferences("User", MODE_PRIVATE);
+
+        SharedPreferences user = getSharedPreferences("User", MODE_PRIVATE);
+        user.edit().clear().commit();
+        sharedPreferences = getSharedPreferences("Guide", MODE_PRIVATE);
         tag = sharedPreferences.getBoolean("tag", false);
 
         GuideViewPageAdapter pageAdapter = new GuideViewPageAdapter(GuideActivity.this);
@@ -80,7 +84,7 @@ public class GuideActivity extends BaseActivity {
                 SharedPreferences.Editor edit = sharedPreferences.edit();
                 edit.putBoolean("tag", true);
                 edit.commit();
-                startActivity(new Intent(GuideActivity.this, LoginActivity.class));
+                startActivity(new Intent(GuideActivity.this, HomeActivity.class));
                 finish();
             }
         });

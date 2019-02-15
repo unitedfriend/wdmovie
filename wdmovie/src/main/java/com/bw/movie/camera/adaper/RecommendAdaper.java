@@ -31,6 +31,8 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context mContext;
     private final int SUCCESS=1;
     private final int CANCEL=2;
+    private ViewHolderRecommend holderRecommend;
+
     public RecommendAdaper(Context mContext) {
         this.mContext = mContext;
         mResult = new ArrayList<>();
@@ -52,7 +54,10 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         notifyDataSetChanged();
     }
-
+    public void setIsOk(boolean t){
+        holderRecommend.attentionImage.setChecked(t);
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -63,7 +68,7 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
-        final ViewHolderRecommend holderRecommend = (ViewHolderRecommend) viewHolder;
+        holderRecommend = (ViewHolderRecommend) viewHolder;
         holderRecommend.cinemaimage.setImageURI(Uri.parse(mResult.get(i).getLogo()));
         holderRecommend.cinemaname.setText(mResult.get(i).getName());
         holderRecommend.cinemaaddress.setText(mResult.get(i).getAddress());

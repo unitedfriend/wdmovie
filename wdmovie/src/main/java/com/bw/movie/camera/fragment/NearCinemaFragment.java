@@ -1,6 +1,8 @@
 package com.bw.movie.camera.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -18,6 +20,7 @@ import com.bw.movie.camera.bean.FollowCinemaBean;
 import com.bw.movie.camera.bean.NearBean;
 import com.bw.movie.camera.bean.RecommendBean;
 import com.bw.movie.fragmnet.BaseFragment;
+import com.bw.movie.login.activity.LoginActivity;
 import com.bw.movie.util.ToastUtil;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
@@ -75,6 +78,13 @@ public class NearCinemaFragment extends BaseFragment {
        neardAdaper.setCallBackNear(new NeardAdaper.CallBackNear() {
            @Override
            public void callBeak(int id, boolean b, int position) {
+               SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
+               String userId = user.getString("userId", null);
+               if(userId==null){
+                   startActivity(new Intent(getActivity(),LoginActivity.class));
+                   neardAdaper.setIsOk(!b);
+                   return;
+               }
                if(b){
                    doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_CINEAM_GET,id),FollowCinemaBean.class);
                }else {
@@ -117,9 +127,11 @@ public class NearCinemaFragment extends BaseFragment {
         }else if(object instanceof FollowCinemaBean){
             FollowCinemaBean followCinemaBean = (FollowCinemaBean) object;
             ToastUtil.showToast(followCinemaBean.getMessage());
+
         }else if(object instanceof CancelFollowCineamBean){
             CancelFollowCineamBean cancelFollowCineamBean = (CancelFollowCineamBean) object;
             ToastUtil.showToast(cancelFollowCineamBean.getMessage());
+
         }
     }
 

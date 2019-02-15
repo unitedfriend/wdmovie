@@ -2,8 +2,10 @@ package com.bw.movie.home.fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
@@ -84,6 +86,12 @@ public class MyFragment extends BaseFragment {
         doNetWorkGetRequest(Apis.URL_GET_USER_INFO_BY_USERID_GET, MyMessageBean.class);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+    }
+
     /**
      * 初始化view
      */
@@ -157,29 +165,44 @@ public class MyFragment extends BaseFragment {
         switch (view.getId()) {
             //签到
             case R.id.sign:
-                doNetWorkGetRequest(Apis.URL_USER_SIGN_IN_GET, UserSignInBean.class);
+
+                if(isLogin()) {
+                    doNetWorkGetRequest(Apis.URL_USER_SIGN_IN_GET, UserSignInBean.class);
+                }
                 break;
             //我的信息
             case R.id.my_message:
-                Intent intent = new Intent(getActivity(), MyMessageActivity.class);
-                intent.putExtra("result", result);
-                startActivityForResult(intent, REQUESTCODE_NUM);
+
+                if(isLogin()) {
+                    Intent intent = new Intent(getActivity(), MyMessageActivity.class);
+                    intent.putExtra("result", result);
+                    startActivityForResult(intent, REQUESTCODE_NUM);
+                }
                 break;
             //我的关注
             case R.id.my_concern:
-                startActivity(new Intent(getActivity(), MyAttentionActivity.class));
-                getActivity().overridePendingTransition(0, 0);
+
+                if(isLogin()) {
+                    startActivity(new Intent(getActivity(), MyAttentionActivity.class));
+                    getActivity().overridePendingTransition(0, 0);
+                }
                 break;
             //购票记录
             case R.id.my_ticketinrecords:
-                startActivity(new Intent(getActivity(), MyTicketrecordActivity.class));
-                getActivity().overridePendingTransition(0, 0);
+
+                if(isLogin()) {
+                    startActivity(new Intent(getActivity(), MyTicketrecordActivity.class));
+                    getActivity().overridePendingTransition(0, 0);
+                }
                 break;
             //意见反馈
             case R.id.my_feedback:
+
+                if(isLogin()){
                 startActivity(new Intent(getActivity(), FeedBackActivity.class));
                 //屏蔽activity跳转的默认转场效果
                 getActivity().overridePendingTransition(0, 0);
+                }
                 break;
             //最新版本
             case R.id.my_latestversion:
@@ -193,6 +216,17 @@ public class MyFragment extends BaseFragment {
                 break;
             default:
                 break;
+        }
+    }
+
+    private boolean isLogin() {
+        SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
+        String userId = user.getString("userId", null);
+        if(userId==null){
+            startActivity(new Intent(getActivity(),LoginActivity.class));
+            return false;
+        }else{
+            return true;
         }
     }
 

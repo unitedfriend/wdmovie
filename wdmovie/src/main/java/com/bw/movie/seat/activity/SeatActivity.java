@@ -24,6 +24,7 @@ import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
 import com.bw.movie.camera.bean.CinemaMovieListBean;
+import com.bw.movie.login.activity.LoginActivity;
 import com.bw.movie.seat.bean.OrderBean;
 import com.bw.movie.seat.customview.SeatTable;
 import com.bw.movie.util.Md5Utils;
@@ -291,6 +292,10 @@ public class SeatActivity extends BaseActivity {
             if (orderBean == null || !orderBean.isSuccess()) {
                 ToastUtil.showToast(orderBean.getMessage());
             } else {
+                if(orderBean.getMessage().equals("请先登陆")){
+                    startActivity(new Intent(SeatActivity.this,LoginActivity.class));
+                    return;
+                }
                 ToastUtil.showToast(orderBean.getMessage());
                 //获取pop支付弹框
                 getPayPopvView();
@@ -303,6 +308,10 @@ public class SeatActivity extends BaseActivity {
             if (wxPayBean == null || !wxPayBean.isSuccess()) {
                 ToastUtil.showToast(wxPayBean.getMessage());
             } else {
+                if(wxPayBean.getMessage().equals("请先登陆")){
+                    startActivity(new Intent(SeatActivity.this,LoginActivity.class));
+                    return;
+                }
                 ToastUtil.showToast(wxPayBean.getMessage());
                 WeiXinUtil.weiXinPay(wxPayBean);
                 //finish();

@@ -3,6 +3,7 @@ package com.bw.movie.activity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +16,9 @@ import android.view.MotionEvent;
 import android.view.WindowManager;
 
 import com.bw.movie.R;
+import com.bw.movie.camera.bean.IsLoginBean;
 import com.bw.movie.finals.BaseFinal;
+import com.bw.movie.login.activity.LoginActivity;
 import com.bw.movie.mvp.presenter.PresenterImpl;
 import com.bw.movie.mvp.view.IView;
 import com.bw.movie.util.AccountValidatorUtil;
@@ -125,6 +128,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
         }
         mCircularLoading=null;
         netFail(error);
+
     }
 
     /**
