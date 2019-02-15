@@ -48,10 +48,10 @@ public class WXEntryActivity extends BaseActivity implements IWXAPIEventHandler 
                 String sessionId = xinBean.getResult().getSessionId();
                 //将userId和sessionId保存到本地
                 preferences.edit().putString("userId", String.valueOf(userId)).putString("sessionId", sessionId).commit();
-                Intent intent = new Intent(WXEntryActivity.this, HomeActivity.class);
+                /*Intent intent = new Intent(WXEntryActivity.this, HomeActivity.class);
                 intent.putExtra("pic", xinBean.getResult().getUserInfo().getHeadPic());
                 intent.putExtra("name", xinBean.getResult().getUserInfo().getNickName());
-                startActivity(intent);
+                startActivity(intent);*/
                 finish();
             }
         }

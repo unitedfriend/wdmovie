@@ -253,13 +253,21 @@ public class CinemaDateListActivity extends BaseActivity {
             }
         }else if(object instanceof FindMovieListByCinemaIdBean){
             FindMovieListByCinemaIdBean movieListByCinemaIdBean = (FindMovieListByCinemaIdBean) object;
-            result = movieListByCinemaIdBean.getResult();
-            cinemaFilm.smoothScrollToPosition(result.size()/2);
-            if(movieListByCinemaIdBean == null || !movieListByCinemaIdBean.isSuccess()){
-                ToastUtil.showToast(movieListByCinemaIdBean.getMessage());
-            }else{
-                movieListAdaper.setmResult(movieListByCinemaIdBean.getResult());
+
+            if(movieListByCinemaIdBean.getMessage().equals("无数据")){
+                cinemaFilm.setVisibility(View.INVISIBLE);
+                return;
+            }else {
+                cinemaFilm.setVisibility(View.VISIBLE);
+                result = movieListByCinemaIdBean.getResult();
+                cinemaFilm.smoothScrollToPosition(result.size() / 2);
+                if(movieListByCinemaIdBean == null || !movieListByCinemaIdBean.isSuccess()){
+                    ToastUtil.showToast(movieListByCinemaIdBean.getMessage());
+                }else{
+                    movieListAdaper.setmResult(movieListByCinemaIdBean.getResult());
+                }
             }
+
         }else if(object instanceof CinemaMovieListBean){
             CinemaMovieListBean movieListBean = (CinemaMovieListBean) object;
             if(movieListBean==null || !movieListBean.isSuccess()){
