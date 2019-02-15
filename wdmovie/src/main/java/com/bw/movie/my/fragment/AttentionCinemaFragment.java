@@ -18,7 +18,12 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
+/**
+  * @作者 GXY
+  * @创建日期 2019/2/14 14:39
+  * @描述 关注影院
+  *
+  */
 public class AttentionCinemaFragment extends BaseFragment {
     @BindView(R.id.cinemarecycleview)
     XRecyclerView cinemarecycleview;

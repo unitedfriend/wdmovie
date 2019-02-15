@@ -19,7 +19,12 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
+/**
+  * @作者 GXY
+  * @创建日期 2019/2/14 14:49
+  * @描述 已完成
+  *
+  */
 public class StocksFragment extends BaseFragment {
     @BindView(R.id.xrecycleview)
     XRecyclerView xrecycleview;

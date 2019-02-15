@@ -60,7 +60,7 @@ public class ObligationAdaper extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
         ViewHolderObligation holderObligation = (ViewHolderObligation) viewHolder;
         holderObligation.name.setText(mResult.get(i).getMovieName());
         holderObligation.movie.setText("影院:"+mResult.get(i).getCinemaName());
@@ -75,6 +75,14 @@ public class ObligationAdaper extends RecyclerView.Adapter<RecyclerView.ViewHold
         holderObligation.time.setText("时间:"+date+" "+begintime+"-"+endtime);
         holderObligation.num.setText("数量:"+mResult.get(i).getAmount()+"张");
         holderObligation.price.setText("金额:"+mResult.get(i).getPrice()+"元");
+        holderObligation.payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(callBackObligation!=null){
+                    callBackObligation.callBack(mResult.get(i).getOrderId(),mResult.get(i).getAmount(),mResult.get(i).getPrice());
+                }
+            }
+        });
     }
 
     @Override
@@ -103,5 +111,13 @@ public class ObligationAdaper extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+    //定义接口
+    private CallBackObligation callBackObligation;
+    public void setCallBackObligation(CallBackObligation callBackObligation){
+        this.callBackObligation = callBackObligation;
+    }
+    public interface CallBackObligation{
+        void callBack(String orderId,int amount,double price);
     }
 }

@@ -128,7 +128,6 @@ public class NearCinemaFragment extends BaseFragment {
 
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

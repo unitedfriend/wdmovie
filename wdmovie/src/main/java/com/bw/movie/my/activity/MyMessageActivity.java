@@ -89,18 +89,12 @@ public class MyMessageActivity extends BaseActivity {
         String headPic = result.getHeadPic();
         String nickName = result.getNickName();
         int sex = result.getSex();
-        String birthday = result.getBirthday();
         String phone = result.getPhone();
         usericonImage.setImageURI(Uri.parse(headPic));
         userNickname.setText(nickName);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date date = format.parse(birthday);
-            birth.setText((CharSequence) date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String time = sDateFormat.format(Long.valueOf(result.getBirthday()));
+        birth.setText(time);
         phonenumber.setText(phone);
         if (sex == 1) {
             userSex.setText("男");

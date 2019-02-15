@@ -112,4 +112,6 @@ dependencies {
 
     //腾讯Bugly
     implementation 'com.tencent.bugly:crashreport:latest.release'
+    implementation 'com.contrarywind:Android-PickerView:4.1.7'
+
 }

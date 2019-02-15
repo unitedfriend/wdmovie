@@ -60,5 +60,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".home.activity.MovieScheduleActivity"/>
+        <activity android:name=".my.activity.SystemMessageActivity"/>
     </application>
 </manifest>
