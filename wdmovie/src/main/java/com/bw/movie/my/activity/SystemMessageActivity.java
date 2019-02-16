@@ -10,10 +10,18 @@ import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
 import com.bw.movie.my.adaper.SystemMessageAdapter;
+import com.bw.movie.my.bean.PushTokenBean;
 import com.bw.movie.my.bean.SystemMessageBean;
 import com.bw.movie.my.bean.UnreadBean;
 import com.bw.movie.my.bean.UnreadChangeBean;
+import com.bw.movie.util.ToastUtil;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,10 +41,10 @@ public class SystemMessageActivity extends BaseActivity {
     private int page;
     private SystemMessageAdapter adapter;
     private int postion;
-
+    private int count = 15;
     @Override
     protected void initData() {
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_ALL_SYS_MSG_LIST,page),SystemMessageBean.class);
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_ALL_SYS_MSG_LIST,page,count),SystemMessageBean.class);
     }
 
     @Override
@@ -76,6 +84,30 @@ public class SystemMessageActivity extends BaseActivity {
                 finish();
             }
         });
+        XGPushConfig.enableOtherPush(getApplicationContext(), true);
+        XGPushConfig.setHuaweiDebug(true);
+        /*XGPushConfig.setMiPushAppId(getApplicationContext(), "APPID");
+        XGPushConfig.setMiPushAppKey(getApplicationContext(), "APPKEY");
+        XGPushConfig.setMzPushAppId(this, "APPID");
+        XGPushConfig.setMzPushAppKey(this, "APPKEY");*/
+
+        XGPushManager.registerPush(this, new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object data, int flag) {
+                //token在设备卸载重装的时候有可能会变
+                //Log.d("TPush", "注册成功，设备token为：" + data);
+                ToastUtil.showToast(data+"");
+                String token = (String) data;
+                Map<String,String> map = new HashMap<>();
+                map.put("token",token);
+                map.put("os",String.valueOf(1));
+                doNetWorkPostRequest(Apis.URL_UP_LOAD_PUSH_TOKEN_POST,map,PushTokenBean.class);
+            }
+            @Override
+            public void onFail(Object data, int errCode, String msg) {
+                //Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+            }
+        });
     }
     @Override
     protected int getLayoutResId() {
@@ -103,6 +135,13 @@ public class SystemMessageActivity extends BaseActivity {
             if(b){
                 doNetWorkGetRequest(Apis.URL_FIND_UNREAD_MESSAGE_COUNT_GET,UnreadBean.class);
                 adapter.setChange(postion);
+            }
+        }else if(object instanceof PushTokenBean){
+            PushTokenBean pushTokenBean = (PushTokenBean) object;
+            if(pushTokenBean==null || !pushTokenBean.isSuccess()){
+                ToastUtil.showToast(pushTokenBean.getMessage());
+            }else{
+                ToastUtil.showToast(pushTokenBean.getMessage());
             }
         }
     }

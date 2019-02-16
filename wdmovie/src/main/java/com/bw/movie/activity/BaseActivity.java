@@ -197,6 +197,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
                     Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
                     Manifest.permission.BLUETOOTH,
                     Manifest.permission.BLUETOOTH_ADMIN,
+
+                    Manifest.permission.WAKE_LOCK,
+                    Manifest.permission.VIBRATE,
+                    Manifest.permission.REQUEST_INSTALL_PACKAGES,
             };
             ActivityCompat.requestPermissions(this,mStatenetwork,100);
         }
