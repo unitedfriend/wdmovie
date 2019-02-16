@@ -1,19 +1,26 @@
 package com.bw.movie.register.activity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
@@ -25,7 +32,9 @@ import com.bw.movie.util.EmptyUtil;
 import com.bw.movie.util.EncryptUtil;
 import com.bw.movie.util.ToastUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -46,7 +55,7 @@ public class RegisterActivity extends BaseActivity {
     @BindView(R.id.sign_text_sex)
     EditText textSex;
     @BindView(R.id.sign_text_date)
-    EditText textDate;
+    TextView textDate;
     @BindView(R.id.sign_text_phone)
     EditText textPhone;
     @BindView(R.id.sign_text_email)
@@ -60,6 +69,7 @@ public class RegisterActivity extends BaseActivity {
     private SharedPreferences preferences;
     private SharedPreferences.Editor edit;
     public InputFilter[] emojiFilters = {emojiFilter};
+
     /**
      * 加载数据
      */
@@ -83,15 +93,60 @@ public class RegisterActivity extends BaseActivity {
         textSex.setFilters(emojiFilters);
         textDate.setFilters(emojiFilters);
         textPwd.setFilters(emojiFilters);
-        getDateTime();
+
+        textDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //收回软件盘
+                InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(RegisterActivity.this.getWindow().getDecorView().getWindowToken(), 0);
+
+                //获取系统时间
+                Calendar calendar = Calendar.getInstance();
+                final int year = calendar.get(Calendar.YEAR);
+                final int month = calendar.get(Calendar.MONTH);
+                final int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                Calendar startDate = Calendar.getInstance();
+                Calendar endDate = Calendar.getInstance();
+                calendar.set(year - 10, month, day);
+                startDate.set(year - 100, 0, 1);
+                endDate.set(year, month, day);
+                TimePickerView pvTime = new TimePickerBuilder(RegisterActivity.this, new OnTimeSelectListener() {
+                    @Override
+                    public void onTimeSelect(Date date, View v) {
+                        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        String time = sDateFormat.format(date);
+                        textDate.setText(time + "");
+                    }
+                })
+                        .setType(new boolean[]{true, true, true, false, false, false})
+                        // 默认全部显示
+                        .setCancelText("取消")
+                        //取消按钮文字
+                        .setSubmitText("确定")
+                        //确认按钮文字
+                        .setOutSideCancelable(true)
+                        //点击屏幕，点在控件外部范围时，是否取消显示
+                        .setRangDate(startDate, endDate)
+                        //起始终止年月日设定
+                        .setDate(calendar)
+                        //设置默认时间
+                        .isCenterLabel(false)
+                        //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                        .build();
+                pvTime.show();
+            }
+        });
     }
     /**
      * 禁止输入框输入表情
-     * */
+     */
     private static InputFilter emojiFilter = new InputFilter() {
         Pattern emoji = Pattern.compile(
                 "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
                 Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest,
                                    int dstart,
@@ -103,6 +158,7 @@ public class RegisterActivity extends BaseActivity {
             return null;
         }
     };
+
     /**
      * 加载布局
      */
@@ -189,41 +245,5 @@ public class RegisterActivity extends BaseActivity {
         } else {
             ToastUtil.showToast(getResources().getString(R.string.is_null));
         }
-    }
-
-    private void getDateTime() {
-        //日期第三方
-        textDate.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    showDatePickDlg();
-                    return true;
-                }
-                return false;
-            }
-        });
-        textDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    showDatePickDlg();
-                }
-            }
-        });
-    }
-
-    //第三方控件  日期格式
-    protected void showDatePickDlg() {
-        Calendar calendar = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                RegisterActivity.this.textDate.setText(year + "-" + (monthOfYear+1) + "-" + dayOfMonth);
-            }
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
     }
 }

@@ -52,7 +52,6 @@ public class WeiXinUtil {
         IWXAPI wxapi = WXAPIFactory.createWXAPI(MyApplication.getApplication(), APP_ID, true);
         //注册到微信
         wxapi.registerApp(APP_ID);
-
         PayReq payReq = new PayReq();
         payReq.appId=bean.getAppId();
         payReq.prepayId=bean.getPrepayId();

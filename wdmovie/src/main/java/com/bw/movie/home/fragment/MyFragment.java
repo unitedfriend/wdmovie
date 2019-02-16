@@ -24,6 +24,7 @@ import com.bw.movie.my.activity.FeedBackActivity;
 import com.bw.movie.my.activity.MyAttentionActivity;
 import com.bw.movie.my.activity.MyMessageActivity;
 import com.bw.movie.my.activity.MyTicketrecordActivity;
+import com.bw.movie.my.activity.SystemMessageActivity;
 import com.bw.movie.my.bean.MyMessageBean;
 import com.bw.movie.my.bean.NewVersionBean;
 import com.bw.movie.my.bean.UserSignInBean;
@@ -139,7 +140,8 @@ public class MyFragment extends BaseFragment {
             } else {
                 int flag = versionBean.getFlag();
                 if(flag==1){
-                    showAlertDialog(versionBean.getDownloadUrl());
+                    VersionUtil.openBrowser(getActivity(),versionBean.getDownloadUrl());
+                    //showAlertDialog(versionBean.getDownloadUrl());
                 }else{
                     ToastUtil.showToast("已是最新版本");
                 }
@@ -213,6 +215,9 @@ public class MyFragment extends BaseFragment {
                 ActivityCollectorUtil.finishAllActivity();
                 break;
             case R.id.system_message:
+                if(isLogin()){
+                    startActivity(new Intent(getActivity(),SystemMessageActivity.class));
+                }
                 break;
             default:
                 break;
@@ -237,102 +242,5 @@ public class MyFragment extends BaseFragment {
         if (requestCode == REQUESTCODE_NUM && resultCode == RESULTCODE_NUM) {
             doNetWorkGetRequest(Apis.URL_GET_USER_INFO_BY_USERID_GET, MyMessageBean.class);
         }
-    }
-    /**
-     * 显示AlertDialog
-     * */
-    private void showAlertDialog(final String downloadUrl) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("版本升级");
-        builder.setMessage("软件更新");
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startDialog(downloadUrl);
-            }
-        });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-
-    }
-    /**
-     * 点击确定获取url下载
-     * */
-    private void startDialog(final String downloadUrl) {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                try {
-                    startDownload(downloadUrl, progressDialog);
-                    progressDialog.dismiss();
-                } catch (Exception e) {
-
-                }
-            }
-        }.start();
-    }
-
-    private void startDownload(String downloadUrl, ProgressDialog progressDialog) throws Exception {
-        URL url = new URL(downloadUrl);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setConnectTimeout(8000);
-        progressDialog.setMax(conn.getContentLength());
-        InputStream inputStream = conn.getInputStream();
-        mFilePath = VersionUtil.getSaveFilePath(downloadUrl);
-        File file = new File(mFilePath);
-        writeFile(inputStream, file, progressDialog);
-    }
-    /**
-     * 写入文件
-     * */
-    public void writeFile(InputStream inputStream, File file, ProgressDialog progressDialog) throws Exception {
-//判断下载的文件是否已存在
-        if (file.exists()) {
-            file.delete();
-        }
-        FileOutputStream fos = null;
-        fos = new FileOutputStream(file);
-        byte[] b = new byte[1024];
-        int length;
-        int total = 0;
-        while ((length = inputStream.read(b)) != -1) {
-            fos.write(b, 0, length);
-            total += length;
-            progressDialog.setProgress(total);
-        }
-        inputStream.close();
-        fos.close();
-        progressDialog.dismiss();
-        installApk(mFilePath);
-    }
-
-    private void installApk(String filePath) {
-        File file = new File(filePath);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri data;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //判断版本大于等于7.0
-            // "com.ansen.checkupdate.fileprovider"即是在清单文件中配置的authorities
-            // 通过FileProvider创建一个content类型的Uri
-            data = FileProvider.getUriForFile(getActivity(), "com.bw.movie.fileprovider", file);
-            // 给目标应用一个临时授权
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        } else {
-            data = Uri.fromFile(file);
-        }
-        intent.setDataAndType(data, "application/vnd.android.package-archive");
-        startActivity(intent);
     }
 }

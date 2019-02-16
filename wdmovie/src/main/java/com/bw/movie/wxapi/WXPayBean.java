@@ -3,10 +3,8 @@ package com.bw.movie.wxapi;
   * @作者 GXY
   * @创建日期 2019/2/13 14:58
   * @描述 微信支付bean
-  *
   */
 public class WXPayBean {
-
     /**
      * appId : wxb3852e6a6b7d9516
      * message : 支付成功
@@ -18,7 +16,6 @@ public class WXPayBean {
      * timeStamp : 1533602976
      * packageValue : Sign=WXPay
      */
-
     private String appId;
     private String message;
     private String nonceStr;
