@@ -215,6 +215,9 @@ public class MyFragment extends BaseFragment {
                 ActivityCollectorUtil.finishAllActivity();
                 break;
             case R.id.system_message:
+                if(isLogin()){
+                    startActivity(new Intent(getActivity(),SystemMessageActivity.class));
+                }
                 break;
             default:
                 break;

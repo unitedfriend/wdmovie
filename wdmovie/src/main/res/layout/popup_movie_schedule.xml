@@ -10,171 +10,176 @@
         android:layout_width="@dimen/dp_0"
         android:layout_height="@dimen/dp_200"
         android:background="#00000000"></android.support.constraint.ConstraintLayout>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="@dimen/dp_0"
         android:layout_height="@dimen/dp_0"
         android:background="#ffffff"
-        app:layout_constraintTop_toBottomOf="@id/c1"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/c1"
+        app:layout_constraintVertical_bias="1.0">
+
         <TextView
+            android:id="@+id/datesButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_21"
             android:text="详情"
-            android:textSize="@dimen/sp_16"
             android:textColor="#333333"
-            android:id="@+id/datesButton"
+            android:textSize="@dimen/sp_16"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/commentButton"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/dp_21"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
+            android:id="@+id/commentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/commentButton"
-            android:textSize="@dimen/sp_16"
-            android:textColor="#333333"
             android:text="评论"
-            app:layout_constraintTop_toTopOf="@id/datesButton"
-            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_16"
             app:layout_constraintLeft_toRightOf="@id/datesButton"
-            />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/datesButton" />
+
         <ImageView
+            android:id="@+id/hideButton"
             android:layout_width="@dimen/dp_24"
             android:layout_height="@dimen/dp_24"
-            android:id="@+id/hideButton"
-            app:layout_constraintRight_toRightOf="parent"
             android:layout_marginRight="@dimen/dp_24"
-            app:layout_constraintTop_toTopOf="@id/datesButton"
             android:background="@mipmap/com_icon_down_default"
-            />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/datesButton" />
+
         <TextView
+            android:id="@+id/datesLine"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_3"
+            android:layout_marginTop="@dimen/dp_6"
             android:background="@drawable/item_titletext"
             app:layout_constraintLeft_toLeftOf="@id/datesButton"
-            app:layout_constraintTop_toBottomOf="@id/datesButton"
-            android:id="@+id/datesLine"
-            android:layout_marginTop="@dimen/dp_6"
-            />
+            app:layout_constraintTop_toBottomOf="@id/datesButton" />
+
         <TextView
+            android:id="@+id/commentLine"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_3"
-            android:background="@drawable/item_titletext"
-            app:layout_constraintLeft_toLeftOf="@id/commentButton"
-            app:layout_constraintTop_toBottomOf="@id/commentButton"
-            android:id="@+id/commentLine"
             android:layout_marginTop="@dimen/dp_6"
+            android:background="@drawable/item_titletext"
             android:visibility="invisible"
-            />
+            app:layout_constraintLeft_toLeftOf="@id/commentButton"
+            app:layout_constraintTop_toBottomOf="@id/commentButton" />
+
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/datesLayout"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp_0"
-            android:id="@+id/datesLayout"
+            android:layout_marginTop="@dimen/dp_10"
             android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/datesLine"
-            android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:layout_constraintTop_toBottomOf="@id/datesLine">
+
             <ImageView
+                android:id="@+id/i1"
                 android:layout_width="@dimen/dp_24"
                 android:layout_height="@dimen/dp_24"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/dp_24"
                 android:background="@mipmap/cinema_etail_icon_location_default"
-                android:id="@+id/i1"
-                />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#333333"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintLeft_toRightOf="@id/i1"
-                app:layout_constraintTop_toTopOf="@id/i1"
-                app:layout_constraintBottom_toBottomOf="@id/i1"
-                android:layout_marginLeft="@dimen/dp_10"
                 android:id="@+id/addressText"
-                />
-            <ImageView
-                android:layout_width="@dimen/dp_24"
-                android:layout_height="@dimen/dp_24"
-                app:layout_constraintTop_toBottomOf="@id/i1"
-                android:layout_marginTop="@dimen/dp_20"
-                app:layout_constraintLeft_toLeftOf="parent"
-                android:layout_marginLeft="@dimen/dp_24"
-                android:background="@mipmap/cinema_detail_icon_phone_default"
-                android:id="@+id/i2"
-                />
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#333333"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintLeft_toRightOf="@id/i2"
-                app:layout_constraintTop_toTopOf="@id/i2"
-                app:layout_constraintBottom_toBottomOf="@id/i2"
                 android:layout_marginLeft="@dimen/dp_10"
-                android:id="@+id/phoneText"
-                />
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@id/i1"
+                app:layout_constraintLeft_toRightOf="@id/i1"
+                app:layout_constraintTop_toTopOf="@id/i1" />
+
             <ImageView
+                android:id="@+id/i2"
                 android:layout_width="@dimen/dp_24"
                 android:layout_height="@dimen/dp_24"
-                app:layout_constraintTop_toBottomOf="@id/i2"
-                android:layout_marginTop="@dimen/dp_20"
-                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/dp_24"
-                android:background="@mipmap/cinema_detail_icon_route_default"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@mipmap/cinema_detail_icon_phone_default"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/i1" />
+
+            <TextView
+                android:id="@+id/phoneText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@id/i2"
+                app:layout_constraintLeft_toRightOf="@id/i2"
+                app:layout_constraintTop_toTopOf="@id/i2" />
+
+            <ImageView
                 android:id="@+id/i3"
-                />
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_marginLeft="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@mipmap/cinema_detail_icon_route_default"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/i2" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#333333"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintLeft_toRightOf="@id/i3"
-                app:layout_constraintTop_toTopOf="@id/i3"
-                app:layout_constraintBottom_toBottomOf="@id/i3"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:text="乘车路线"
-                />
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@id/i3"
+                app:layout_constraintLeft_toRightOf="@id/i3"
+                app:layout_constraintTop_toTopOf="@id/i3" />
+
             <TextView
+                android:id="@+id/pathText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_12"
-                android:textColor="#333333"
-                app:layout_constraintTop_toBottomOf="@id/i3"
-                android:layout_marginTop="@dimen/dp_20"
-                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginLeft="@dimen/dp_24"
-                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="@dimen/dp_20"
                 android:layout_marginRight="@dimen/dp_24"
-                android:id="@+id/pathText"
-                />
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/i3" />
         </android.support.constraint.ConstraintLayout>
+
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/commentLayout"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp_0"
-            android:id="@+id/commentLayout"
-            app:layout_constraintTop_toBottomOf="@id/commentLine"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/commentLine">
+
             <com.jcodecraeer.xrecyclerview.XRecyclerView
+                android:id="@+id/xRecycle"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_0"
+                android:layout_marginLeft="@dimen/dp_24"
+                android:layout_marginRight="@dimen/dp_24"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/xRecycle"
-                android:layout_marginLeft="@dimen/dp_24"
-                android:layout_marginRight="@dimen/dp_24"></com.jcodecraeer.xrecyclerview.XRecyclerView>
+                app:layout_constraintTop_toTopOf="parent"></com.jcodecraeer.xrecyclerview.XRecyclerView>
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

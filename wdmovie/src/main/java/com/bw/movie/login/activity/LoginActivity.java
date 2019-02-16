@@ -164,6 +164,7 @@ public class LoginActivity extends BaseActivity {
                 //点击跳转到注册
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.login_but:
                 phone = textPhone.getText().toString().trim();

@@ -268,13 +268,13 @@ public class Apis {
      * 接口地址：http://172.17.8.100/movieApi/tool/v1/verify/findAllSysMsgList
      * 请求方式：GET
      * */
-    public static final String URL_FIND_ALL_SYS_MSG_LIST = "movieApi/tool/v1/verify/findAllSysMsgList";
+    public static final String URL_FIND_ALL_SYS_MSG_LIST = "movieApi/tool/v1/verify/findAllSysMsgList?page=%d&count=5";
     /**
      * 4.系统消息读取状态修改
      * 接口地址：http://172.17.8.100/movieApi/tool/v1/verify/changeSysMsgStatus
      * 请求方式：GET
      * */
-    public static final String URL_CHABGE_SYS_MSG_STATUS_GET = "movieApi/tool/v1/verify/changeSysMsgStatus";
+    public static final String URL_CHABGE_SYS_MSG_STATUS_GET = "movieApi/tool/v1/verify/changeSysMsgStatus?id=%d";
     /**
      * 5.查询用户当前未读消息数量
      * 接口地址：http://172.17.8.100/movieApi/tool/v1/verify/findUnreadMessageCount

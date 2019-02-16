@@ -193,8 +193,9 @@ public class RegisterActivity extends BaseActivity {
                 String sessionId = loginBean.getResult().getSessionId();
                 //将userId和sessionId保存到本地
                 preferences.edit().putString("userId", String.valueOf(userId)).putString("sessionId", sessionId).commit();
-                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                startActivity(intent);*/
+                finish();
             }
         }
     }
