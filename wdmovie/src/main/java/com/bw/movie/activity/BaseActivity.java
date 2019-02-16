@@ -191,8 +191,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IView {
                     Manifest.permission.ACCESS_NETWORK_STATE,
                     Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
                     //定位
-                    Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.CHANGE_WIFI_STATE,
+                    Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+                    Manifest.permission.BLUETOOTH,
+                    Manifest.permission.BLUETOOTH_ADMIN,
             };
             ActivityCompat.requestPermissions(this,mStatenetwork,100);
         }

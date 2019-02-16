@@ -53,4 +53,5 @@
     <style name="movieListTab" >
         <item name="tabBackground">@drawable/movie_tablayout_selector</item>details
     </style>
+
 </resources>

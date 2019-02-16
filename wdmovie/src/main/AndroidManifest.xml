@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.bw.movie">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,9 +7,17 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
+    <!--用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!--用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <!--用于申请获取蓝牙信息进行室内定位-->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <application
         android:networkSecurityConfig="@xml/network_security_config"
         android:name=".application.MyApplication"
@@ -29,8 +36,7 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.amap.api.v2.apikey"
-            android:value="bec12516cec8db5a49f94ab9b9673309"/>
+
         <activity android:name=".login.activity.LoginActivity" android:launchMode="singleTask"/>
         <activity android:name=".register.activity.RegisterActivity" android:launchMode="singleTask"/>
         <activity android:name=".home.activity.HomeActivity" android:launchMode="singleTask" android:theme="@style/DefaultCityPickerTheme"/>
@@ -63,5 +69,9 @@
         </activity>
         <activity android:name=".home.activity.MovieScheduleActivity"/>
         <activity android:name=".my.activity.SystemMessageActivity"/>
+        <meta-data android:name="com.amap.api.v2.apikey" android:value="962da9ed001e0a8d01c1cd1ef4d44ed4">
+            <!--开发者申请的key-->
+        </meta-data>
+        <service android:name="com.amap.api.location.APSService"></service>
     </application>
 </manifest>

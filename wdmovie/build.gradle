@@ -34,7 +34,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        ndk {
+            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86","x86_64"
+        }
     }
 
     buildTypes {
@@ -46,7 +49,11 @@ android {
             signingConfig signingConfigs.config
         }
     }
-
+    allprojects {
+        repositories {
+            jcenter() // 或者 mavenCentral()
+        }
+    }
     //如果导入依赖报错请写以下代码
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
@@ -59,7 +66,6 @@ android {
             }
         }
     }
-
 }
 repositories {
     maven {
@@ -102,18 +108,17 @@ dependencies {
     implementation  'cn.jzvd:jiaozivideoplayer:6.2.10'
 
     implementation 'com.github.bumptech.glide:glide:3.7.0'
-    //腾讯Bugly
-    implementation 'com.tencent.bugly:crashreport:latest.release'
 
     //地址
     implementation 'com.zaaach:citypicker:2.0.3'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
-
 
     //腾讯Bugly
     implementation 'com.tencent.bugly:crashreport:latest.release'
     implementation 'com.contrarywind:Android-PickerView:4.1.7'
-
+    //内存溢出
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+
+    //高德定位依赖
+    implementation 'com.amap.api:location:latest.integration'
 }
