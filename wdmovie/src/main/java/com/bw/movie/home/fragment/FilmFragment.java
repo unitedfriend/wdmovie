@@ -225,7 +225,7 @@ public void setEvent(AddressBean event){
             @Override
             public void searchCallBack(String s) {
                 //搜索按钮击事件
-                startActivity(new Intent(getActivity(),MovieListActivity.class).putExtra("type","search").putExtra("name",s));
+               // startActivity(new Intent(getActivity(),MovieListActivity.class).putExtra("type","search").putExtra("name",s));
             }
 
             @Override
