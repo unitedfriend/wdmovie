@@ -43,9 +43,13 @@ public class HomeActivity extends BaseActivity {
     @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
 
+    private CinemaFragment cinemaFragment;
+    private FilmFragment filmFragment;
+
     @Override
     protected void initData() {
         initSelector();
+
 
     }
     /**
@@ -69,6 +73,7 @@ public class HomeActivity extends BaseActivity {
                         setMagnify(cinema);
                         setShrink(film);
                         setShrink(my);
+                        cinemaFragment.getInit();
                         homeViewpage.setCurrentItem(1,false);
                         break;
                     case R.id.my:
@@ -126,8 +131,8 @@ public class HomeActivity extends BaseActivity {
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
         List<Fragment>list = new ArrayList<>();
-        CinemaFragment cinemaFragment = new CinemaFragment();
-        FilmFragment filmFragment = new FilmFragment();
+        cinemaFragment = new CinemaFragment();
+        filmFragment = new FilmFragment();
         MyFragment myFragment = new MyFragment();
         list.add(filmFragment);
         list.add(cinemaFragment);

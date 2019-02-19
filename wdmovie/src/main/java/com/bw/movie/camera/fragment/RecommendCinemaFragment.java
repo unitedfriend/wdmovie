@@ -71,22 +71,33 @@ public class RecommendCinemaFragment extends BaseFragment {
             }
         });
         //关注
+        final SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
         recommendAdaper.setCallBackRecommend(new RecommendAdaper.CallBackRecommend() {
             @Override
-            public void callBeak(int id, boolean b, int position) {
-                SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
+            public void callTrueBeak(int id, boolean b, int position) {
                 String userId = user.getString("userId", null);
                 if(userId==null){
                     startActivity(new Intent(getActivity(),LoginActivity.class));
                     recommendAdaper.setIsOk(!b);
                     return;
                 }
-                if(b){
-                    doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_CINEAM_GET,id),FollowCinemaBean.class);
-                }else {
-                    doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_CINEAM_GET,id),CancelFollowCineamBean.class);
-                }
+                doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_CINEAM_GET,id),FollowCinemaBean.class);
             }
+
+            @Override
+            public void callFalseBeak(int id, boolean b, int position) {
+
+                String userId = user.getString("userId", null);
+                if(userId==null){
+                    startActivity(new Intent(getActivity(),LoginActivity.class));
+                    recommendAdaper.setIsOk(!b);
+                    return;
+                }
+                doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_CINEAM_GET,id),CancelFollowCineamBean.class);
+
+            }
+
+
         });
         //跳转到排期
        recommendAdaper.setCallBackList(new RecommendAdaper.CallBackList() {

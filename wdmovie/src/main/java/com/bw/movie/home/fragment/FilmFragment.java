@@ -3,12 +3,14 @@ package com.bw.movie.home.fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.MainThread;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,8 +30,10 @@ import com.bw.movie.fragmnet.BaseFragment;
 import com.bw.movie.home.activity.FilmDetailsActivity;
 import com.bw.movie.home.activity.MovieListActivity;
 import com.bw.movie.home.adapter.FilmRecycleAdapter;
+import com.bw.movie.home.bean.AddressBean;
 import com.bw.movie.home.bean.AllBean;
 import com.bw.movie.home.bean.HotBean;
+import com.bw.movie.home.bean.MyAddressBean;
 import com.bw.movie.home.bean.ShowBean;
 import com.bw.movie.home.bean.ShowingBean;
 import com.bw.movie.util.ToastUtil;
@@ -39,6 +43,10 @@ import com.zaaach.citypicker.model.City;
 import com.zaaach.citypicker.model.HotCity;
 import com.zaaach.citypicker.model.LocateState;
 import com.zaaach.citypicker.model.LocatedCity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,25 +84,25 @@ public class FilmFragment extends BaseFragment{
     private String adCode;
     private String cityCode;
     private String province;
+    private double longitude;
+    private double latitude;
+    private String cityName;
+    private SharedPreferences.Editor location;
+    private SharedPreferences getlocation;
+    private String mcity;
+
     @Override
     protected void initData() {
+        location = getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE).edit();
+        getlocation = getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
+        String mlatitude = getlocation.getString("latitude", null);
+        String mlongitude = getlocation.getString("longitude", null);
+        mcity = getlocation.getString("city", null);
+        String mcityCode = getlocation.getString("cityCode", null);
+        if(mcity!=null){
+            doNetWorkGetRequest(String.format(Apis.URL_LOCATION_GET,mcity),MyAddressBean.class);
+        }
 
-    }
-
-    @Override
-    protected void initView(View view) {
-        unbinder = ButterKnife.bind(this, view);
-        tag = 0;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        homeRecycle.setLayoutManager(layoutManager);
-        adapter = new FilmRecycleAdapter(getActivity());
-        homeRecycle.setAdapter(adapter);
-        //创建一个Bean得到所有网络请求的数据
-        allBean = new AllBean();
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_HOT_MOVIE_LIST_GET, PAGE, COUNT), HotBean.class);
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_RELEASE_MOVIE_LIST_GET, PAGE, COUNT), ShowingBean.class);
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_COMING_SOON_MOVIE_LIST_GET, PAGE, COUNT), ShowBean.class);
         //开始定位，这里模拟一下定位
         mlocationClient = new AMapLocationClient(getActivity());
         //设置定位监听
@@ -105,9 +113,9 @@ public class FilmFragment extends BaseFragment{
                 if(aMapLocation!=null){
                     if(aMapLocation.getErrorCode() == 0){
                         //获取纬度
-                        double latitude = aMapLocation.getLatitude();
+                        latitude = aMapLocation.getLatitude();
                         //获取经度
-                        double longitude = aMapLocation.getLongitude();
+                        longitude = aMapLocation.getLongitude();
                         //城市信息
                         city = aMapLocation.getCity();
                         //省信息
@@ -116,6 +124,12 @@ public class FilmFragment extends BaseFragment{
                         cityCode = aMapLocation.getCityCode();
                         //地区编码
                         adCode = aMapLocation.getAdCode();
+                        if(mcity !=null){
+
+                        }else{
+                            doNetWorkGetRequest(String.format(Apis.URL_LOCATION_GET,city),MyAddressBean.class);
+                        }
+                        cityName=city;
                         CityPicker.from(getActivity()).locateComplete(new LocatedCity(city, province,cityCode), LocateState.SUCCESS);
                         adapter.setLocation(String.format(city));
                     }
@@ -136,6 +150,30 @@ public class FilmFragment extends BaseFragment{
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
         //启动定位
         mlocationClient.startLocation();
+    }
+@Subscribe(threadMode = ThreadMode.MAIN)
+public void setEvent(AddressBean event){
+    cityName=event.getName();
+    doNetWorkGetRequest(String.format(Apis.URL_LOCATION_GET,event.getName()),MyAddressBean.class);
+}
+
+
+    @Override
+    protected void initView(View view) {
+        EventBus.getDefault().register(this);
+        unbinder = ButterKnife.bind(this, view);
+        tag = 0;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        homeRecycle.setLayoutManager(layoutManager);
+        adapter = new FilmRecycleAdapter(getActivity());
+        homeRecycle.setAdapter(adapter);
+        //创建一个Bean得到所有网络请求的数据
+        allBean = new AllBean();
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_HOT_MOVIE_LIST_GET, PAGE, COUNT), HotBean.class);
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_RELEASE_MOVIE_LIST_GET, PAGE, COUNT), ShowingBean.class);
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_COMING_SOON_MOVIE_LIST_GET, PAGE, COUNT), ShowBean.class);
+
         adapter.setFilmCallBack(new FilmRecycleAdapter.FilmCallBack() {
             @Override
             public void addressCallBack() {
@@ -154,7 +192,10 @@ public class FilmFragment extends BaseFragment{
                         .setOnPickListener(new OnPickListener() {
                             @Override
                             public void onPick(int position, City data) {
-                                adapter.setLocation(String.format(data.getName()));
+                                cityName = data.getName();
+
+                                doNetWorkGetRequest(String.format(Apis.URL_LOCATION_GET,data.getName()),MyAddressBean.class);
+
                                 Toast.makeText(
                                         MyApplication.getApplication(),
                                         String.format(data.getName()),
@@ -176,7 +217,7 @@ public class FilmFragment extends BaseFragment{
                                         CityPicker.from(getActivity()).locateComplete(new LocatedCity(city, province,cityCode), LocateState.SUCCESS);
                                     }
                                 }, 1000);
-                                adapter.setLocation(String.format(city));
+                              //  adapter.setLocation(String.format(city));
                             }
                         })
                         .show();
@@ -238,6 +279,17 @@ public class FilmFragment extends BaseFragment{
             ++tag;
             ShowBean showBean = (ShowBean) object;
             allBean.setShow(showBean);
+        }else  if(object instanceof MyAddressBean){
+            MyAddressBean object1 = (MyAddressBean) object;
+            mlocationClient.stopLocation();
+            MyAddressBean.ResultBean result = object1.getResult();
+            double lat = result.getLocation().getLat();
+            double lng = result.getLocation().getLng();
+            adapter.setLocation(cityName);
+            location.putString("latitude",lat+"");
+            location.putString("longitude",lng+"");
+            location.putString("city",cityName);
+            location.commit();
         }
         if (tag == 3) {
             tag = 0;

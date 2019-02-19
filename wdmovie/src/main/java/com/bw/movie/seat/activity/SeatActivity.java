@@ -338,6 +338,9 @@ public class SeatActivity extends BaseActivity {
                 Map<String, String> map = new HashMap<>();
                 map.put("scheduleId", String.valueOf(resultBean.getId()));
                 map.put("amount", String.valueOf(numCount));
+                String userId = preferences.getString("userId", null);
+                String sessionId = preferences.getString("sessionId", null);
+                int id = resultBean.getId();
                 map.put("sign", Md5Utils.MD5(preferences.getString("userId", null) + resultBean.getId() + numCount + "movie"));
                 doNetWorkPostRequest(Apis.URL_BUY_MOVIE_TICKET_POST, map, OrderBean.class);
                 break;

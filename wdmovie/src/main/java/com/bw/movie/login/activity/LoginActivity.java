@@ -169,6 +169,7 @@ public class LoginActivity extends BaseActivity {
             case R.id.login_but:
                 phone = textPhone.getText().toString().trim();
                 password = textPwd.getText().toString().trim();
+
                 //非空判断
                 if (EmptyUtil.isNull(phone, password)) {
                     if (AccountValidatorUtil.isPassword(password)) {
