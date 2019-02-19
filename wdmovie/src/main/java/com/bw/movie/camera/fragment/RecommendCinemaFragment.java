@@ -74,7 +74,7 @@ public class RecommendCinemaFragment extends BaseFragment {
         final SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
         recommendAdaper.setCallBackRecommend(new RecommendAdaper.CallBackRecommend() {
             @Override
-            public void callTrueBeak(int id, boolean b, int position) {
+            public void callTrueBeak(int id, boolean b) {
                 String userId = user.getString("userId", null);
                 if(userId==null){
                     startActivity(new Intent(getActivity(),LoginActivity.class));
@@ -85,7 +85,7 @@ public class RecommendCinemaFragment extends BaseFragment {
             }
 
             @Override
-            public void callFalseBeak(int id, boolean b, int position) {
+            public void callFalseBeak(int id, boolean b) {
 
                 String userId = user.getString("userId", null);
                 if(userId==null){
