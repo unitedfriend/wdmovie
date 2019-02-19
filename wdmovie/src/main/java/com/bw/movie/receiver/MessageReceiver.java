@@ -17,11 +17,7 @@ import com.tencent.android.tpush.XGPushShowedResult;
 import com.tencent.android.tpush.XGPushTextMessage;
 
 public class MessageReceiver extends XGPushBaseReceiver {
-	private Intent intent = new Intent("com.bw.movie.activity.UPDATE_LISTVIEW");
-	public static final String LogTag = "TPushReceiver";
-	private void show(Context context, String text) {
-//		Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
-	}
+
 	@Override
 	public void onRegisterResult(Context context, int i, XGPushRegisterResult xgPushRegisterResult) {
 
@@ -54,5 +50,6 @@ public class MessageReceiver extends XGPushBaseReceiver {
 
 	@Override
 	public void onNotifactionShowedResult(Context context, XGPushShowedResult xgPushShowedResult) {
+
 	}
 }

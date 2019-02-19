@@ -124,12 +124,12 @@ public class RecommendCinemaFragment extends BaseFragment {
             FollowCinemaBean followCinemaBean = (FollowCinemaBean) object;
             ToastUtil.showToast(followCinemaBean.getMessage());
             if(followCinemaBean.getMessage().equals("请先登陆")){
+                ToastUtil.showToast("请先登陆");
                 startActivity(new Intent(getActivity(),LoginActivity.class));
             }
         }else if(object instanceof CancelFollowCineamBean){
             CancelFollowCineamBean cancelFollowCineamBean = (CancelFollowCineamBean) object;
             ToastUtil.showToast(cancelFollowCineamBean.getMessage());
-
         }
 
     }

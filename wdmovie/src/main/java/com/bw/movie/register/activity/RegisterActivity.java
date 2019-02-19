@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,8 +53,8 @@ import butterknife.OnClick;
 public class RegisterActivity extends BaseActivity {
     @BindView(R.id.sign_text_nick)
     EditText textNick;
-    @BindView(R.id.sign_text_sex)
-    EditText textSex;
+    @BindView(R.id.sign_group_sex)
+    RadioGroup signGroupSex;
     @BindView(R.id.sign_text_date)
     TextView textDate;
     @BindView(R.id.sign_text_phone)
@@ -87,10 +88,10 @@ public class RegisterActivity extends BaseActivity {
         preferences = getSharedPreferences("User", MODE_PRIVATE);
         edit = preferences.edit();
         textNick.setFilters(emojiFilters);
-        textSex.setFilters(emojiFilters);
+        //textSex.setFilters(emojiFilters);
         textDate.setFilters(emojiFilters);
         textEmail.setFilters(emojiFilters);
-        textSex.setFilters(emojiFilters);
+        //textSex.setFilters(emojiFilters);
         textDate.setFilters(emojiFilters);
         textPwd.setFilters(emojiFilters);
 
@@ -211,22 +212,25 @@ public class RegisterActivity extends BaseActivity {
     @OnClick(R.id.sign_but)
     public void onViewClicked() {
         String nick = textNick.getText().toString().trim();
-        String sex = textSex.getText().toString().trim();
+        //String sex = textSex.getText().toString().trim();
+        int radioButtonId = signGroupSex.getCheckedRadioButtonId();
+        int sex = 0;
+        if (radioButtonId == R.id.sign_radio_man) {
+            sex = 1;
+        } else if (radioButtonId == R.id.sign_radio_woman) {
+            sex = 2;
+        }
         String date = textDate.getText().toString().trim();
         String email = textEmail.getText().toString().trim();
         phone = textPhone.getText().toString().trim();
         pwd = textPwd.getText().toString().trim();
-        if (EmptyUtil.loginNull(nick, sex, date, email, phone, pwd)) {
+        if (EmptyUtil.loginNull(nick,date, email, phone, pwd)) {
             if (AccountValidatorUtil.isMobile(phone)) {
                 if (AccountValidatorUtil.isEmail(email)) {
                     if (AccountValidatorUtil.isPassword(pwd)) {
-                        int mSex = 1;
-                        if (sex.equals("女")) {
-                            mSex = 2;
-                        }
                         Map<String, String> map = new HashMap<>();
                         map.put("nickName", nick);
-                        map.put("sex", String.valueOf(mSex));
+                        map.put("sex", String.valueOf(sex));
                         map.put("birthday", date);
                         map.put("phone", phone);
                         map.put("email", email);

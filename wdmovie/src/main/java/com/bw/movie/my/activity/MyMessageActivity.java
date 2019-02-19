@@ -30,11 +30,10 @@ import com.bw.movie.util.ImageFileUtil;
 import com.bw.movie.util.ToastUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,19 +85,20 @@ public class MyMessageActivity extends BaseActivity {
     protected void initData() {
         Intent intent = getIntent();
         MyMessageBean.ResultBean result = (MyMessageBean.ResultBean) intent.getSerializableExtra("result");
-        if(result!=null) {
+        if (result != null) {
             String headPic = result.getHeadPic();
             String nickName = result.getNickName();
             int sex = result.getSex();
             String birthday = result.getBirthday();
             String phone = result.getPhone();
+            String email = result.getEmail();
             usericonImage.setImageURI(Uri.parse(headPic));
             userNickname.setText(nickName);
-            if(birthday!=null){
+            emailnum.setText(email);
+            if (birthday != null) {
                 SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String time = sDateFormat.format(Long.valueOf(birthday));
                 birth.setText(time);
-
             }
             phonenumber.setText(phone);
             if (sex == 1) {
@@ -203,10 +203,18 @@ public class MyMessageActivity extends BaseActivity {
     protected void netSuccess(Object object) {
         if (object instanceof LoadHeadPicBean) {
             LoadHeadPicBean headPicBean = (LoadHeadPicBean) object;
-            ToastUtil.showToast(headPicBean.getMessage());
+            if (headPicBean == null || !headPicBean.isSuccess()) {
+                ToastUtil.showToast(headPicBean.getMessage());
+            } else {
+                ToastUtil.showToast(headPicBean.getMessage());
+            }
         } else if (object instanceof UpdateUserInfoBean) {
             UpdateUserInfoBean userInfoBean = (UpdateUserInfoBean) object;
-            ToastUtil.showToast(userInfoBean.getMessage());
+            if (userInfoBean == null || !userInfoBean.isSuccess()) {
+                ToastUtil.showToast(userInfoBean.getMessage());
+            } else {
+                ToastUtil.showToast(userInfoBean.getMessage());
+            }
         }
     }
 
@@ -334,12 +342,17 @@ public class MyMessageActivity extends BaseActivity {
         }
         if (requestCode == REQUESTCODE_SUCCESS && resultCode == RESULT_OK) {
             Bitmap bitmap = data.getParcelableExtra("data");
+
+
+
             try {
                 ImageFileUtil.setBitmap(bitmap, file, 50);
             } catch (Exception e) {
                 e.printStackTrace();
                 ToastUtil.showToast(e.getMessage());
             }
+            Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, null,null));
+            usericonImage.setImageURI(uri);
             Map<String, String> map = new HashMap<>();
             map.put("image", file);
             doNetWorkPostimagesRequest(Apis.URL_UPLOAD_HEADPIC_POST, map, LoadHeadPicBean.class);

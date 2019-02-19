@@ -1,14 +1,9 @@
 package com.bw.movie.home.fragment;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
-import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,11 +28,7 @@ import com.bw.movie.util.ToastUtil;
 import com.bw.movie.util.VersionUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,6 +69,7 @@ public class MyFragment extends BaseFragment {
     private final int RESULTCODE_NUM = 200;
     private String mFilePath;
     private boolean mIsUpdate;
+    private MyMessageActivity messageActivity;
 
     /**
      * 初始化数据
@@ -99,9 +91,7 @@ public class MyFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         unbinder = ButterKnife.bind(this, view);
-
     }
-
     /**
      * 加载布局
      */
@@ -141,7 +131,6 @@ public class MyFragment extends BaseFragment {
                 int flag = versionBean.getFlag();
                 if(flag==1){
                     VersionUtil.openBrowser(getActivity(),versionBean.getDownloadUrl());
-                    //showAlertDialog(versionBean.getDownloadUrl());
                 }else{
                     ToastUtil.showToast("已是最新版本");
                 }
@@ -160,6 +149,7 @@ public class MyFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        EventBus.getDefault().unregister(this);
     }
 
     @OnClick({R.id.sign, R.id.my_message, R.id.my_concern, R.id.my_ticketinrecords, R.id.my_feedback, R.id.my_latestversion, R.id.my_quit, R.id.system_message})
@@ -167,7 +157,6 @@ public class MyFragment extends BaseFragment {
         switch (view.getId()) {
             //签到
             case R.id.sign:
-
                 if(isLogin()) {
                     doNetWorkGetRequest(Apis.URL_USER_SIGN_IN_GET, UserSignInBean.class);
                 }
@@ -228,6 +217,7 @@ public class MyFragment extends BaseFragment {
         SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
         String userId = user.getString("userId", null);
         if(userId==null){
+            ToastUtil.showToast("请先登陆");
             startActivity(new Intent(getActivity(),LoginActivity.class));
             return false;
         }else{

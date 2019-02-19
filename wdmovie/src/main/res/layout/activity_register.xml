@@ -49,10 +49,10 @@
         android:layout_marginTop="@dimen/dp_20"
         app:layout_constraintTop_toBottomOf="@id/sign_view_nick"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/sign_text_sex"
+        app:layout_constraintRight_toLeftOf="@+id/sign_group_sex"
         android:background="@mipmap/register_icon_sex_default"
         />
-    <EditText
+    <!--<EditText
         android:id="@+id/sign_text_sex"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_20"
@@ -66,7 +66,39 @@
         app:layout_constraintLeft_toRightOf="@+id/sign_image_sex"
         app:layout_constraintRight_toRightOf="parent"
         android:digits="男女"
-        />
+        />-->
+    <RadioGroup
+        android:id="@+id/sign_group_sex"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_20"
+        android:textColor="#fff"
+        android:textColorHint="#fff"
+        android:textSize="@dimen/sp_16"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layout_constraintTop_toBottomOf="@id/sign_view_nick"
+        app:layout_constraintLeft_toRightOf="@+id/sign_image_sex"
+        app:layout_constraintRight_toRightOf="parent"
+        >
+        <RadioButton
+            android:id="@+id/sign_radio_man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男"
+            android:buttonTint="#fff"
+            android:textColor="#fff"
+            android:checked="true"
+            android:layout_marginRight="@dimen/dp_20"
+            />
+        <RadioButton
+            android:id="@+id/sign_radio_woman"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="女"
+            android:buttonTint="#fff"
+            android:textColor="#fff"
+            />
+    </RadioGroup>
     <View
         android:id="@+id/sign_view_sex"
         android:layout_width="match_parent"
@@ -133,6 +165,7 @@
         android:textSize="@dimen/sp_16"
         android:maxLength="11"
         android:phoneNumber="true"
+        android:inputType="number"
         app:layout_constraintLeft_toRightOf="@+id/sign_image_phone"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sign_view_date" />

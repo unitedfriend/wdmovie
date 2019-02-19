@@ -86,10 +86,10 @@ public class SystemMessageActivity extends BaseActivity {
         });
         XGPushConfig.enableOtherPush(getApplicationContext(), true);
         XGPushConfig.setHuaweiDebug(true);
-        /*XGPushConfig.setMiPushAppId(getApplicationContext(), "APPID");
+        XGPushConfig.setMiPushAppId(getApplicationContext(), "APPID");
         XGPushConfig.setMiPushAppKey(getApplicationContext(), "APPKEY");
         XGPushConfig.setMzPushAppId(this, "APPID");
-        XGPushConfig.setMzPushAppKey(this, "APPKEY");*/
+        XGPushConfig.setMzPushAppKey(this, "APPKEY");
 
         XGPushManager.registerPush(this, new XGIOperateCallback() {
             @Override

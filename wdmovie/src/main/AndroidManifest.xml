@@ -28,7 +28,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".guide.activity.GuideActivity">
@@ -62,7 +62,7 @@
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop">
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -77,14 +77,14 @@
             <!--开发者申请的key-->
         </meta-data>
         <service android:name="com.amap.api.location.APSService"></service>
-        <!--<receiver android:name=".receiver.MessageReceiver"
+        <receiver android:name=".receiver.MessageReceiver"
             android:exported="true" >
             <intent-filter>
-                &lt;!&ndash; 接收消息透传 &ndash;&gt;
+                <!-- 接收消息透传 -->
                 <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />
-                &lt;!&ndash; 监听注册、反注册、设置/删除标签、通知被点击等处理结果 &ndash;&gt;
+                <!-- 监听注册、反注册、设置/删除标签、通知被点击等处理结果 -->
                 <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
             </intent-filter>
-        </receiver>-->
+        </receiver>
     </application>
 </manifest>

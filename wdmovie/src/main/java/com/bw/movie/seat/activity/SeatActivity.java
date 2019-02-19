@@ -290,13 +290,12 @@ public class SeatActivity extends BaseActivity {
             OrderBean orderBean = (OrderBean) object;
             orderId = orderBean.getOrderId();
             if (orderBean == null || !orderBean.isSuccess()) {
+                ToastUtil.showToast(orderBean.getMessage());
                 if(orderBean.getMessage().equals("请先登陆")){
                     startActivity(new Intent(SeatActivity.this,LoginActivity.class));
                     return;
                 }
-                ToastUtil.showToast(orderBean.getMessage());
             } else {
-
                 ToastUtil.showToast(orderBean.getMessage());
                 //获取pop支付弹框
                 getPayPopvView();
@@ -313,7 +312,6 @@ public class SeatActivity extends BaseActivity {
                     return;
                 }
             } else {
-
                 ToastUtil.showToast(wxPayBean.getMessage());
                 WeiXinUtil.weiXinPay(wxPayBean);
                 //finish();

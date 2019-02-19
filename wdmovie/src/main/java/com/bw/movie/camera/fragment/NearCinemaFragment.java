@@ -27,12 +27,12 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 /**
-  * @作者 GXY
-  * @创建日期 2019/1/30 19:59
-  * @描述 附近影院Fragment
-  *
-  */
+ * @作者 GXY
+ * @创建日期 2019/1/30 19:59
+ * @描述 附近影院Fragment
+ */
 public class NearCinemaFragment extends BaseFragment {
     @BindView(R.id.xrecycleview)
     XRecyclerView xrecycleview;
@@ -45,7 +45,7 @@ public class NearCinemaFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_NEAR_BY_CINEMAS_GET,longitude,latitude,mPage,mCount),NearBean.class);
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_NEAR_BY_CINEMAS_GET, longitude, latitude, mPage, mCount), NearBean.class);
     }
 
     @Override
@@ -75,29 +75,29 @@ public class NearCinemaFragment extends BaseFragment {
             }
         });
         //关注
-       neardAdaper.setCallBackNear(new NeardAdaper.CallBackNear() {
-           @Override
-           public void callBeak(int id, boolean b, int position) {
-               SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
-               String userId = user.getString("userId", null);
-               if(userId==null){
-                   startActivity(new Intent(getActivity(),LoginActivity.class));
-                   neardAdaper.setIsOk(!b);
-                   return;
-               }
-               if(b){
-                   doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_CINEAM_GET,id),FollowCinemaBean.class);
-               }else {
-                   doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_CINEAM_GET,id),CancelFollowCineamBean.class);
-               }
-           }
-       });
+        neardAdaper.setCallBackNear(new NeardAdaper.CallBackNear() {
+            @Override
+            public void callBeak(int id, boolean b, int position) {
+                SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
+                String userId = user.getString("userId", null);
+                if (userId == null) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    neardAdaper.setIsOk(!b);
+                    return;
+                }
+                if (b) {
+                    doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_CINEAM_GET, id), FollowCinemaBean.class);
+                } else {
+                    doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_CINEAM_GET, id), CancelFollowCineamBean.class);
+                }
+            }
+        });
         //跳转到排期
         neardAdaper.setCallBackList(new NeardAdaper.CallBackList() {
             @Override
             public void callBack(int id) {
-                Intent intent = new Intent(getActivity(),CinemaDateListActivity.class);
-                intent.putExtra("id",id);
+                Intent intent = new Intent(getActivity(), CinemaDateListActivity.class);
+                intent.putExtra("id", id);
                 startActivity(intent);
             }
         });
@@ -110,28 +110,26 @@ public class NearCinemaFragment extends BaseFragment {
 
     @Override
     protected void netSuccess(Object object) {
-        if(object instanceof NearBean){
+        if (object instanceof NearBean) {
             NearBean nearBean = (NearBean) object;
-            if(nearBean == null || !nearBean.isSuccess()){
+            if (nearBean == null || !nearBean.isSuccess()) {
                 ToastUtil.showToast(nearBean.getMessage());
-            }else{
-                if(mPage == 1){
+            } else {
+                if (mPage == 1) {
                     neardAdaper.setmResult(nearBean.getResult());
-                }else{
+                } else {
                     neardAdaper.addmResult(nearBean.getResult());
                 }
                 mPage++;
                 xrecycleview.loadMoreComplete();
                 xrecycleview.refreshComplete();
             }
-        }else if(object instanceof FollowCinemaBean){
+        } else if (object instanceof FollowCinemaBean) {
             FollowCinemaBean followCinemaBean = (FollowCinemaBean) object;
             ToastUtil.showToast(followCinemaBean.getMessage());
-
-        }else if(object instanceof CancelFollowCineamBean){
+        } else if (object instanceof CancelFollowCineamBean) {
             CancelFollowCineamBean cancelFollowCineamBean = (CancelFollowCineamBean) object;
             ToastUtil.showToast(cancelFollowCineamBean.getMessage());
-
         }
     }
 

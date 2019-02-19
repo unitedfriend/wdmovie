@@ -179,7 +179,7 @@ public class FilmDetailsActivity extends BaseActivity {
         prevuePopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                filmPrevueAdapter.setCanCle();
+                //filmPrevueAdapter.setCanCle();
             }
         });
         ImageView backImage= prevueView.findViewById(R.id.dimisImage);
