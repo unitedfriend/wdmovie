@@ -1,5 +1,6 @@
 package com.bw.movie.guide.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -65,8 +66,9 @@ public class GuideActivity extends BaseActivity {
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
 
-        SharedPreferences user = getSharedPreferences("User", MODE_PRIVATE);
-        user.edit().clear().commit();
+         SharedPreferences getlocation = getSharedPreferences("Location", Context.MODE_PRIVATE);
+         getlocation.edit().clear().commit();
+
         sharedPreferences = getSharedPreferences("Guide", MODE_PRIVATE);
         tag = sharedPreferences.getBoolean("tag", false);
 

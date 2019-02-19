@@ -201,6 +201,10 @@ public class MyFragment extends BaseFragment {
                 break;
             //退出登录
             case R.id.my_quit:
+                SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
+                SharedPreferences.Editor edit = user.edit();
+                edit.clear();
+                edit.commit();
                 ActivityCollectorUtil.finishAllActivity();
                 break;
             case R.id.system_message:

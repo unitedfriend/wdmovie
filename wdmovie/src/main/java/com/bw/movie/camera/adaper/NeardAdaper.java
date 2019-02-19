@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.camera.bean.NearBean;
 import com.bw.movie.camera.bean.RecommendBean;
+import com.bw.movie.util.ToastUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -80,17 +83,14 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             holderNear.attentionImage.setChecked(false);
         }
         //关注
-        holderNear.attentionImage.setOnClickListener(new View.OnClickListener() {
+
+        holderNear.attentionImage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if(holderNear.attentionImage.isChecked()){
-                    if(callBackNear!=null){
-                        callBackNear.callBeak(mResult.get(i).getId(),true,i);
-                    }
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    callBackNear.callTrueBeak(mResult.get(i).getId(),true,i);
                 }else{
-                    if(callBackNear!=null){
-                        callBackNear.callBeak(mResult.get(i).getId(),false,i);
-                    }
+                    callBackNear.callFalseBeak(mResult.get(i).getId(),false,i);
                 }
             }
         });
@@ -106,7 +106,7 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
     public void setIsOk(boolean t){
         holderNear.attentionImage.setChecked(t);
-        notifyDataSetChanged();
+      notifyDataSetChanged();
     }
     @Override
     public int getItemCount() {
@@ -137,7 +137,8 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.callBackNear = callBackNear;
     }
     public interface CallBackNear{
-        void callBeak(int id, boolean b, int position);
+        void callTrueBeak(int id, boolean b, int position);
+        void callFalseBeak(int id, boolean b, int position);
     }
     //根据影院ID查询该影院当前排期的电影列表接口
     private CallBackList callBackList;

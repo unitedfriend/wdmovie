@@ -1,6 +1,7 @@
 package com.bw.movie.application;
 
 
+
 import android.app.Application;
 import android.content.Context;
 import android.os.Build;
@@ -40,6 +41,9 @@ public class MyApplication extends Application {
             StrictMode.setVmPolicy(builder.build());
         }
         CrashReport.initCrashReport(getApplicationContext(), "7fb01ba51c", false);
+
+
+
     }
     public static Context getApplication() {
         return mContext;
@@ -49,4 +53,5 @@ public class MyApplication extends Application {
         MyApplication myApplication  = (MyApplication) mContext.getApplicationContext();
         return myApplication.refWatcher;
     }
+
 }

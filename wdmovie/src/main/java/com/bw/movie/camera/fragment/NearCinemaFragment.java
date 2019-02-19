@@ -45,7 +45,7 @@ public class NearCinemaFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_NEAR_BY_CINEMAS_GET, longitude, latitude, mPage, mCount), NearBean.class);
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_NEAR_BY_CINEMAS_GET,longitude,latitude,mPage,mCount),NearBean.class);
     }
 
     @Override
@@ -75,29 +75,38 @@ public class NearCinemaFragment extends BaseFragment {
             }
         });
         //关注
-        neardAdaper.setCallBackNear(new NeardAdaper.CallBackNear() {
-            @Override
-            public void callBeak(int id, boolean b, int position) {
-                SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
-                String userId = user.getString("userId", null);
-                if (userId == null) {
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    neardAdaper.setIsOk(!b);
-                    return;
-                }
-                if (b) {
-                    doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_CINEAM_GET, id), FollowCinemaBean.class);
-                } else {
-                    doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_CINEAM_GET, id), CancelFollowCineamBean.class);
-                }
-            }
-        });
+        final SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
+       neardAdaper.setCallBackNear(new NeardAdaper.CallBackNear() {
+           @Override
+           public void callTrueBeak(int id, boolean b, int position) {
+
+               String userId = user.getString("userId", null);
+               if(userId==null){
+                   startActivity(new Intent(getActivity(),LoginActivity.class));
+                   neardAdaper.setIsOk(!b);
+                   return;
+               }
+               doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_CINEAM_GET,id),FollowCinemaBean.class);
+           }
+
+           @Override
+           public void callFalseBeak(int id, boolean b, int position) {
+
+               String userId = user.getString("userId", null);
+               if(userId==null){
+                   startActivity(new Intent(getActivity(),LoginActivity.class));
+                   neardAdaper.setIsOk(!b);
+                   return;
+               }
+               doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_CINEAM_GET,id),CancelFollowCineamBean.class);
+           }
+       });
         //跳转到排期
         neardAdaper.setCallBackList(new NeardAdaper.CallBackList() {
             @Override
             public void callBack(int id) {
-                Intent intent = new Intent(getActivity(), CinemaDateListActivity.class);
-                intent.putExtra("id", id);
+                Intent intent = new Intent(getActivity(),CinemaDateListActivity.class);
+                intent.putExtra("id",id);
                 startActivity(intent);
             }
         });

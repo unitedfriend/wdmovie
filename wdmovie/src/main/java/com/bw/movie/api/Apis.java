@@ -2,6 +2,12 @@ package com.bw.movie.api;
 
 public class Apis {
     /**
+     *  @author Tang
+     *  @time 2019/2/16  18:57
+     *  @describe 通过城市名得到城市经纬度
+     */
+    public static final String URL_LOCATION_GET="http://api.map.baidu.com/geocoder?address=%s&output=json&key=37492c0ee6f924cb5e934fa08c6b1676";
+    /**
      * 1.注册
      * 接口地址：http://172.17.8.100/movieApi/user/v1/registerUser
      * 请求方式:POST

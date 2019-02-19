@@ -21,12 +21,16 @@ import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
 import com.bw.movie.home.activity.HomeActivity;
 import com.bw.movie.login.bean.LoginBean;
+import com.bw.movie.my.bean.PushTokenBean;
 import com.bw.movie.register.activity.RegisterActivity;
 import com.bw.movie.util.AccountValidatorUtil;
 import com.bw.movie.util.EmptyUtil;
 import com.bw.movie.util.EncryptUtil;
 import com.bw.movie.util.ToastUtil;
 import com.bw.movie.wxapi.WeiXinUtil;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import java.util.HashMap;
@@ -150,6 +154,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+
     /**
      * 失败
      */
@@ -169,6 +174,7 @@ public class LoginActivity extends BaseActivity {
             case R.id.login_but:
                 phone = textPhone.getText().toString().trim();
                 password = textPwd.getText().toString().trim();
+
                 //非空判断
                 if (EmptyUtil.isNull(phone, password)) {
                     if (AccountValidatorUtil.isPassword(password)) {

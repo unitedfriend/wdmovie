@@ -20,36 +20,36 @@ public class MessageReceiver extends XGPushBaseReceiver {
 
 	@Override
 	public void onRegisterResult(Context context, int i, XGPushRegisterResult xgPushRegisterResult) {
-
+		Log.i("gxy","onRegisterResult");
 	}
 
 	@Override
 	public void onUnregisterResult(Context context, int i) {
-
+		Log.i("gxy",1+"onUnregisterResult");
 	}
 
 	@Override
 	public void onSetTagResult(Context context, int i, String s) {
-
+		Log.i("gxy",1+"onSetTagResult");
 	}
 
 	@Override
 	public void onDeleteTagResult(Context context, int i, String s) {
-
+		Log.i("gxy",1+"onDeleteTagResult");
 	}
 
 	@Override
 	public void onTextMessage(Context context, XGPushTextMessage xgPushTextMessage) {
-
+		Log.i("gxy",1+"onTextMessage");
 	}
 
 	@Override
 	public void onNotifactionClickedResult(Context context, XGPushClickedResult xgPushClickedResult) {
-
+		Log.i("gxy",1+"onNotifactionClickedResult");
 	}
 
 	@Override
 	public void onNotifactionShowedResult(Context context, XGPushShowedResult xgPushShowedResult) {
-
+		Log.i("gxy",1+"onNotifactionShowedResult");
 	}
 }

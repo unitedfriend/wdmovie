@@ -84,7 +84,7 @@ public class SystemMessageActivity extends BaseActivity {
                 finish();
             }
         });
-        XGPushConfig.enableOtherPush(getApplicationContext(), true);
+       /* XGPushConfig.enableOtherPush(getApplicationContext(), true);
         XGPushConfig.setHuaweiDebug(true);
         XGPushConfig.setMiPushAppId(getApplicationContext(), "APPID");
         XGPushConfig.setMiPushAppKey(getApplicationContext(), "APPKEY");
@@ -107,7 +107,7 @@ public class SystemMessageActivity extends BaseActivity {
             public void onFail(Object data, int errCode, String msg) {
                 //Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
             }
-        });
+        });*/
     }
     @Override
     protected int getLayoutResId() {
@@ -135,13 +135,6 @@ public class SystemMessageActivity extends BaseActivity {
             if(b){
                 doNetWorkGetRequest(Apis.URL_FIND_UNREAD_MESSAGE_COUNT_GET,UnreadBean.class);
                 adapter.setChange(postion);
-            }
-        }else if(object instanceof PushTokenBean){
-            PushTokenBean pushTokenBean = (PushTokenBean) object;
-            if(pushTokenBean==null || !pushTokenBean.isSuccess()){
-                ToastUtil.showToast(pushTokenBean.getMessage());
-            }else{
-                ToastUtil.showToast(pushTokenBean.getMessage());
             }
         }
     }

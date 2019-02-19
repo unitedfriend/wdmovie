@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.bw.movie.R;
@@ -80,16 +81,17 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holderRecommend.attentionImage.setChecked(false);
         }
         //关注
-        holderRecommend.attentionImage.setOnClickListener(new View.OnClickListener() {
+
+        holderRecommend.attentionImage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if(holderRecommend.attentionImage.isChecked()){
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
                     if(callBackRecommend!=null){
-                        callBackRecommend.callBeak(mResult.get(i).getId(),true,i);
+                        callBackRecommend.callTrueBeak(mResult.get(i).getId(),true,i);
                     }
                 }else{
                     if(callBackRecommend!=null){
-                        callBackRecommend.callBeak(mResult.get(i).getId(),false,i);
+                        callBackRecommend.callFalseBeak(mResult.get(i).getId(),false,i);
                     }
                 }
             }
@@ -133,7 +135,8 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.callBackRecommend = callBackRecommend;
     }
     public interface CallBackRecommend{
-        void callBeak(int id,boolean b,int position);
+        void callTrueBeak(int id, boolean b, int position);
+        void callFalseBeak(int id, boolean b, int position);
     }
     //根据影院ID查询该影院当前排期的电影列表接口
     private CallBackList callBackList;

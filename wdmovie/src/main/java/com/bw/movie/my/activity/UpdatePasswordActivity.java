@@ -69,8 +69,8 @@ public class UpdatePasswordActivity extends BaseActivity {
                 ToastUtil.showToast(pwdBean.getMessage());
             }else{
                 ToastUtil.showToast(pwdBean.getMessage());
-                Intent intent = new Intent(UpdatePasswordActivity.this,LoginActivity.class);
-                startActivity(intent);
+               /* Intent intent = new Intent(UpdatePasswordActivity.this,LoginActivity.class);
+                startActivity(intent);*/
             }
         }
     }
