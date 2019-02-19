@@ -18,6 +18,10 @@
     <!--用于申请获取蓝牙信息进行室内定位-->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!-- 【必须】 信鸽SDK所需权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <application
         android:networkSecurityConfig="@xml/network_security_config"
         android:name=".application.MyApplication"
@@ -73,5 +77,14 @@
             <!--开发者申请的key-->
         </meta-data>
         <service android:name="com.amap.api.location.APSService"></service>
+        <!--<receiver android:name=".receiver.MessageReceiver"
+            android:exported="true" >
+            <intent-filter>
+                &lt;!&ndash; 接收消息透传 &ndash;&gt;
+                <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />
+                &lt;!&ndash; 监听注册、反注册、设置/删除标签、通知被点击等处理结果 &ndash;&gt;
+                <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
+            </intent-filter>
+        </receiver>-->
     </application>
 </manifest>
