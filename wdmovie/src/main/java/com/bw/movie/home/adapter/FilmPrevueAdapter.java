@@ -4,12 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bw.movie.R;
 import com.bw.movie.home.bean.FilmDetailsBean;
+import com.bw.movie.util.ToastUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.util.ArrayList;
@@ -44,17 +46,21 @@ public class FilmPrevueAdapter extends RecyclerView.Adapter<FilmPrevueAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHoder viewHoder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHoder viewHoder, int i) {
 
         this.viewHoder = viewHoder;
         this.viewHoder.customVideoplayerStandard.setUp(mList.get(i).getVideoUrl(),
                 JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL);
         Uri uri = Uri.parse(mList.get(i).getImageUrl());
         Glide.with(mContext).load(uri).into(viewHoder.customVideoplayerStandard.thumbImageView);
+        Display display = this.viewHoder.customVideoplayerStandard.getDisplay();
 
     }
 public void setCanCle(){
-    viewHoder.customVideoplayerStandard.releaseAllVideos();
+
+            viewHoder.customVideoplayerStandard.releaseAllVideos();
+
+
 }
 
 

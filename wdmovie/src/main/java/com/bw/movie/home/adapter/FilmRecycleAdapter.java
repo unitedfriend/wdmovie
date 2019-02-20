@@ -10,6 +10,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -129,11 +130,13 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);
-                        ((BannerViewHoder) viewHolder).list.smoothScrollToPosition(current);
+                        int selectedPos = bannerViewHoder.list.getSelectedPos();
+                        ((BannerViewHoder) viewHolder).list.smoothScrollToPosition(++selectedPos);
                         current++;
-                        handler.sendEmptyMessageDelayed(0,2000);
+                        handler.sendEmptyMessageDelayed(0,3000);
                     }
                 };
+
                 //点击隐藏搜索框
                 bannerViewHoder.searchText.setOnClickListener(new View.OnClickListener() {
                     @Override

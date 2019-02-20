@@ -1,6 +1,8 @@
 package com.bw.movie.home.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -50,10 +53,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-
-
-
+import cn.jzvd.JZMediaManager;
+import cn.jzvd.JZVideoPlayer;
+import cn.jzvd.JZVideoPlayerStandard;
 
 
 public class FilmDetailsActivity extends BaseActivity {
@@ -84,12 +86,7 @@ public class FilmDetailsActivity extends BaseActivity {
     private FilmDetailsBean filmDetailsBean;
     private View detailsView;
     private PopupWindow detailsPopupWindowsss;
-
-
-
-
-
-    private PopupWindow mPop;
+private PopupWindow mPop;
     private PopupWindow nopicePop;
     private PopupWindow stillsPop;
     private PopupWindow reviewPop;
@@ -101,7 +98,6 @@ public class FilmDetailsActivity extends BaseActivity {
     private SimpleDraweeView image_detail_three;
     private ImageView detail_down;
     private int movieId;
-
     private View review_view;
     private View stills_view;
     private View notice_view;
@@ -121,7 +117,6 @@ public class FilmDetailsActivity extends BaseActivity {
     private LinearLayout linearLayout;
     private PopupWindow prevuePopup;
     private FilmPrevueAdapter filmPrevueAdapter;
-
     @Override
     protected void initData() {
         initAttentionImage();
@@ -146,6 +141,7 @@ public class FilmDetailsActivity extends BaseActivity {
         });
     }
 
+
     /**
      * @author Tang
      * @time 2019/1/28  14:06
@@ -164,8 +160,24 @@ public class FilmDetailsActivity extends BaseActivity {
         getStillsView();
         init();
 
-
         initPrevuePop();
+
+    }
+
+
+int b=0;
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        b++;
+        if(b==3){
+         //   filmPrevueAdapter.setCanCle();
+            JZVideoPlayerStandard.releaseAllVideos();
+            b=0;
+        }
+
+
     }
 
     private void initPrevuePop() {
@@ -179,7 +191,7 @@ public class FilmDetailsActivity extends BaseActivity {
         prevuePopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                filmPrevueAdapter.setCanCle();
+                // filmPrevueAdapter.setCanCle();
             }
         });
         ImageView backImage= prevueView.findViewById(R.id.dimisImage);
@@ -208,9 +220,16 @@ public class FilmDetailsActivity extends BaseActivity {
         detailsPopupWindowsss.setBackgroundDrawable(new ColorDrawable(color));
     }
 
+
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_filmdetails;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
     }
 
     /**
@@ -476,7 +495,12 @@ public class FilmDetailsActivity extends BaseActivity {
                 write.setVisibility(View.VISIBLE);
                 String trim = edit_write.getText().toString().trim();
                 if (trim.equals("")) {
-
+                    ToastUtil.showToast("评论为空");
+                    //收回软件盘
+                    InputMethodManager imm = ( InputMethodManager ) getSystemService( Context.INPUT_METHOD_SERVICE );
+                    if ( imm.isActive( ) ) {
+                        imm.hideSoftInputFromWindow( v.getWindowToken() , 0 );
+                    }
                 } else {
                     Map<String, String> map = new HashMap<>();
                     map.put("movieId", String.valueOf(movieId));
