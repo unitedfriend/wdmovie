@@ -39,13 +39,21 @@ public class NearCinemaFragment extends BaseFragment {
     Unbinder unbinder;
     private int mPage;
     private int mCount = 5;
-    private String longitude = "116.30551391385724";
-    private String latitude = "40.04571807462411";
+    /*private String longitude = "116.30551391385724";
+    private String latitude = "40.04571807462411";*/
     private NeardAdaper neardAdaper;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor edit;
 
     @Override
     protected void initData() {
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_NEAR_BY_CINEMAS_GET,longitude,latitude,mPage,mCount),NearBean.class);
+        sharedPreferences = getActivity().getSharedPreferences("Location", Context.MODE_PRIVATE);
+        edit = sharedPreferences.edit();
+        String latitude = sharedPreferences.getString("latitude", null);
+        String longitude = sharedPreferences.getString("longitude", null);
+        if(latitude!=null && longitude!=null){
+            doNetWorkGetRequest(String.format(Apis.URL_FIND_NEAR_BY_CINEMAS_GET,longitude,latitude,mPage,mCount),NearBean.class);
+        }
     }
 
     @Override

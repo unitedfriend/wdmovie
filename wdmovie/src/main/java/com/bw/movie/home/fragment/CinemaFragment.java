@@ -116,8 +116,6 @@ public class CinemaFragment extends BaseFragment {
                         cityCode = aMapLocation.getCityCode();
                         //地区编码
                         adCode = aMapLocation.getAdCode();
-
-
                         CityPicker.from(getActivity()).locateComplete(new LocatedCity(CinemaFragment.this.city, province, cityCode), LocateState.SUCCESS);
                     }
                 }

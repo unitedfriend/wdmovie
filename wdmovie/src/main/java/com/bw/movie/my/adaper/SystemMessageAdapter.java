@@ -68,7 +68,7 @@ public void setmList(List<SystemMessageBean.ResultBean>list){
             @Override
             public void onClick(View v) {
                 if(resultBean.getStatus()==0){
-                    back.callback(resultBean.getId(),i);
+                    back.callback(mList.get(i),i);
                 }
             }
         });
@@ -105,7 +105,7 @@ public void setChange(int p){
     }
     CallBack back;
     public interface CallBack{
-      void  callback(int p,int pos);
+      void  callback(SystemMessageBean.ResultBean resultBean,int n);
     }
     public void setBack(CallBack c){
         back=c;

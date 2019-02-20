@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -164,22 +165,18 @@ public class HomeActivity extends BaseActivity {
       *
       */
     private void getPushToken() {
+        XGPushConfig.setAccessId(getApplicationContext(), 2100300660);
+        XGPushConfig.setAccessKey(getApplicationContext(), "A44FJ9N7N9EY");
+
         XGPushConfig.enableDebug(this,true);
         XGPushConfig.enableOtherPush(getApplicationContext(), true);
         XGPushConfig.setHuaweiDebug(true);
-//        XGPushConfig.setMiPushAppId(getApplicationContext(), "d71d384497c51");
-//        XGPushConfig.setMiPushAppKey(getApplicationContext(), "A44FJ9N7N9EY");
-//        XGPushConfig.setMzPushAppId(this, "d71d384497c51");
-//        XGPushConfig.setMzPushAppKey(this, "A44FJ9N7N9EY");
-
         XGPushManager.registerPush(this, new XGIOperateCallback() {
             @Override
             public void onSuccess(Object data, int flag) {
                 //token在设备卸载重装的时候有可能会变
-                //Log.d("TPush", "注册成功，设备token为：" + data);
-
-                XGPushManager.bindAccount(getApplicationContext(), "XINGE");
-                ToastUtil.showToast(data + "");
+                Log.d("gxy", "注册成功，设备token为：" + data);
+                //ToastUtil.showToast(data + "");
                 String token = (String) data;
                 Map<String, String> map = new HashMap<>();
                 map.put("token", token);

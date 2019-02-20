@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -20,6 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alipay.sdk.app.PayTask;
 import com.bw.movie.R;
 import com.bw.movie.activity.BaseActivity;
 import com.bw.movie.api.Apis;
@@ -29,9 +32,12 @@ import com.bw.movie.seat.bean.OrderBean;
 import com.bw.movie.seat.customview.SeatTable;
 import com.bw.movie.util.Md5Utils;
 import com.bw.movie.util.ToastUtil;
+import com.bw.movie.wxapi.AliPayBean;
+import com.bw.movie.wxapi.PayResult;
 import com.bw.movie.wxapi.WXPayBean;
 import com.bw.movie.wxapi.WeiXinUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -190,7 +196,27 @@ public class SeatActivity extends BaseActivity {
         //设置文字样式
         getTextView();
     }
-
+    /**
+      * @作者 GXY
+      * @创建日期 2019/2/20 17:59
+      * @描述 创建handler  防止内存泄漏
+      */
+    MyHandler myHandler = new MyHandler(this);
+    private static class MyHandler extends Handler{
+        private final WeakReference<SeatActivity> mActivity;
+        public MyHandler(SeatActivity activity){
+            mActivity = new WeakReference<SeatActivity>(activity);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if(mActivity.get() == null){
+                PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                ToastUtil.showToast(payResult.getMemo());
+                return;
+            }
+        }
+    }
     /**
      * @作者 GXY
      * @创建日期 2019/2/12 15:08
@@ -228,8 +254,6 @@ public class SeatActivity extends BaseActivity {
         View view = View.inflate(SeatActivity.this, R.layout.pay_popupwindow_view, null);
         ImageView detail_down = view.findViewById(R.id.detail_down);
         RadioGroup radiogroup = view.findViewById(R.id.radiogroup);
-      /*  RadioButton pay_wx= view.findViewById(R.id.pay_wx);
-        RadioButton pay_alipay= view.findViewById(R.id.pay_alipay);*/
         confirm_pay = view.findViewById(R.id.confirm_pay);
         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, 550);
         //设置焦点
@@ -271,10 +295,17 @@ public class SeatActivity extends BaseActivity {
         confirm_pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, String> map = new HashMap<>();
-                map.put("payType", String.valueOf(1));
-                map.put("orderId", orderId);
-                doNetWorkPostRequest(Apis.URL_PAY_POST, map, WXPayBean.class);
+                if (pay == 1) {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("payType", String.valueOf(1));
+                    map.put("orderId", orderId);
+                    doNetWorkPostRequest(Apis.URL_PAY_POST, map, WXPayBean.class);
+                } else if (pay == 2) {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("payType", String.valueOf(2));
+                    map.put("orderId", orderId);
+                    doNetWorkPostRequest(Apis.URL_PAY_POST, map, AliPayBean.class);
+                }
             }
         });
     }
@@ -314,7 +345,33 @@ public class SeatActivity extends BaseActivity {
             } else {
                 ToastUtil.showToast(wxPayBean.getMessage());
                 WeiXinUtil.weiXinPay(wxPayBean);
-                //finish();
+                popupWindow.dismiss();
+            }
+        }else if(object instanceof AliPayBean){
+            AliPayBean aliPayBean = (AliPayBean) object;
+            if(aliPayBean == null || !aliPayBean.isSuccess()){
+                ToastUtil.showToast(aliPayBean.getMessage());
+                if(aliPayBean.getMessage().equals("请先登陆")){
+                    startActivity(new Intent(SeatActivity.this,LoginActivity.class));
+                    return;
+                }
+            }else{
+                ToastUtil.showToast(aliPayBean.getMessage());
+                final String result = aliPayBean.getResult();
+                final Runnable payRunnnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        PayTask payTask = new PayTask(SeatActivity.this);
+                        Map<String, String> map = payTask.payV2(result, true);
+                        Message message = new Message();
+                        message.obj = map;
+                        myHandler.sendMessage(message);
+                    }
+                };
+                // 必须异步调用
+                Thread payThread = new Thread(payRunnnable);
+                payThread.start();
+                popupWindow.dismiss();
             }
         }
     }
@@ -348,5 +405,11 @@ public class SeatActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myHandler.removeCallbacksAndMessages(null);
     }
 }

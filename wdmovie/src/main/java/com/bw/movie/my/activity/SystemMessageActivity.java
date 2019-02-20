@@ -1,9 +1,16 @@
 package com.bw.movie.my.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bw.movie.R;
@@ -20,6 +27,8 @@ import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,16 +51,17 @@ public class SystemMessageActivity extends BaseActivity {
     private SystemMessageAdapter adapter;
     private int postion;
     private int count = 15;
+
     @Override
     protected void initData() {
-        doNetWorkGetRequest(String.format(Apis.URL_FIND_ALL_SYS_MSG_LIST,page,count),SystemMessageBean.class);
+        doNetWorkGetRequest(String.format(Apis.URL_FIND_ALL_SYS_MSG_LIST, page, count), SystemMessageBean.class);
     }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         ButterKnife.bind(this);
         page = 1;
-        doNetWorkGetRequest(Apis.URL_FIND_UNREAD_MESSAGE_COUNT_GET,UnreadBean.class);
+        doNetWorkGetRequest(Apis.URL_FIND_UNREAD_MESSAGE_COUNT_GET, UnreadBean.class);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         xRecycle.setLayoutManager(layoutManager);
@@ -62,7 +72,7 @@ public class SystemMessageActivity extends BaseActivity {
         xRecycle.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                page=1;
+                page = 1;
                 initData();
             }
 
@@ -73,67 +83,88 @@ public class SystemMessageActivity extends BaseActivity {
         });
         adapter.setBack(new SystemMessageAdapter.CallBack() {
             @Override
-            public void callback(int p,int pos) {
-                postion=pos;
-                doNetWorkGetRequest(String.format(Apis.URL_CHABGE_SYS_MSG_STATUS_GET,p),UnreadChangeBean.class);
+            public void callback(SystemMessageBean.ResultBean resultBean, final int n) {
+                final int id = resultBean.getId();
+                String content = resultBean.getContent();
+                String pushTime = resultBean.getPushTime();
+                String title = resultBean.getTitle();
+                final AlertDialog.Builder builder = new AlertDialog.Builder(SystemMessageActivity.this);
+                View view = View.inflate(SystemMessageActivity.this, R.layout.systemmessage_alertdialog, null);
+                builder.setView(view);
+                TextView messageName = view.findViewById(R.id.messageName);
+                TextView messageContent = view.findViewById(R.id.messageContent);
+                TextView timeText = view.findViewById(R.id.timeText);
+                messageName.setText(title);
+                messageContent.setText(content);
+                String time = stampToDate(pushTime);
+                timeText.setText(time);
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        postion = n;
+                        doNetWorkGetRequest(String.format(Apis.URL_CHABGE_SYS_MSG_STATUS_GET, id), UnreadChangeBean.class);
+                    }
+                });
+                builder.show();
+
             }
         });
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-       /* XGPushConfig.enableOtherPush(getApplicationContext(), true);
-        XGPushConfig.setHuaweiDebug(true);
-        XGPushConfig.setMiPushAppId(getApplicationContext(), "APPID");
-        XGPushConfig.setMiPushAppKey(getApplicationContext(), "APPKEY");
-        XGPushConfig.setMzPushAppId(this, "APPID");
-        XGPushConfig.setMzPushAppKey(this, "APPKEY");
-
-        XGPushManager.registerPush(this, new XGIOperateCallback() {
-            @Override
-            public void onSuccess(Object data, int flag) {
-                //token在设备卸载重装的时候有可能会变
-                //Log.d("TPush", "注册成功，设备token为：" + data);
-                ToastUtil.showToast(data+"");
-                String token = (String) data;
-                Map<String,String> map = new HashMap<>();
-                map.put("token",token);
-                map.put("os",String.valueOf(1));
-                doNetWorkPostRequest(Apis.URL_UP_LOAD_PUSH_TOKEN_POST,map,PushTokenBean.class);
-            }
-            @Override
-            public void onFail(Object data, int errCode, String msg) {
-                //Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-            }
-        });*/
+    }
+    public static String stampToDate(String s){
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long lt = new Long(s);
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
     }
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_system_message;
     }
 
+    /**
+     * @作者 GXY
+     * @创建日期 2019/2/20 14:07
+     * @描述 查看详细信息
+     */
+    public void setDetail() {
+
+    }
+
     @Override
     protected void netSuccess(Object object) {
-        if(object instanceof SystemMessageBean){
+        if (object instanceof SystemMessageBean) {
             SystemMessageBean object1 = (SystemMessageBean) object;
-            if(page==1){
+            if (page == 1) {
                 adapter.setmList(object1.getResult());
-            }else{
+            } else {
                 adapter.addmList(object1.getResult());
             }
             page++;
             xRecycle.refreshComplete();
             xRecycle.loadMoreComplete();
-        }else if(object instanceof UnreadBean){
+        } else if (object instanceof UnreadBean) {
             UnreadBean object1 = (UnreadBean) object;
-            unreadNum.setText("("+object1.getCount()+"条未读");
-        }else if(object instanceof UnreadChangeBean){
+            unreadNum.setText("(" + object1.getCount() + "条未读");
+        } else if (object instanceof UnreadChangeBean) {
             UnreadChangeBean object1 = (UnreadChangeBean) object;
             boolean b = object1.getMessage().equals("状态改变成功");
-            if(b){
-                doNetWorkGetRequest(Apis.URL_FIND_UNREAD_MESSAGE_COUNT_GET,UnreadBean.class);
+            if (b) {
+                doNetWorkGetRequest(Apis.URL_FIND_UNREAD_MESSAGE_COUNT_GET, UnreadBean.class);
                 adapter.setChange(postion);
             }
         }
