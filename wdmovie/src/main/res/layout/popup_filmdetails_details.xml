@@ -131,7 +131,7 @@
             android:id="@+id/actorList"
             android:textColor="#333333"
             android:textSize="@dimen/sp_12"
-            />selectedPos
+            />
     </android.support.constraint.ConstraintLayout>
 <com.facebook.drawee.view.SimpleDraweeView
     android:layout_width="@dimen/dp_111"
