@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/dp_12"
         android:text="请登录"
         android:textColor="#ffffff" />
-    <Button
+    <TextView
         android:id="@+id/sign"
         android:layout_width="@dimen/dp_66"
         android:layout_height="@dimen/dp_28"
@@ -31,6 +31,7 @@
         android:textSize="@dimen/sp_14"
         android:layout_below="@id/my_icon_name"
         android:layout_marginTop="@dimen/dp_12"
+        android:gravity="center"
         android:layout_centerHorizontal="true"
         android:background="@drawable/my_button_sign_shape"
         />

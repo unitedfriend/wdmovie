@@ -56,8 +56,8 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
     public void setIsOk(boolean t){
-        holderRecommend.attentionImage.setChecked(t);
-        notifyDataSetChanged();
+        /*holderRecommend.attentionImage.setChecked(t);
+        notifyDataSetChanged();*/
     }
     @NonNull
     @Override
@@ -87,11 +87,11 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     if(callBackRecommend!=null){
-                        callBackRecommend.callTrueBeak(mResult.get(i).getId(),true,i);
+                        callBackRecommend.callTrueBeak(mResult.get(i).getId(),true);
                     }
                 }else{
                     if(callBackRecommend!=null){
-                        callBackRecommend.callFalseBeak(mResult.get(i).getId(),false,i);
+                        callBackRecommend.callFalseBeak(mResult.get(i).getId(),false);
                     }
                 }
             }
@@ -135,8 +135,8 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.callBackRecommend = callBackRecommend;
     }
     public interface CallBackRecommend{
-        void callTrueBeak(int id, boolean b, int position);
-        void callFalseBeak(int id, boolean b, int position);
+        void callTrueBeak(int id, boolean b);
+        void callFalseBeak(int id, boolean b);
     }
     //根据影院ID查询该影院当前排期的电影列表接口
     private CallBackList callBackList;

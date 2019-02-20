@@ -10,10 +10,12 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bw.movie.R;
@@ -118,10 +120,13 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                         }
                     }
                 });
+
                 //加载子条目的recycleview
                 RecyclerCoverFlowAdapter recyclerCoverFlowAdapter = new RecyclerCoverFlowAdapter(mContext);
                 ((BannerViewHoder) viewHolder).list.setAdapter(recyclerCoverFlowAdapter);
-                HotBean hot1 = allBean.getHot();
+                final HotBean hot1 = allBean.getHot();
+                bannerViewHoder.progressBar.setMax(hot1.getResult().size()-1);
+              //  bannerViewHoder.progressBar.setProgress(hot1.getResult().size());
                 recyclerCoverFlowAdapter.setmList(hot1.getResult());
                 current=5;
                 //轮播图自动轮播
@@ -129,11 +134,13 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);
-                        ((BannerViewHoder) viewHolder).list.smoothScrollToPosition(current);
+                        int selectedPos = bannerViewHoder.list.getSelectedPos();
+                        ((BannerViewHoder) viewHolder).list.smoothScrollToPosition(++selectedPos);
                         current++;
-                        handler.sendEmptyMessageDelayed(0,2000);
+                        handler.sendEmptyMessageDelayed(0,3000);
                     }
                 };
+
                 //点击隐藏搜索框
                 bannerViewHoder.searchText.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -151,6 +158,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onItemSelected(int position) {
                         current=position;
+                        bannerViewHoder.progressBar.setSecondaryProgress(position%hot1.getResult().size());
                     }
                 });
 
@@ -161,6 +169,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                         filmCallBack.bannerCallBack(id);
                     }
                 });
+
                 break;
             case HOT:
                 HotViewHoder hotViewHoder = (HotViewHoder) viewHolder;
@@ -309,7 +318,8 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         ConstraintLayout searchViewGroup;
         @BindView(R.id.list)
         RecyclerCoverFlow list;
-
+        @BindView(R.id.proBar)
+        ProgressBar progressBar;
         public BannerViewHoder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

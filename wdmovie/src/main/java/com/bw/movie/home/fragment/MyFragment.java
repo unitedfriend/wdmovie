@@ -46,7 +46,7 @@ public class MyFragment extends BaseFragment {
     @BindView(R.id.my_icon_name)
     TextView myIconName;
     @BindView(R.id.sign)
-    Button sign;
+    TextView sign;
     @BindView(R.id.my_message)
     LinearLayout myMessage;
     @BindView(R.id.my_concern)
@@ -70,7 +70,7 @@ public class MyFragment extends BaseFragment {
     private String mFilePath;
     private boolean mIsUpdate;
     private MyMessageActivity messageActivity;
-
+    private boolean b;
     /**
      * 初始化数据
      */
@@ -91,6 +91,7 @@ public class MyFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         unbinder = ButterKnife.bind(this, view);
+        b = true;
     }
     /**
      * 加载布局
@@ -122,6 +123,7 @@ public class MyFragment extends BaseFragment {
                 ToastUtil.showToast(signInBean.getMessage());
             } else {
                 ToastUtil.showToast(signInBean.getMessage());
+                sign.setText("已签到");
             }
         } else if (object instanceof NewVersionBean) {
             NewVersionBean versionBean = (NewVersionBean) object;

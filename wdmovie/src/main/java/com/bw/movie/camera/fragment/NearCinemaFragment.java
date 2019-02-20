@@ -27,12 +27,12 @@ import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
 /**
- * @作者 GXY
- * @创建日期 2019/1/30 19:59
- * @描述 附近影院Fragment
- */
+  * @作者 GXY
+  * @创建日期 2019/1/30 19:59
+  * @描述 附近影院Fragment
+  *
+  */
 public class NearCinemaFragment extends BaseFragment {
     @BindView(R.id.xrecycleview)
     XRecyclerView xrecycleview;
@@ -42,6 +42,7 @@ public class NearCinemaFragment extends BaseFragment {
     /*private String longitude = "116.30551391385724";
     private String latitude = "40.04571807462411";*/
     private NeardAdaper neardAdaper;
+    private int movieID;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor edit;
 
@@ -90,8 +91,8 @@ public class NearCinemaFragment extends BaseFragment {
 
                String userId = user.getString("userId", null);
                if(userId==null){
+                   ToastUtil.showToast("请先登陆");
                    startActivity(new Intent(getActivity(),LoginActivity.class));
-                   neardAdaper.setIsOk(!b);
                    return;
                }
                doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_CINEAM_GET,id),FollowCinemaBean.class);
@@ -99,14 +100,19 @@ public class NearCinemaFragment extends BaseFragment {
 
            @Override
            public void callFalseBeak(int id, boolean b, int position) {
-
+               movieID = id;
                String userId = user.getString("userId", null);
                if(userId==null){
+                   ToastUtil.showToast("请先登陆");
                    startActivity(new Intent(getActivity(),LoginActivity.class));
-                   neardAdaper.setIsOk(!b);
                    return;
                }
                doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_CINEAM_GET,id),CancelFollowCineamBean.class);
+           }
+
+           @Override
+           public void callLoging() {
+               startActivity(new Intent(getActivity(),LoginActivity.class));
            }
        });
         //跳转到排期
@@ -127,26 +133,28 @@ public class NearCinemaFragment extends BaseFragment {
 
     @Override
     protected void netSuccess(Object object) {
-        if (object instanceof NearBean) {
+        if(object instanceof NearBean){
             NearBean nearBean = (NearBean) object;
-            if (nearBean == null || !nearBean.isSuccess()) {
+            if(nearBean == null || !nearBean.isSuccess()){
                 ToastUtil.showToast(nearBean.getMessage());
-            } else {
-                if (mPage == 1) {
+            }else{
+                if(mPage == 1){
                     neardAdaper.setmResult(nearBean.getResult());
-                } else {
+                }else{
                     neardAdaper.addmResult(nearBean.getResult());
                 }
                 mPage++;
                 xrecycleview.loadMoreComplete();
                 xrecycleview.refreshComplete();
             }
-        } else if (object instanceof FollowCinemaBean) {
+        }else if(object instanceof FollowCinemaBean){
             FollowCinemaBean followCinemaBean = (FollowCinemaBean) object;
             ToastUtil.showToast(followCinemaBean.getMessage());
-        } else if (object instanceof CancelFollowCineamBean) {
+
+        }else if(object instanceof CancelFollowCineamBean){
             CancelFollowCineamBean cancelFollowCineamBean = (CancelFollowCineamBean) object;
             ToastUtil.showToast(cancelFollowCineamBean.getMessage());
+
         }
     }
 

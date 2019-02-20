@@ -1,6 +1,7 @@
 package com.bw.movie.camera.adaper;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -38,6 +39,7 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int SUCCESS=1;
     private final int CANCEL=2;
     private ViewHolderNear holderNear;
+    private SharedPreferences user;
 
     public NeardAdaper(Context mContext) {
         this.mContext = mContext;
@@ -84,13 +86,33 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         //关注
 
+       /* holderNear.attentionImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = holderNear.attentionImage.isChecked();
+                holderNear.attentionImage.setChecked(!checked);
+
+                boolean isChecked = holderNear.attentionImage.isChecked();
+                if (isChecked) {
+                    callBackNear.callTrueBeak(mResult.get(i).getId(), true, i);
+                } else {
+                    callBackNear.callFalseBeak(mResult.get(i).getId(), false, i);
+                }
+            }
+
+        });*/
         holderNear.attentionImage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    callBackNear.callTrueBeak(mResult.get(i).getId(),true,i);
+                String userId = user.getString("userId", null);
+                if(userId!=null) {
+                    if (isChecked) {
+                        callBackNear.callTrueBeak(mResult.get(i).getId(), true, i);
+                    } else {
+                        callBackNear.callFalseBeak(mResult.get(i).getId(), false, i);
+                    }
                 }else{
-                    callBackNear.callFalseBeak(mResult.get(i).getId(),false,i);
+                    //callBackNear.callLoging();
                 }
             }
         });
@@ -104,10 +126,7 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         });
     }
-    public void setIsOk(boolean t){
-        holderNear.attentionImage.setChecked(t);
-      notifyDataSetChanged();
-    }
+
     @Override
     public int getItemCount() {
         return mResult.size();
@@ -129,6 +148,9 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public ViewHolderNear(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+            if(user==null){
+                user = mContext.getSharedPreferences("User", Context.MODE_PRIVATE);
+            }
         }
     }
     //定义关注接口
@@ -139,6 +161,7 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface CallBackNear{
         void callTrueBeak(int id, boolean b, int position);
         void callFalseBeak(int id, boolean b, int position);
+        void callLoging();
     }
     //根据影院ID查询该影院当前排期的电影列表接口
     private CallBackList callBackList;

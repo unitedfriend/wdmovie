@@ -198,7 +198,7 @@ public class HomeActivity extends BaseActivity {
             if (pushTokenBean == null || !pushTokenBean.isSuccess()) {
                 ToastUtil.showToast(pushTokenBean.getMessage());
             } else {
-                ToastUtil.showToast(pushTokenBean.getMessage());
+                //ToastUtil.showToast(pushTokenBean.getMessage());
             }
         }
     }
