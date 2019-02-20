@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bw.movie.R;
@@ -119,10 +120,13 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                         }
                     }
                 });
+
                 //加载子条目的recycleview
                 RecyclerCoverFlowAdapter recyclerCoverFlowAdapter = new RecyclerCoverFlowAdapter(mContext);
                 ((BannerViewHoder) viewHolder).list.setAdapter(recyclerCoverFlowAdapter);
-                HotBean hot1 = allBean.getHot();
+                final HotBean hot1 = allBean.getHot();
+                bannerViewHoder.progressBar.setMax(hot1.getResult().size()-1);
+              //  bannerViewHoder.progressBar.setProgress(hot1.getResult().size());
                 recyclerCoverFlowAdapter.setmList(hot1.getResult());
                 current=5;
                 //轮播图自动轮播
@@ -154,6 +158,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onItemSelected(int position) {
                         current=position;
+                        bannerViewHoder.progressBar.setSecondaryProgress(position%hot1.getResult().size());
                     }
                 });
 
@@ -164,6 +169,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                         filmCallBack.bannerCallBack(id);
                     }
                 });
+
                 break;
             case HOT:
                 HotViewHoder hotViewHoder = (HotViewHoder) viewHolder;
@@ -312,7 +318,8 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         ConstraintLayout searchViewGroup;
         @BindView(R.id.list)
         RecyclerCoverFlow list;
-
+        @BindView(R.id.proBar)
+        ProgressBar progressBar;
         public BannerViewHoder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

@@ -42,6 +42,7 @@ public class NearCinemaFragment extends BaseFragment {
     private String longitude = "116.30551391385724";
     private String latitude = "40.04571807462411";
     private NeardAdaper neardAdaper;
+    private int movieID;
 
     @Override
     protected void initData() {
@@ -82,8 +83,8 @@ public class NearCinemaFragment extends BaseFragment {
 
                String userId = user.getString("userId", null);
                if(userId==null){
+                   ToastUtil.showToast("请先登陆");
                    startActivity(new Intent(getActivity(),LoginActivity.class));
-                   neardAdaper.setIsOk(!b);
                    return;
                }
                doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_CINEAM_GET,id),FollowCinemaBean.class);
@@ -91,14 +92,19 @@ public class NearCinemaFragment extends BaseFragment {
 
            @Override
            public void callFalseBeak(int id, boolean b, int position) {
-
+               movieID = id;
                String userId = user.getString("userId", null);
                if(userId==null){
+                   ToastUtil.showToast("请先登陆");
                    startActivity(new Intent(getActivity(),LoginActivity.class));
-                   neardAdaper.setIsOk(!b);
                    return;
                }
                doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_CINEAM_GET,id),CancelFollowCineamBean.class);
+           }
+
+           @Override
+           public void callLoging() {
+               startActivity(new Intent(getActivity(),LoginActivity.class));
            }
        });
         //跳转到排期

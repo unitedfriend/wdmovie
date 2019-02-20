@@ -81,6 +81,7 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holderRecommend.attentionImage.setChecked(false);
         }
         //关注
+
         holderRecommend.attentionImage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
