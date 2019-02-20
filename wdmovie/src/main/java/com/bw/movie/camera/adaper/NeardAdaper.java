@@ -112,7 +112,7 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         callBackNear.callFalseBeak(mResult.get(i).getId(), false, i);
                     }
                 }else{
-                    //callBackNear.callLoging();
+                    callBackNear.callLoging();
                 }
             }
         });
