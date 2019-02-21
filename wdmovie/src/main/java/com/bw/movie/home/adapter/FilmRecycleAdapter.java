@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bw.movie.R;
@@ -125,8 +127,12 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                 RecyclerCoverFlowAdapter recyclerCoverFlowAdapter = new RecyclerCoverFlowAdapter(mContext);
                 ((BannerViewHoder) viewHolder).list.setAdapter(recyclerCoverFlowAdapter);
                 final HotBean hot1 = allBean.getHot();
-                bannerViewHoder.progressBar.setMax(hot1.getResult().size()-1);
+               // bannerViewHoder.progressBar.setMax(hot1.getResult().size()-1);
               //  bannerViewHoder.progressBar.setProgress(hot1.getResult().size());
+                bannerViewHoder.seekBar.setMax(hot1.getResult().size()-1);
+
+                bannerViewHoder.seekBar.setFocusable(false);
+                
                 recyclerCoverFlowAdapter.setmList(hot1.getResult());
                 current=5;
                 //轮播图自动轮播
@@ -158,7 +164,8 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onItemSelected(int position) {
                         current=position;
-                        bannerViewHoder.progressBar.setSecondaryProgress(position%hot1.getResult().size());
+                      //  bannerViewHoder.progressBar.setSecondaryProgress(position%hot1.getResult().size());
+                        bannerViewHoder.seekBar.setProgress(position%hot1.getResult().size());
                     }
                 });
 
@@ -319,7 +326,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         @BindView(R.id.list)
         RecyclerCoverFlow list;
         @BindView(R.id.proBar)
-        ProgressBar progressBar;
+        SeekBar seekBar;
         public BannerViewHoder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

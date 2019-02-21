@@ -5,12 +5,15 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,8 +39,8 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<NearBean.ResultBean> mResult;
     private Context mContext;
-    private final int SUCCESS=1;
-    private final int CANCEL=2;
+    private final int SUCCESS = 1;
+    private final int CANCEL = 2;
     private ViewHolderNear holderNear;
     private SharedPreferences user;
 
@@ -77,50 +80,71 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         holderNear.cinemaimage.setImageURI(Uri.parse(mResult.get(i).getLogo()));
         holderNear.cinemaname.setText(mResult.get(i).getName());
         holderNear.cinemaaddress.setText(mResult.get(i).getAddress());
-        holderNear.distance.setText(mResult.get(i).getDistance()+"km");
+        holderNear.distance.setText(mResult.get(i).getDistance() + "km");
         boolean followCinema = mResult.get(i).getFollowCinema();
-        if(followCinema){
-            holderNear.attentionImage.setChecked(true);
-        }else{
-            holderNear.attentionImage.setChecked(false);
+        if (followCinema) {
+            holderNear.attentionImageTrue.setVisibility(View.VISIBLE);
+            holderNear.attentionImageFalse.setVisibility(View.INVISIBLE);
+        } else {
+            holderNear.attentionImageTrue.setVisibility(View.INVISIBLE);
+            holderNear.attentionImageFalse.setVisibility(View.VISIBLE);
         }
+        holderNear.attentionImageFalse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callBackNear.callTrueBeak(mResult.get(i).getId(), true);
+                /*holderNear.attentionImageFalse.setVisibility(View.INVISIBLE);
+                holderNear.attentionImageTrue.setVisibility(View.VISIBLE);*/
+                mResult.get(i).setFollowCinema(1);
+                notifyDataSetChanged();
+
+            }
+        });
+        holderNear.attentionImageTrue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callBackNear.callFalseBeak(mResult.get(i).getId(), false);
+                /*holderNear.attentionImageFalse.setVisibility(View.VISIBLE);
+                holderNear.attentionImageTrue.setVisibility(View.INVISIBLE);*/
+                mResult.get(i).setFollowCinema(2);
+                notifyDataSetChanged();
+            }
+        });
         //关注
 
-       /* holderNear.attentionImage.setOnClickListener(new View.OnClickListener() {
+        /*holderNear.attentionImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean checked = holderNear.attentionImage.isChecked();
-                holderNear.attentionImage.setChecked(!checked);
 
-                boolean isChecked = holderNear.attentionImage.isChecked();
-                if (isChecked) {
-                    callBackNear.callTrueBeak(mResult.get(i).getId(), true, i);
+                if (checked) {
+                    callBackNear.callTrueBeak(mResult.get(i).getId(), true);
                 } else {
-                    callBackNear.callFalseBeak(mResult.get(i).getId(), false, i);
+                    callBackNear.callFalseBeak(mResult.get(i).getId(), false);
                 }
             }
 
         });*/
-        holderNear.attentionImage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+       /* holderNear.attentionImage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 String userId = user.getString("userId", null);
                 if(userId!=null) {
                     if (isChecked) {
-                        callBackNear.callTrueBeak(mResult.get(i).getId(), true, i);
+                        callBackNear.callTrueBeak(mResult.get(i).getId(), true);
                     } else {
-                        callBackNear.callFalseBeak(mResult.get(i).getId(), false, i);
+                        callBackNear.callFalseBeak(mResult.get(i).getId(), false);
                     }
                 }else{
                     callBackNear.callLoging();
                 }
             }
-        });
+        });*/
         //点击跳转
         holderNear.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(callBackList!=null){
+                if (callBackList != null) {
                     callBackList.callBack(mResult.get(i).getId());
                 }
             }
@@ -145,30 +169,42 @@ public class NeardAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         CheckBox attentionImage;
         @BindView(R.id.layout)
         ConstraintLayout layout;
+        @BindView(R.id.attentionImage_true)
+        ImageView attentionImageTrue;
+        @BindView(R.id.attentionImage_false)
+        ImageView attentionImageFalse;
         public ViewHolderNear(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
-            if(user==null){
+            ButterKnife.bind(this, itemView);
+            if (user == null) {
                 user = mContext.getSharedPreferences("User", Context.MODE_PRIVATE);
             }
         }
     }
+
     //定义关注接口
     private CallBackNear callBackNear;
-    public void setCallBackNear(CallBackNear callBackNear){
+
+    public void setCallBackNear(CallBackNear callBackNear) {
         this.callBackNear = callBackNear;
     }
-    public interface CallBackNear{
-        void callTrueBeak(int id, boolean b, int position);
-        void callFalseBeak(int id, boolean b, int position);
+
+    public interface CallBackNear {
+        void callTrueBeak(int id, boolean b);
+
+        void callFalseBeak(int id, boolean b);
+
         void callLoging();
     }
+
     //根据影院ID查询该影院当前排期的电影列表接口
     private CallBackList callBackList;
-    public void setCallBackList(CallBackList callBackList){
+
+    public void setCallBackList(CallBackList callBackList) {
         this.callBackList = callBackList;
     }
-    public interface CallBackList{
+
+    public interface CallBackList {
         void callBack(int id);
     }
 }
