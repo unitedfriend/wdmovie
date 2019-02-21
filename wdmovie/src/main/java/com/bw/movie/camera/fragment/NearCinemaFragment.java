@@ -57,6 +57,10 @@ public class NearCinemaFragment extends BaseFragment {
         }
     }
 
+    public void setInit(){
+        initData();
+    }
+
     @Override
     protected void initView(View view) {
         mPage = 1;

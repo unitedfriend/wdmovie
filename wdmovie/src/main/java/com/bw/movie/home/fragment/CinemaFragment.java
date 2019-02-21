@@ -85,6 +85,7 @@ public class CinemaFragment extends BaseFragment {
     private double longitude;
     private double latitude;
     private String cityName;
+    private NearCinemaFragment nearCinemaFragment;
 
     @Override
     protected void initData() {
@@ -200,7 +201,7 @@ public class CinemaFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
         List<Fragment> list = new ArrayList<>();
         RecommendCinemaFragment recommendCinemaFragment = new RecommendCinemaFragment();
-        NearCinemaFragment nearCinemaFragment = new NearCinemaFragment();
+        nearCinemaFragment = new NearCinemaFragment();
         list.add(recommendCinemaFragment);
         list.add(nearCinemaFragment);
         RecordViewPagerAdaper recordViewPagerAdaper = new RecordViewPagerAdaper(getChildFragmentManager(),list);
@@ -224,6 +225,7 @@ public class CinemaFragment extends BaseFragment {
                     case R.id.near:
                         recommend.setTextColor(Color.BLACK);
                         near.setTextColor(Color.WHITE);
+                        nearCinemaFragment.setInit();
                         viewpager.setCurrentItem(1,false);
                         break;
                     default:
