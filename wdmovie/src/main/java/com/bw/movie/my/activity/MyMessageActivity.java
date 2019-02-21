@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -64,7 +65,7 @@ public class MyMessageActivity extends BaseActivity {
     @BindView(R.id.returnbutton)
     ImageButton returnbutton;
     @BindView(R.id.updatemessage)
-    TextView updatemessage;
+    ImageButton updatemessage;
     private View camera;
     private View pick;
     private View cancel;
@@ -77,6 +78,9 @@ public class MyMessageActivity extends BaseActivity {
     private final int REQUESTCODE_PICK = 300;
     private final int REQUESTCODE_SUCCESS = 200;
     private AlertDialog dialog;
+    private String nickName;
+    private String email;
+    private int sex;
 
     /**
      * 初始化数据
@@ -87,11 +91,11 @@ public class MyMessageActivity extends BaseActivity {
         MyMessageBean.ResultBean result = (MyMessageBean.ResultBean) intent.getSerializableExtra("result");
         if (result != null) {
             String headPic = result.getHeadPic();
-            String nickName = result.getNickName();
-            int sex = result.getSex();
+            nickName = result.getNickName();
+            sex = result.getSex();
             String birthday = result.getBirthday();
             String phone = result.getPhone();
-            String email = result.getEmail();
+            email = result.getEmail();
             usericonImage.setImageURI(Uri.parse(headPic));
             userNickname.setText(nickName);
             emailnum.setText(email);
@@ -259,6 +263,8 @@ public class MyMessageActivity extends BaseActivity {
         final RadioButton man = viewname.findViewById(R.id.manbutton);
         final RadioButton woman = viewname.findViewById(R.id.womanbutton);
         final EditText updateEmail = viewname.findViewById(R.id.updata_edix_email);
+        updateName.setText(nickName);
+        updateEmail.setText(email);
         //修改
         update.setOnClickListener(new View.OnClickListener() {
             @Override
