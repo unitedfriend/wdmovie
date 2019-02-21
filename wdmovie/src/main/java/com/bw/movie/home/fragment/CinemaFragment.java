@@ -343,6 +343,7 @@ public class CinemaFragment extends BaseFragment {
             location.putString("longitude",lng+"");
             location.putString("city",cityName);
             location.commit();
+            nearCinemaFragment.setInit();
         }
     }
 

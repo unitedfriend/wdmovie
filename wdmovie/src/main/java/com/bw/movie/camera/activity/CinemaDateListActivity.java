@@ -25,6 +25,7 @@ import com.bw.movie.camera.bean.RecommendBean;
 import com.bw.movie.home.adapter.FindAllCinemaCommentAdapter;
 import com.bw.movie.home.bean.CommentPraiseBean;
 import com.bw.movie.home.bean.FindAllCinemaComment;
+import com.bw.movie.login.activity.LoginActivity;
 import com.bw.movie.seat.activity.SeatActivity;
 import com.bw.movie.util.ToastUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -248,8 +249,13 @@ public class CinemaDateListActivity extends BaseActivity {
         } else if (object instanceof FindMovieListByCinemaIdBean) {
             FindMovieListByCinemaIdBean movieListByCinemaIdBean = (FindMovieListByCinemaIdBean) object;
             result = movieListByCinemaIdBean.getResult();
-            cinemaFilm.smoothScrollToPosition(result.size() / 2);
 
+            if(movieListByCinemaIdBean.getMessage().equals("无数据")){
+                ToastUtil.showToast(movieListByCinemaIdBean.getMessage());
+                cinemaFilm.setVisibility(View.INVISIBLE);
+                return;
+            }
+            cinemaFilm.smoothScrollToPosition(result.size() / 2);
             if (movieListByCinemaIdBean == null || !movieListByCinemaIdBean.isSuccess()) {
                 ToastUtil.showToast(movieListByCinemaIdBean.getMessage());
             } else {
@@ -279,6 +285,8 @@ public class CinemaDateListActivity extends BaseActivity {
             ToastUtil.showToast(object1.getMessage());
             if (object1.getMessage().equals("点赞成功")) {
                 adapter.addWhetherGreat(i);
+            }else if(object1.getMessage().equals("请先登陆")){
+                startActivity(new Intent(this,LoginActivity.class));
             }
         }
     }
