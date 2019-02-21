@@ -85,9 +85,9 @@
         android:layout_marginTop="@dimen/dp_85"
         >
     </recycler.coverflow.RecyclerCoverFlow>
-<ProgressBar
+<SeekBar
     android:layout_width="@dimen/dp_0"
-    android:layout_height="@dimen/dp_10"
+    android:layout_height="@dimen/dp_3"
     app:layout_constraintTop_toBottomOf="@id/list"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
@@ -95,6 +95,9 @@
     android:layout_marginLeft="@dimen/dp_24"
     android:layout_marginRight="@dimen/dp_24"
     android:id="@+id/proBar"
-    style="?android:progressBarStyleHorizontal"
+    android:thumb="@drawable/seek_pro"
+    android:focusable="false"
+    android:progressDrawable="@drawable/seek_bg"
+
     />
 </android.support.constraint.ConstraintLayout>

@@ -79,7 +79,7 @@ public class NearCinemaFragment extends BaseFragment {
         final SharedPreferences user = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
        neardAdaper.setCallBackNear(new NeardAdaper.CallBackNear() {
            @Override
-           public void callTrueBeak(int id, boolean b, int position) {
+           public void callTrueBeak(int id, boolean b) {
 
                String userId = user.getString("userId", null);
                if(userId==null){
@@ -91,7 +91,7 @@ public class NearCinemaFragment extends BaseFragment {
            }
 
            @Override
-           public void callFalseBeak(int id, boolean b, int position) {
+           public void callFalseBeak(int id, boolean b) {
                movieID = id;
                String userId = user.getString("userId", null);
                if(userId==null){
