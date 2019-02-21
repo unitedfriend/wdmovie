@@ -29,6 +29,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 fresco:roundedCornerRadius="@dimen/dp_4"
+                fresco:actualImageScaleType="fitCenter"
                 />
             <TextView
                 android:id="@+id/cinemaname"
