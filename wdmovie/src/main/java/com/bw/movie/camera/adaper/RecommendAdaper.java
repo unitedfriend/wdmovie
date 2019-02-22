@@ -30,8 +30,6 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private List<RecommendBean.ResultBean> mResult;
     private Context mContext;
-    private final int SUCCESS=1;
-    private final int CANCEL=2;
     private ViewHolderRecommend holderRecommend;
 
     public RecommendAdaper(Context mContext) {
