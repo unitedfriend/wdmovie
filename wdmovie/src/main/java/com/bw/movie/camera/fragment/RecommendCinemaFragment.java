@@ -78,7 +78,7 @@ public class RecommendCinemaFragment extends BaseFragment {
                 String userId = user.getString("userId", null);
                 if(userId==null){
                     startActivity(new Intent(getActivity(),LoginActivity.class));
-                    recommendAdaper.setIsOk(!b);
+                  //  recommendAdaper.setIsOk(!b);
                     return;
                 }
                 doNetWorkGetRequest(String.format(Apis.URL_FOLLOW_CINEAM_GET,id),FollowCinemaBean.class);
@@ -90,7 +90,7 @@ public class RecommendCinemaFragment extends BaseFragment {
                 String userId = user.getString("userId", null);
                 if(userId==null){
                     startActivity(new Intent(getActivity(),LoginActivity.class));
-                    recommendAdaper.setIsOk(!b);
+                   // recommendAdaper.setIsOk(!b);
                     return;
                 }
                 doNetWorkGetRequest(String.format(Apis.URL_CANCEL_FOLLOW_CINEAM_GET,id),CancelFollowCineamBean.class);

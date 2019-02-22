@@ -2,6 +2,7 @@ package com.bw.movie.home.adapter;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -13,10 +14,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -88,6 +87,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
     //搜索框是否弹出的标识
     boolean b = true;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
         //不同类型加载不同数据
@@ -132,7 +132,37 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                 bannerViewHoder.seekBar.setMax(hot1.getResult().size()-1);
 
                 bannerViewHoder.seekBar.setFocusable(false);
-                
+               bannerViewHoder.list.setOnTouchListener(new View.OnTouchListener() {
+
+                   private float mDownY;
+                   float x1 = 0;
+                   float y1=0;
+                   float x2=0;
+                   float y2=0;
+                   @Override
+                   public boolean onTouch(View v, MotionEvent event) {
+                       switch (event.getAction()) {
+                           case MotionEvent.ACTION_DOWN:
+                               mDownY = event.getY();
+                               x1 = event.getRawX();
+                               y1 = event.getRawY();
+                               //  getParent().requestDisallowInterceptTouchEvent(true); //设置父类不拦截滑动事件
+                               break;
+                           case MotionEvent.ACTION_MOVE:
+                                   x2 = event.getRawX();
+                                   y2 = event.getRawY();
+                                   if(Math.abs(x1-x2)>50){
+                                       return false;
+                                   }
+                                   callUPandDown.down(y1-y2);
+                                   y1 = y2;
+
+                               return true;
+
+                       }
+                       return true;
+                   }
+               });
                 recyclerCoverFlowAdapter.setmList(hot1.getResult());
                 current=5;
                 //轮播图自动轮播
@@ -392,4 +422,16 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
     public void setFilmCallBack(FilmCallBack callBack){
         filmCallBack=callBack;
     }
+
+    CallUPandDown  callUPandDown;
+    public interface CallUPandDown{
+        void up(float v);
+        void down(float v);
+    }
+    public void setCallUPandDown(CallUPandDown call){
+        callUPandDown=call;
+    }
+
 }
+
+

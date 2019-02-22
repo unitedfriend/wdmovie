@@ -74,6 +74,25 @@
                 android:background="@drawable/movielist_attention"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/cinemaimage"
+                android:visibility="invisible"
+                />
+            <ImageView
+                android:layout_width="@dimen/dp_16"
+                android:layout_height="@dimen/dp_16"
+                android:id="@+id/attentionImage_true"
+                android:background="@mipmap/com_icon_collection_selected"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/cinemaimage"
+
+                />
+            <ImageView
+                android:layout_width="@dimen/dp_16"
+                android:layout_height="@dimen/dp_16"
+                android:id="@+id/attentionImage_false"
+                android:background="@mipmap/com_icon_collection_default"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/cinemaimage"
+
                 />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>

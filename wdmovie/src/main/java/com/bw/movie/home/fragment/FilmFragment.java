@@ -14,6 +14,7 @@ import android.support.annotation.MainThread;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +91,7 @@ public class FilmFragment extends BaseFragment{
     private SharedPreferences.Editor location;
     private SharedPreferences getlocation;
     private String mcity;
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected void initData() {
@@ -163,7 +165,7 @@ public void setEvent(AddressBean event){
         EventBus.getDefault().register(this);
         unbinder = ButterKnife.bind(this, view);
         tag = 0;
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         homeRecycle.setLayoutManager(layoutManager);
         adapter = new FilmRecycleAdapter(getActivity());
@@ -256,6 +258,24 @@ public void setEvent(AddressBean event){
             public void detailsCallBack(String id) {
                 //点击影片展示详情
                 startActivity(new Intent(getActivity(), FilmDetailsActivity.class).putExtra("id", id));
+            }
+        });
+        adapter.setCallUPandDown(new FilmRecycleAdapter.CallUPandDown() {
+            @Override
+            public void up(float v) {
+                Log.i("ttt",v+"");
+                /*int scrollY = homeRecycle.getScrollY();
+                int i =   scrollY+((int) v/2 );
+                homeRecycle.scrollBy(0,i);*/
+            }
+
+            @Override
+            public void down(float v) {
+
+               /* int scrollY = homeRecycle.getScrollY();
+                int i = ((int) v ) - scrollY;
+                homeRecycle.scrollBy(0,-i);*/
+                homeRecycle.scrollBy(0, homeRecycle.getScrollY() + (int) v);
             }
         });
     }

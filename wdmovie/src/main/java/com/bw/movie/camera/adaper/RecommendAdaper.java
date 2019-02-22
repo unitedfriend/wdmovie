@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bw.movie.R;
@@ -75,17 +76,39 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
         holderRecommend.cinemaaddress.setText(mResult.get(i).getAddress());
         holderRecommend.distance.setText(mResult.get(i).getDistance()+"km");
         boolean followCinema = mResult.get(i).getFollowCinema();
-        if(followCinema){
-            holderRecommend.attentionImage.setChecked(true);
-        }else{
-            holderRecommend.attentionImage.setChecked(false);
+        if (followCinema) {
+            holderRecommend.attentionImageTrue.setVisibility(View.VISIBLE);
+            holderRecommend.attentionImageFalse.setVisibility(View.INVISIBLE);
+        } else {
+            holderRecommend.attentionImageTrue.setVisibility(View.INVISIBLE);
+            holderRecommend.attentionImageFalse.setVisibility(View.VISIBLE);
         }
-        //关注
-
-        holderRecommend.attentionImage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holderRecommend.attentionImageFalse.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+            public void onClick(View v) {
+                callBackRecommend.callTrueBeak(mResult.get(i).getId(), true);
+                /*holderNear.attentionImageFalse.setVisibility(View.INVISIBLE);
+                holderNear.attentionImageTrue.setVisibility(View.VISIBLE);*/
+                mResult.get(i).setFollowCinema(1);
+                notifyDataSetChanged();
+
+            }
+        });
+        holderRecommend.attentionImageTrue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callBackRecommend.callFalseBeak(mResult.get(i).getId(), false);
+                /*holderNear.attentionImageFalse.setVisibility(View.VISIBLE);
+                holderNear.attentionImageTrue.setVisibility(View.INVISIBLE);*/
+                mResult.get(i).setFollowCinema(2);
+                notifyDataSetChanged();
+            }
+        });
+        //关注
+        /*holderRecommend.attentionImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holderRecommend.attentionImage.isChecked()){
                     if(callBackRecommend!=null){
                         callBackRecommend.callTrueBeak(mResult.get(i).getId(),true);
                     }
@@ -95,7 +118,21 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                 }
             }
-        });
+        });*/
+       /* holderRecommend.attentionImage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(holderRecommend.attentionImage.isChecked()){
+                    if(callBackRecommend!=null){
+                        callBackRecommend.callTrueBeak(mResult.get(i).getId(),true);
+                    }
+                }else{
+                    if(callBackRecommend!=null){
+                        callBackRecommend.callFalseBeak(mResult.get(i).getId(),false);
+                    }
+                }
+            }
+        });*/
         //点击跳转
         holderRecommend.layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,8 +157,10 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView cinemaaddress;
         @BindView(R.id.distance)
         TextView distance;
-        @BindView(R.id.attentionImage)
-        CheckBox attentionImage;
+        @BindView(R.id.attentionImage_true)
+        ImageView attentionImageTrue;
+        @BindView(R.id.attentionImage_false)
+        ImageView attentionImageFalse;
         @BindView(R.id.layout)
         ConstraintLayout layout;
         public ViewHolderRecommend(@NonNull View itemView) {
@@ -145,5 +184,18 @@ public class RecommendAdaper extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
     public interface CallBackList{
         void callBack(int id);
+    }
+    private CallBackNear callBackNear;
+
+    public void setCallBackNear(CallBackNear callBackNear) {
+        this.callBackNear = callBackNear;
+    }
+
+    public interface CallBackNear {
+        void callTrueBeak(int id, boolean b);
+
+        void callFalseBeak(int id, boolean b);
+
+        void callLoging();
     }
 }

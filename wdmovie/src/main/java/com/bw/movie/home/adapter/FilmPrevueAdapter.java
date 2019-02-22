@@ -57,10 +57,7 @@ public class FilmPrevueAdapter extends RecyclerView.Adapter<FilmPrevueAdapter.Vi
 
     }
 public void setCanCle(){
-
             viewHoder.customVideoplayerStandard.releaseAllVideos();
-
-
 }
 
 
