@@ -127,8 +127,6 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                 RecyclerCoverFlowAdapter recyclerCoverFlowAdapter = new RecyclerCoverFlowAdapter(mContext);
                 ((BannerViewHoder) viewHolder).list.setAdapter(recyclerCoverFlowAdapter);
                 final HotBean hot1 = allBean.getHot();
-               // bannerViewHoder.progressBar.setMax(hot1.getResult().size()-1);
-              //  bannerViewHoder.progressBar.setProgress(hot1.getResult().size());
                 bannerViewHoder.seekBar.setMax(hot1.getResult().size()-1);
 
                 bannerViewHoder.seekBar.setFocusable(false);
@@ -164,7 +162,6 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onItemSelected(int position) {
                         current=position;
-                      //  bannerViewHoder.progressBar.setSecondaryProgress(position%hot1.getResult().size());
                         bannerViewHoder.seekBar.setProgress(position%hot1.getResult().size());
                     }
                 });

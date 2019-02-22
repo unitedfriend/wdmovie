@@ -41,9 +41,6 @@ public class MyApplication extends Application {
             StrictMode.setVmPolicy(builder.build());
         }
         CrashReport.initCrashReport(getApplicationContext(), "7fb01ba51c", false);
-
-
-
     }
     public static Context getApplication() {
         return mContext;
