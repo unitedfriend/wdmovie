@@ -170,11 +170,10 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                         super.handleMessage(msg);
                         int selectedPos = bannerViewHoder.list.getSelectedPos();
                         ((BannerViewHoder) viewHolder).list.smoothScrollToPosition(++selectedPos);
-                        current++;
+                        bannerViewHoder.list.clearFocus();
                         handler.sendEmptyMessageDelayed(0,3000);
                     }
                 };
-
                 //点击隐藏搜索框
                 bannerViewHoder.searchText.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -196,7 +195,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                     }
                 });
 
-                handler.sendEmptyMessage(0);
+             //   handler.sendEmptyMessage(0);
                 recyclerCoverFlowAdapter.setRecycleCallBack(new RecyclerCoverFlowAdapter.RecycleCallBack() {
                     @Override
                     public void imageCallBack(String id) {
