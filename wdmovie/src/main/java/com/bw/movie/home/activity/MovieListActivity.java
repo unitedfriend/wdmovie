@@ -32,6 +32,7 @@ import com.bw.movie.home.bean.MyAddressBean;
 import com.bw.movie.home.fragment.ListHotFragment;
 import com.bw.movie.home.fragment.ListShowFragment;
 import com.bw.movie.home.fragment.ListShowingFragment;
+import com.bw.movie.util.NetUtil;
 import com.bw.movie.util.ToastUtil;
 import com.zaaach.citypicker.CityPicker;
 import com.zaaach.citypicker.adapter.OnPickListener;
@@ -148,7 +149,10 @@ public class MovieListActivity extends BaseActivity {
         // 在定位结束后，在合适的生命周期调用onDestroy()方法
         // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
         //启动定位
-        mlocationClient.startLocation();
+        boolean b = NetUtil.hasNetWork();
+        if(b){
+            mlocationClient.startLocation();
+        }
        /* locationImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
