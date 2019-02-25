@@ -16,6 +16,7 @@
             <include layout="@layout/fragment_my_header" />
             <include layout="@layout/fragment_myinfo_below" />
         </LinearLayout>
+
     </com.bw.movie.custom.ZoomInScrollView>
 
     <ImageView
