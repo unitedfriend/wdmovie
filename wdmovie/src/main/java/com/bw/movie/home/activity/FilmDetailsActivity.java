@@ -191,7 +191,7 @@ int b=0;
         prevuePopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                // filmPrevueAdapter.setCanCle();
+                 filmPrevueAdapter.setCanCle();
             }
         });
         ImageView backImage= prevueView.findViewById(R.id.dimisImage);

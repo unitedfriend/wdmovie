@@ -29,10 +29,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
+
 /**
- *  @author Tang
- *  @time 2019/1/28  8:48
- *  @describe 电影首页的多条目
+ * @author Tang
+ * @time 2019/1/28  8:48
+ * @describe 电影首页的多条目
  */
 public class FilmRecycleAdapter extends RecyclerView.Adapter {
     private Context mContext;
@@ -55,15 +56,15 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    
+
     /**
-     *  @author Tang
-     *  @time 2019/1/28  8:49
-     *  @describe 加载不同视图
-     *  bannerView 轮播图
-     *  hotView 热门电影
-     *  showingView 正在热映
-     *  showView 即将上映
+     * @author Tang
+     * @time 2019/1/28  8:49
+     * @describe 加载不同视图
+     * bannerView 轮播图
+     * hotView 热门电影
+     * showingView 正在热映
+     * showView 即将上映
      */
     @NonNull
     @Override
@@ -84,6 +85,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         }
         return null;
     }
+
     //搜索框是否弹出的标识
     boolean b = true;
 
@@ -114,9 +116,9 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                             setTranslationInit(bannerViewHoder.searchViewGroup, 500);
                             bannerViewHoder.searchEditText.setVisibility(View.VISIBLE);
                             bannerViewHoder.searchText.setVisibility(View.VISIBLE);
-                        }else{
-                            b=!b;
-                            setTranslationOut(bannerViewHoder.searchViewGroup,500);
+                        } else {
+                            b = !b;
+                            setTranslationOut(bannerViewHoder.searchViewGroup, 500);
                             bannerViewHoder.searchEditText.setVisibility(View.GONE);
                             bannerViewHoder.searchText.setVisibility(View.GONE);
                         }
@@ -127,59 +129,64 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                 RecyclerCoverFlowAdapter recyclerCoverFlowAdapter = new RecyclerCoverFlowAdapter(mContext);
                 ((BannerViewHoder) viewHolder).list.setAdapter(recyclerCoverFlowAdapter);
                 final HotBean hot1 = allBean.getHot();
-                bannerViewHoder.seekBar.setMax(hot1.getResult().size()-1);
+                bannerViewHoder.seekBar.setMax(hot1.getResult().size() - 1);
 
                 bannerViewHoder.seekBar.setFocusable(false);
-               bannerViewHoder.list.setOnTouchListener(new View.OnTouchListener() {
+                bannerViewHoder.list.setOnTouchListener(new View.OnTouchListener() {
 
-                   private float mDownY;
-                   float x1 = 0;
-                   float y1=0;
-                   float x2=0;
-                   float y2=0;
-                   @Override
-                   public boolean onTouch(View v, MotionEvent event) {
-                       switch (event.getAction()) {
-                           case MotionEvent.ACTION_DOWN:
-                               mDownY = event.getY();
-                               x1 = event.getRawX();
-                               y1 = event.getRawY();
-                               //  getParent().requestDisallowInterceptTouchEvent(true); //设置父类不拦截滑动事件
-                               break;
-                           case MotionEvent.ACTION_MOVE:
-                                   x2 = event.getRawX();
-                                   y2 = event.getRawY();
-                                   if(Math.abs(x1-x2)>50){
-                                       return false;
-                                   }
-                                   callUPandDown.down(y1-y2);
-                                   y1 = y2;
+                    private float mDownY;
+                    float x1 = 0;
+                    float y1 = 0;
+                    float x2 = 0;
+                    float y2 = 0;
 
-                               return true;
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                mDownY = event.getY();
+                                x1 = event.getRawX();
+                                y1 = event.getRawY();
+                                //  getParent().requestDisallowInterceptTouchEvent(true); //设置父类不拦截滑动事件
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                x2 = event.getRawX();
+                                y2 = event.getRawY();
+                                if (Math.abs(x1 - x2) > 50) {
+                                    return false;
+                                }
+                                callUPandDown.down(y1 - y2);
+                                y1 = y2;
 
-                       }
-                       return true;
-                   }
-               });
+                                return true;
+                            case MotionEvent.ACTION_UP:
+                                if((y2-y1)>=20){
+                                    return false;
+                                }
+
+                        }
+                        return true;
+                    }
+                });
                 recyclerCoverFlowAdapter.setmList(hot1.getResult());
-                current=5;
+                current = 5;
                 //轮播图自动轮播
-                handler = new Handler(){
+                handler = new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);
                         int selectedPos = bannerViewHoder.list.getSelectedPos();
                         ((BannerViewHoder) viewHolder).list.smoothScrollToPosition(++selectedPos);
                         bannerViewHoder.list.clearFocus();
-                        handler.sendEmptyMessageDelayed(0,3000);
+                        handler.sendEmptyMessageDelayed(0, 3000);
                     }
                 };
                 //点击隐藏搜索框
                 bannerViewHoder.searchText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        b=!b;
-                        setTranslationOut(bannerViewHoder.searchViewGroup,500);
+                        b = !b;
+                        setTranslationOut(bannerViewHoder.searchViewGroup, 500);
                         bannerViewHoder.searchEditText.setVisibility(View.GONE);
                         bannerViewHoder.searchText.setVisibility(View.GONE);
                         String s = ((BannerViewHoder) viewHolder).searchText.getText().toString();
@@ -190,12 +197,12 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                 ((BannerViewHoder) viewHolder).list.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
                     @Override
                     public void onItemSelected(int position) {
-                        current=position;
-                        bannerViewHoder.seekBar.setProgress(position%hot1.getResult().size());
+                        current = position;
+                        bannerViewHoder.seekBar.setProgress(position % hot1.getResult().size());
                     }
                 });
 
-             //   handler.sendEmptyMessage(0);
+                handler.sendEmptyMessage(0);
                 recyclerCoverFlowAdapter.setRecycleCallBack(new RecyclerCoverFlowAdapter.RecycleCallBack() {
                     @Override
                     public void imageCallBack(String id) {
@@ -216,10 +223,10 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                 hotAdapter.setCallBack(new HotAdapter.HotCallBack() {
                     @Override
                     public void skip(int id) {
-                       filmCallBack.detailsCallBack(id+"");
+                        filmCallBack.detailsCallBack(id + "");
                     }
                 });
-               hotViewHoder.hotTextView.setOnClickListener(new View.OnClickListener() {
+                hotViewHoder.hotTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         filmCallBack.hotSkipGroup();
@@ -244,7 +251,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                 showingAdapter.setCallBack(new ShowingAdapter.ShowingCallBack() {
                     @Override
                     public void skip(int id) {
-                        filmCallBack.detailsCallBack(id+"");
+                        filmCallBack.detailsCallBack(id + "");
                     }
                 });
                 showingViewHoder.showingImage.setOnClickListener(new View.OnClickListener() {
@@ -272,7 +279,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
                 showAdapter.setCallBack(new ShowAdapter.ShowCallBack() {
                     @Override
                     public void skip(int id) {
-                        filmCallBack.detailsCallBack(id+"");
+                        filmCallBack.detailsCallBack(id + "");
                     }
                 });
                 showViewHoder.showTextView.setOnClickListener(new View.OnClickListener() {
@@ -353,6 +360,7 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         RecyclerCoverFlow list;
         @BindView(R.id.proBar)
         SeekBar seekBar;
+
         public BannerViewHoder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -401,31 +409,42 @@ public class FilmRecycleAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void setLocation(String l){
+    public void setLocation(String l) {
         bannerViewHoder.locationText.setText(l);
     }
 
     FilmCallBack filmCallBack;
-    public interface FilmCallBack{
+
+    public interface FilmCallBack {
         void addressCallBack();
+
         void searchCallBack(String s);
+
         void bannerCallBack(String id);
+
         void hotSkipGroup();
+
         void showingSkipGroup();
+
         void showSkipGroup();
+
         void detailsCallBack(String id);
     }
-    public void setFilmCallBack(FilmCallBack callBack){
-        filmCallBack=callBack;
+
+    public void setFilmCallBack(FilmCallBack callBack) {
+        filmCallBack = callBack;
     }
 
-    CallUPandDown  callUPandDown;
-    public interface CallUPandDown{
+    CallUPandDown callUPandDown;
+
+    public interface CallUPandDown {
         void up(float v);
+
         void down(float v);
     }
-    public void setCallUPandDown(CallUPandDown call){
-        callUPandDown=call;
+
+    public void setCallUPandDown(CallUPandDown call) {
+        callUPandDown = call;
     }
 
 }
